@@ -187,6 +187,54 @@ export class WizardFlowService {
         };
     }
 
+    /*  */
+    getNextPosition(step: number, formIndex: number): { step: number; form: number } | null {
+        const normalizedStep = this.normalizeStep(step);
+        const totalForms = this.getFormsCount(normalizedStep);
+
+        if (formIndex < totalForms) {
+            return {
+            step: normalizedStep,
+            form: formIndex + 1,
+            };
+        }
+
+        const nextStep = normalizedStep + 1;
+
+        if (nextStep <= this.steps.length) {
+            return {
+            step: nextStep,
+            form: 1,
+            };
+        }
+
+        return null;
+    }
+
+    getPrevPosition(step: number, formIndex: number): { step: number; form: number } | null {
+        const normalizedStep = this.normalizeStep(step);
+
+        if (formIndex > 1) {
+            return {
+            step: normalizedStep,
+            form: formIndex - 1,
+            };
+        }
+
+        const prevStep = normalizedStep - 1;
+
+        if (prevStep >= 1) {
+            return {
+            step: prevStep,
+            form: this.getFormsCount(prevStep),
+            };
+        }
+
+        return null;
+    }
+
+    /*  */
+
     saveCurrentPosition(step: number, form: number): void {
         const previousState = this.readStorageState();
 

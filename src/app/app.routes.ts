@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { WIZARD_ROUTES } from './wizard/wizard.routes';
+import { CUSTOMER_ROUTES } from './wizard/components/customer-shell/customer.routes';
 
 export const routes: Routes = [
   {
@@ -9,7 +9,7 @@ export const routes: Routes = [
   },
   {
     path: 'wizard',
-    children: WIZARD_ROUTES,
+    children: CUSTOMER_ROUTES,
   },
   {
     path: '**',

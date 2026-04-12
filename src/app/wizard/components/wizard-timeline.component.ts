@@ -73,7 +73,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
       --small-size: 22px;
       --active-size: 48px;
       --track-color: #d9e2ec;
-      --progress-color: #635bff;
+      --progress-color: #ff6600;
       --completed-color: #18c37e;
       --inactive-color: #bcc9d8;
 
@@ -102,7 +102,8 @@ import { WizardFlowService } from '../services/wizard-flow.service';
     }
 
     .stripe-timeline__progress {
-      background: linear-gradient(90deg, var(--progress-color), #7a73ff);
+      /* background: linear-gradient(90deg, var(--progress-color), #ff3d9a); */
+      background: var(--progress-color);
       transition: width 260ms ease, left 260ms ease;
     }
 
@@ -187,7 +188,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
     }
 
     .stripe-step.is-completed .stripe-step__circle {
-      background: var(--completed-color);
+      background: var(--progress-color);
     }
 
     .timeline-warning {

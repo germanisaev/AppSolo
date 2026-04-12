@@ -1,0 +1,39 @@
+.container-wrap > header {
+    background: #ffffff;
+    height: 40px;
+}
+
+.container-wrap > main {
+    height: 100%;
+    width: 100%;
+    margin-bottom: 40px;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+    background: #f5f7fb;
+}
+
+.container-wrap > main::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 58vh;
+      background: url('/background-customer.png') bottom center / 100% 100% no-repeat;
+      z-index: 0;
+    }
+
+
+ .container-wrap > main::before {
+      content: '';
+      position: absolute;
+      left: -8%;
+      right: -8%;
+      bottom: calc(58vh - 110px);
+      /* height: 230px; */
+      background: #f5f7fb;
+      border-bottom-left-radius: 55% 100%;
+      border-bottom-right-radius: 55% 100%;
+      z-index: 1;
+    }
