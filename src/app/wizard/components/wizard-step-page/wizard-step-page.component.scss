@@ -1,0 +1,101 @@
+
+
+.step-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.step-caption {
+  width: 50%;
+  min-width: 620px;
+  margin-bottom: 16px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.form-card {
+  position: relative;
+  overflow: hidden;
+  width: 50%;
+  min-width: 620px;
+  min-height: 260px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.actions {
+  width: 50%;
+  min-width: 620px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+:host ::ng-deep .form-grid {
+  display: grid;
+  gap: 18px;
+}
+
+:host ::ng-deep .field > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+:host ::ng-deep input[type='text'] {
+  height: 46px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+:host ::ng-deep input[type='text']:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+:host ::ng-deep .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-card-inner {
+  position: relative;
+  min-height: 220px;
+}
+
+@media (max-width: 1024px) {
+  .step-caption,
+  .form-card,
+  .actions {
+    width: 70%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 768px) {
+  .step-caption,
+  .form-card,
+  .actions {
+    width: 94%;
+  }
+
+  .form-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .actions {
+    gap: 12px;
+  }
+}

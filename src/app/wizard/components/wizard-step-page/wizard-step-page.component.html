@@ -1,0 +1,48 @@
+
+<ng-container *ngIf="vm$ | async as vm">
+  <div class="step-page">
+    <div class="step-caption">
+      Step {{ vm.step }} · Form {{ vm.formIndex }} / {{ vm.totalForms }}
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-inner" [@slideForm]="getAnimationState(vm.step, vm.formIndex)">
+
+        <ng-container [ngSwitch]="getFormKey(vm.step, vm.formIndex)">
+          <app-step1-form1 *ngSwitchCase="'1-1'" [form]="vm.form"></app-step1-form1>
+          <app-step1-form2 *ngSwitchCase="'1-2'" [form]="vm.form"></app-step1-form2>
+          <app-step1-form3 *ngSwitchCase="'1-3'" [form]="vm.form"></app-step1-form3>
+
+          <app-step2-form1 *ngSwitchCase="'2-1'" [form]="vm.form"></app-step2-form1>
+          <app-step2-form2 *ngSwitchCase="'2-2'" [form]="vm.form"></app-step2-form2>
+
+          <app-step3-form1 *ngSwitchCase="'3-1'" [form]="vm.form"></app-step3-form1>
+          <app-step3-form2 *ngSwitchCase="'3-2'" [form]="vm.form"></app-step3-form2>
+          <app-step3-form3 *ngSwitchCase="'3-3'" [form]="vm.form"></app-step3-form3>
+          <app-step3-form4 *ngSwitchCase="'3-4'" [form]="vm.form"></app-step3-form4>
+          <app-step3-form5 *ngSwitchCase="'3-5'" [form]="vm.form"></app-step3-form5>
+          <app-step3-form6 *ngSwitchCase="'3-6'" [form]="vm.form"></app-step3-form6>
+
+          <app-step4-form1 *ngSwitchCase="'4-1'" [form]="vm.form"></app-step4-form1>
+
+          <app-step5-form1 *ngSwitchCase="'5-1'" [form]="vm.form"></app-step5-form1>
+          <app-step5-form2 *ngSwitchCase="'5-2'" [form]="vm.form"></app-step5-form2>
+
+          <div *ngSwitchDefault>
+            Form not found for {{ getFormKey(vm.step, vm.formIndex) }}
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="actions">
+      <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+        [disabled]="vm.step === 1 && vm.formIndex === 1" (onClick)="prev(vm.step, vm.formIndex)">
+      </p-button>
+
+      <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'Finish' : 'Next'" icon="pi pi-arrow-right"
+        iconPos="right" (onClick)="next(vm.step, vm.formIndex)">
+      </p-button>
+    </div>
+  </div>
+</ng-container>

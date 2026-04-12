@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeicons/primeicons.css";
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+label {
+  display: inline-block;
+  line-height: 1.2;
+}
+
+label.required-mark::after {
+  content: "*";
+  color: #dc2626;
+  margin-left: 4px;
+  font-weight: 700;
+}
