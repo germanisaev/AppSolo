@@ -15,12 +15,12 @@ export class WizardFlowService {
     private fb = inject(FormBuilder);
     private readonly storageKey = 'wizard-progress';
 
-    readonly steps: StepMeta[] = [
-        { step: 1, title: 'Personal Info', formsCount: 3 },
-        { step: 2, title: 'Car Details', formsCount: 2 },
-        { step: 3, title: 'Borrowers', formsCount: 6 },
-        { step: 4, title: 'Banking', formsCount: 1 },
-        { step: 5, title: 'Documents', formsCount: 2 },
+    readonly steps: Omit<StepMeta, 'formsCount'>[] = [
+        { step: 1, title: 'Personal Info' },
+        { step: 2, title: 'Car Details' },
+        { step: 3, title: 'Borrowers' },
+        { step: 4, title: 'Banking' },
+        { step: 5, title: 'Documents' },
     ];
 
     readonly formsByStep = {
@@ -90,12 +90,15 @@ export class WizardFlowService {
         this.registerAutoSave();
     }
 
-    getSteps(): StepMeta[] {
-        return this.steps;
-    }
-
     getFormsCount(step: number): number {
         return this.formsByStep[step as keyof typeof this.formsByStep]?.length ?? 0;
+    }
+
+    getSteps(): StepMeta[] {
+        return this.steps.map(step => ({
+            ...step,
+            formsCount: this.getFormsCount(step.step)
+        }));
     }
 
     getForm(step: number, formIndex: number): FormGroup | null {
@@ -194,8 +197,8 @@ export class WizardFlowService {
 
         if (formIndex < totalForms) {
             return {
-            step: normalizedStep,
-            form: formIndex + 1,
+                step: normalizedStep,
+                form: formIndex + 1,
             };
         }
 
@@ -203,8 +206,8 @@ export class WizardFlowService {
 
         if (nextStep <= this.steps.length) {
             return {
-            step: nextStep,
-            form: 1,
+                step: nextStep,
+                form: 1,
             };
         }
 
@@ -216,8 +219,8 @@ export class WizardFlowService {
 
         if (formIndex > 1) {
             return {
-            step: normalizedStep,
-            form: formIndex - 1,
+                step: normalizedStep,
+                form: formIndex - 1,
             };
         }
 
@@ -225,8 +228,8 @@ export class WizardFlowService {
 
         if (prevStep >= 1) {
             return {
-            step: prevStep,
-            form: this.getFormsCount(prevStep),
+                step: prevStep,
+                form: this.getFormsCount(prevStep),
             };
         }
 
@@ -300,7 +303,7 @@ export class WizardFlowService {
         // Вперед — только если все предыдущие шаги валидны
         for (let i = 1; i < normalizedTarget; i++) {
             if (!this.isStepValid(i)) {
-            return false;
+                return false;
             }
         }
 
