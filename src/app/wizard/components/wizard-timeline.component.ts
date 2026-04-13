@@ -291,6 +291,7 @@ export class WizardTimelineComponent implements AfterViewInit {
 
   steps = this.flow.getSteps();
   currentStep = 1;
+  currentForm = 1;
 
   trackLeftPx = 0;
   trackWidthPx = 0;
@@ -318,11 +319,28 @@ export class WizardTimelineComponent implements AfterViewInit {
     this.recalculateLines();
   }
 
+  /* goToStep(step: number, event: MouseEvent): void {
+    event.preventDefault();
+
+    if (!this.flow.isStepAccessible(step, this.currentStep)) {
+      return;
+    }
+
+    this.router.navigate(['/wizard/step', step], {
+      queryParams: { form: 1 },
+    });
+  } */
+
   goToStep(step: number, event: MouseEvent): void {
     event.preventDefault();
 
     if (!this.flow.isStepAccessible(step, this.currentStep)) {
       return;
+    }
+
+    // сохраняем только если текущая форма валидна
+    if (this.flow.isValid(this.currentStep, this.currentForm)) {
+      this.flow.saveCurrentPosition(step, 1);
     }
 
     this.router.navigate(['/wizard/step', step], {

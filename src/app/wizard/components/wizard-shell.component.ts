@@ -20,58 +20,27 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         </div>
       </div>
 
-      <div class="wizard-bottom-bg"></div>
-
-      <!-- <div class="wiizar-buttons">
-        <div class="actions">
-          <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+      <div class="wiizar-actions">
+        
+          <p-button label="Back"></p-button>
+          <p-button label="Next"></p-button>
+          <div class="actions">
+          <!-- <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
             [disabled]="vm.step === 1 && vm.formIndex === 1" (onClick)="prev(vm.step, vm.formIndex)">
           </p-button>
 
           <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'Finish' : 'Next'" icon="pi pi-arrow-right"
             iconPos="right" (onClick)="next(vm.step, vm.formIndex)">
-          </p-button>
+          </p-button> -->
         </div>
-      </div> -->
+      </div>
     </div>
   `,
   styles: [`
-    /* .wizard-page {
-      min-height: 100vh;
-      position: relative;
-      overflow: hidden;
-      background: #f5f7fb;
-    } */
+    .wizard-page {
+      background: transparent;
+    }
 
-    /* нижняя картинка */
-    /* .wizard-page::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 58vh;
-      background: url('/background-customer.png') bottom center / 100% 100% no-repeat;
-      z-index: 0;
-    } */
-
-    /* белая волна сверху картинки */
-    /* .wizard-page::before {
-      content: '';
-      position: absolute;
-      left: -8%;
-      right: -8%;
-      bottom: calc(58vh - 110px);
-      height: 230px;
-      background: #f5f7fb;
-      border-bottom-left-radius: 55% 100%;
-      border-bottom-right-radius: 55% 100%;
-      z-index: 1;
-    } */
-
-      .wizard-page {
-        background: transparent;
-      }
     .wizard-inner {
       position: relative;
       z-index: 2;
@@ -80,14 +49,32 @@ import { WizardFlowService } from '../services/wizard-flow.service';
       box-sizing: border-box;
     }
 
-      .wizard-content,
-      app-wizard-timeline {
-        position: relative;
-        z-index: 1;
-      }
+    .wizard-content,
+    app-wizard-timeline {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wiizar-actions {
+      position: absolute;
+      bottom: 0px; // 👈 отступ от низа
+
+      left: 50%;
+      transform: translateX(-50%);
+
+      width: 100%;
+      max-width: 1100px;
+
+      display: flex;
+      justify-content: space-between;
+
+      padding: 0 24px;
+
+      z-index: 5; // 👈 выше картинки
+    }
   `],
 })
-export class WizardShellComponent { 
+export class WizardShellComponent {
 
   @Input() vm: any;
   animationDirection: 'next' | 'prev' = 'next';

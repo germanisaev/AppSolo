@@ -3,7 +3,25 @@
   height: 100vh;
 }
 
+.app-header {
+  position: fixed;   // 🔥 фиксируем
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 50px;
+  background: #fff;
+
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+
+  z-index: 1000; // поверх всего
+}
+
 .app-main {
-  height: calc(100vh - 40px); /* высота без header */
-  display: block;
+  margin-top: 50px; // 🔥 чтобы не залезал под header
+
+  height: calc(100vh - 50px);
+  overflow-y: auto; // 🔥 скролл только тут
 }

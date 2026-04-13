@@ -136,7 +136,7 @@ export class WizardStepPageComponent {
     this.navigate(prev.step, prev.form);
   } */
 
-  next(step: number, formIndex: number): void {
+  /* next(step: number, formIndex: number): void {
     this.animationDirection = 'next';
 
     this.flow.markTouched(step, formIndex);
@@ -164,6 +164,48 @@ export class WizardStepPageComponent {
     if (!prev) {
       return;
     }
+
+    this.animationTick++;
+    this.navigate(prev.step, prev.form);
+  } */
+
+  next(step: number, formIndex: number): void {
+    this.animationDirection = 'next';
+
+    this.flow.markTouched(step, formIndex);
+
+    if (!this.flow.isValid(step, formIndex)) {
+      return;
+    }
+
+    const totalForms = this.flow.getFormsCount(step);
+    const isLastFormInStep = formIndex === totalForms;
+
+    if (isLastFormInStep && !this.flow.isStepValid(step)) {
+      return;
+    }
+
+    const next = this.flow.getNextPosition(step, formIndex);
+
+    if (!next) {
+      this.flow.saveCurrentPosition(step, formIndex);
+      this.submitAll();
+      return;
+    }
+
+    this.flow.saveCurrentPosition(next.step, next.form);
+
+    this.animationTick++;
+    this.navigate(next.step, next.form);
+  }
+
+  prev(step: number, formIndex: number): void {
+    this.animationDirection = 'prev';
+
+    const prev = this.flow.getPrevPosition(step, formIndex);
+    if (!prev) return;
+
+    this.flow.saveCurrentPosition(prev.step, prev.form);
 
     this.animationTick++;
     this.navigate(prev.step, prev.form);

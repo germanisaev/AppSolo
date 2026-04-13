@@ -87,7 +87,7 @@ export class WizardFlowService {
 
     constructor() {
         this.restoreProgress();
-        this.registerAutoSave();
+        // this.registerAutoSave();
     }
 
     getFormsCount(step: number): number {
@@ -237,7 +237,6 @@ export class WizardFlowService {
     }
 
     /*  */
-
     saveCurrentPosition(step: number, form: number): void {
         const previousState = this.readStorageState();
 
@@ -254,6 +253,8 @@ export class WizardFlowService {
                 ...nextState,
             })
         );
+
+        console.log(localStorage.getItem(this.storageKey));
     }
 
     getSavedPosition(): { step: number; form: number } {
@@ -310,14 +311,15 @@ export class WizardFlowService {
         return true;
     }
 
-    private registerAutoSave(): void {
+    /* private registerAutoSave(): void {
         const controls = Object.values(this.formsByStep)
             .flat()
             .map((form) => form as AbstractControl);
 
         merge(...controls.map((control) => control.valueChanges))
             .pipe(debounceTime(300))
-            .subscribe(() => {
+            .subscribe((item) => {
+                console.log(item);
                 const state = this.readStorageState();
 
                 this.saveCurrentPosition(
@@ -325,7 +327,7 @@ export class WizardFlowService {
                     state?.currentForm ?? 1
                 );
             });
-    }
+    } */
 
     private restoreProgress(): void {
         const state = this.readStorageState();
