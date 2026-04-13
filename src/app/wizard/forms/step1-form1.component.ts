@@ -21,6 +21,20 @@ import { FormBaseComponent } from '../../shared/base/form-base.component';
         </label>
         <input id="lastName" type="text" formControlName="lastName" />
       </div>
+
+      <div class="field">
+        <label [class.required-mark]="isControlRequired('governmentId')">
+          Government Id
+        </label>
+        <input id="governmentId" type="text" formControlName="governmentId" />
+      </div>
+
+      <div class="field">
+        <label [class.required-mark]="isControlRequired('mobile')">
+          Mobile
+        </label>
+        <input id="mobile" type="text" formControlName="mobile" />
+      </div>
     </div>
   `,
 })

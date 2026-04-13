@@ -22,8 +22,8 @@ import { WizardFlowService } from '../services/wizard-flow.service';
 
       <div class="wiizar-actions">
         
-          <p-button label="Back"></p-button>
-          <p-button label="Next"></p-button>
+          <!-- <p-button label="Back"></p-button>
+          <p-button label="Next"></p-button> -->
           <div class="actions">
           <!-- <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
             [disabled]="vm.step === 1 && vm.formIndex === 1" (onClick)="prev(vm.step, vm.formIndex)">

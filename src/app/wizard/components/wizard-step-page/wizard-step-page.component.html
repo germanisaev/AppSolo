@@ -10,8 +10,8 @@
 
         <ng-container [ngSwitch]="getFormKey(vm.step, vm.formIndex)">
           <app-step1-form1 *ngSwitchCase="'1-1'" [form]="vm.form"></app-step1-form1>
-          <app-step1-form2 *ngSwitchCase="'1-2'" [form]="vm.form"></app-step1-form2>
-          <app-step1-form3 *ngSwitchCase="'1-3'" [form]="vm.form"></app-step1-form3>
+          <!-- <app-step1-form2 *ngSwitchCase="'1-2'" [form]="vm.form"></app-step1-form2>
+          <app-step1-form3 *ngSwitchCase="'1-3'" [form]="vm.form"></app-step1-form3> -->
 
           <app-step2-form1 *ngSwitchCase="'2-1'" [form]="vm.form"></app-step2-form1>
           <app-step2-form2 *ngSwitchCase="'2-2'" [form]="vm.form"></app-step2-form2>

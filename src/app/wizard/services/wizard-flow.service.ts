@@ -1,14 +1,23 @@
 import { Injectable, inject } from '@angular/core';
 import {
-    AbstractControl,
     FormBuilder,
     FormGroup,
     Validators,
 } from '@angular/forms';
-import { merge } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { StepMeta, WizardStorageState } from '../models/step.model';
-import { Step1Form1, Step1Form2, Step1Form3, Step2Form1, Step2Form2, Step3Form1, Step3Form2, Step3Form3, Step3Form4, Step3Form5, Step3Form6, Step4Form1, Step5Form1, Step5Form2 } from '../models/step.types';
+import {
+    Step1Form1,
+    Step2Form1,
+    Step2Form2,
+    Step2Form3,
+    Step3Form1,
+    Step3Form2,
+    Step3Form3,
+    Step4Form1,
+    Step4Form2,
+    Step5Form1,
+    Step5Form2
+} from '../models/step.types';
 
 @Injectable({ providedIn: 'root' })
 export class WizardFlowService {
@@ -23,57 +32,148 @@ export class WizardFlowService {
         { step: 5, title: 'Documents' },
     ];
 
+    readonly formSlugsByStep = {
+        1: ['personal-details'],
+        2: ['loan-amount', 'loan-account-setup', 'additional-personal-details'],
+        3: ['account-setup-confirmation', 'spouse-details', 'address-details'],
+        4: ['salary-details', 'personal-declarations'],
+        5: ['loan-submission-completion', 'loan-summary'],
+    } as const;
+
+    getFormSlug(step: number, formIndex: number): string {
+        const normalizedStep = this.normalizeStep(step) as keyof typeof this.formSlugsByStep;
+        return this.formSlugsByStep[normalizedStep]?.[formIndex - 1] ?? `step${step}-form${formIndex}`;
+    }
+
+    getAllRawValue(): Record<string, Array<Record<string, unknown>>> {
+        const result: Record<string, Array<Record<string, unknown>>> = {};
+
+        this.steps.forEach(({ step }) => {
+            const stepKey = step as keyof typeof this.formsByStep;
+
+            result[`step${step}`] = this.formsByStep[stepKey].map((form, index) => ({
+                [this.getFormSlug(step, index + 1)]: form.getRawValue(),
+            }));
+        });
+
+        return result;
+    }
+
     readonly formsByStep = {
         1: [
             this.fb.nonNullable.group({
                 firstName: ['', Validators.required],
                 lastName: ['', Validators.required],
+                governmentId: [{ value: '123456789', disabled: true }, Validators.required],
+                mobile: [{ value: '0541234567', disabled: true }, Validators.required],
             }) as Step1Form1,
-            this.fb.nonNullable.group({
-                phone: ['', Validators.required],
-                email: [''],
-            }) as Step1Form2,
-            this.fb.nonNullable.group({
-                city: [''],
-                street: [''],
-            }) as Step1Form3,
         ],
         2: [
             this.fb.nonNullable.group({
-                carBrand: ['', Validators.required],
-                carModel: ['', Validators.required],
+                loanAmount: [''],
+                numberOfPayments: ['', Validators.required],
+                linkageType: [{ value: '', disabled: true }],
+                monthlyPayment: [{ value: '', disabled: true }],
+
             }) as Step2Form1,
             this.fb.nonNullable.group({
-                year: [''],
-                color: [''],
+                monthlyChargeDate: ['', Validators.required],
+                loanBeneficiary: ['', Validators.required],
+                bank: ['', Validators.required],
+                branchNumber: ['', Validators.required],
+                accountNumber: ['', Validators.required],
             }) as Step2Form2,
+            this.fb.nonNullable.group({
+                idIssueDate: ['', Validators.required],
+                idExpiryDate: ['', Validators.required],
+                biometricId: ['', Validators.required],
+                birthDate: ['', Validators.required],
+                birthCountry: ['', Validators.required],
+                gender: ['', Validators.required],
+                email: ['', Validators.required],
+                familyStatus: ['', Validators.required],
+                childreNumUnder18: ['', Validators.required],
+                creditReportConsentExpiryDate: this.fb.nonNullable.group({
+                    checked: [''],
+                    executedTransactionConsentExpiryDate: [''],
+                    nonExecutedTransactionConsentExpiryDate: [''],
+                }),
+            }) as Step2Form3,
         ],
         3: [
             this.fb.nonNullable.group({
                 borrower1: ['', Validators.required],
             }) as Step3Form1,
             this.fb.nonNullable.group({
-                borrower2: [''],
+                firstName: [''],
+                lastName: [''],
+                governmentId: [''],
+                monthlyIncome: [''],
             }) as Step3Form2,
             this.fb.nonNullable.group({
-                borrower3: [''],
+                city: [{ value: '', disabled: true }],
+                street: [{ value: '', disabled: true }],
+                houseNumber: [{ value: '', disabled: true }],
+                entranceNumber: [{ value: '', disabled: true }],
+                apartmentNumber: [{ value: '', disabled: true }],
+                zipCode: [{ value: '', disabled: true }],
+                isMailingAddressDifferent: [false],
+                differentMailingAddress: this.fb.group({
+                    city: [''],
+                    street: [{ value: '', disabled: true }],
+                    houseNumber: [''],
+                    entranceNumber: [''],
+                    apartmentNumber: [''],
+                    zipCode: [''],
+                    poBoxNumber: [''],
+                }),
             }) as Step3Form3,
-            this.fb.nonNullable.group({
-                borrower4: [''],
-            }) as Step3Form4,
-            this.fb.nonNullable.group({
-                borrower5: [''],
-            }) as Step3Form5,
-            this.fb.nonNullable.group({
-                borrower6: [''],
-            }) as Step3Form6
         ],
         4: [
             this.fb.nonNullable.group({
-                bank: ['', Validators.required],
-                branch: [''],
-                account: [''],
+                businessActivity: [[] as string[], [Validators.required]],
+                fieldsOfOccupation: ['', Validators.required],
+                employmentStatus: ['', Validators.required],
+                tenureValue: ['', Validators.required],
+                tenureUnit: ['שנים', Validators.required],
+                workplaceType: ['', Validators.required],
+                education: ['', Validators.required],
+                salaryPaymentDay: ['', Validators.required],
+                monthlyIncome: ['', Validators.required],
+                additionalHouseholdIncome: ['', Validators.required],
+                monthlyAlimonyExpense: [''],
+                monthlyRentExpense: ['', Validators.required],
+                hasOwnedApartment: ['', Validators.required],
             }) as Step4Form1,
+            this.fb.nonNullable.group({
+                publicPersonnel: this.fb.group({
+                    checked: [null, Validators.required],
+                    value: [null],
+                }),
+                familyMemberPublicPersonnel: this.fb.group({
+                    checked: [null, Validators.required],
+                    value: [null],
+                }),
+                additionalBeneficiaries: this.fb.group({
+                    checked: [null, Validators.required],
+                    value: [null],
+                }),
+                nonIsraeliTaxResidency: this.fb.group({
+                    checked: [null, Validators.required],
+                    value: [null],
+                }),
+                usTaxResidency: this.fb.group({
+                    checked: [null],
+                    value: [null],
+                }),
+                notIsraeliTaxResidencyCountry: this.fb.group({
+                    checked: [null],
+                    value: [null],
+                }),
+                marketingConsent: [false],
+                bankNotifications: [false],
+                notificationMethod: [1]
+            }) as Step4Form2,
         ],
         5: [
             this.fb.nonNullable.group({
@@ -275,15 +375,15 @@ export class WizardFlowService {
         localStorage.removeItem(this.storageKey);
     }
 
-    getAllRawValue() {
+    /* getAllRawValue() {
         return {
             step1: this.formsByStep[1].map((f) => f.getRawValue()),
             step2: this.formsByStep[2].map((f) => f.getRawValue()),
             step3: this.formsByStep[3].map((f) => f.getRawValue()),
             step4: this.formsByStep[4].map((f) => f.getRawValue()),
-            step5: this.formsByStep[5].map((f) => f.getRawValue()),
+            // step5: this.formsByStep[5].map((f) => f.getRawValue()),
         };
-    }
+    } */
 
     isStepValid(step: number): boolean {
         const normalizedStep = this.normalizeStep(step) as keyof typeof this.formsByStep;
@@ -329,6 +429,17 @@ export class WizardFlowService {
             });
     } */
 
+    private extractFormValue(item: unknown): object | null {
+        if (!item || typeof item !== 'object') {
+            return null;
+        }
+
+        const values = Object.values(item as Record<string, unknown>);
+        const first = values[0];
+
+        return first && typeof first === 'object' ? (first as object) : null;
+    }
+
     private restoreProgress(): void {
         const state = this.readStorageState();
 
@@ -345,7 +456,7 @@ export class WizardFlowService {
         this.patchStepData(5, data['step5'] as unknown[] | undefined);
     }
 
-    private patchStepData(step: number, values?: unknown[]): void {
+    /* private patchStepData(step: number, values?: unknown[]): void {
         if (!Array.isArray(values)) {
             return;
         }
@@ -357,6 +468,23 @@ export class WizardFlowService {
 
             if (form && value && typeof value === 'object') {
                 form.patchValue(value as object, { emitEvent: false });
+            }
+        });
+    } */
+
+    private patchStepData(step: number, values?: unknown[]): void {
+        if (!Array.isArray(values)) {
+            return;
+        }
+
+        const forms = this.formsByStep[step as keyof typeof this.formsByStep];
+
+        values.forEach((item, index) => {
+            const form = forms?.[index];
+            const value = this.extractFormValue(item);
+
+            if (form && value) {
+                form.patchValue(value, { emitEvent: false });
             }
         });
     }

@@ -3,26 +3,42 @@ import { FormControl, FormGroup } from "@angular/forms";
 export type Step1Form1 = FormGroup<{
     firstName: FormControl<string>;
     lastName: FormControl<string>;
-}>;
-
-export type Step1Form2 = FormGroup<{
-    phone: FormControl<string>;
-    email: FormControl<string>;
-}>;
-
-export type Step1Form3 = FormGroup<{
-    city: FormControl<string>;
-    street: FormControl<string>;
+    governmentId: FormControl<string>;
+    mobile: FormControl<string>;
 }>;
 
 export type Step2Form1 = FormGroup<{
-    carBrand: FormControl<string>;
-    carModel: FormControl<string>;
+    loanAmount: FormControl<string>;
+    numberOfPayments: FormControl<string>;
+    linkageType: FormControl<string>;
+    monthlyPayment: FormControl<string>;
 }>;
 
 export type Step2Form2 = FormGroup<{
-    year: FormControl<string>;
-    color: FormControl<string>;
+    monthlyChargeDate: FormControl<string>;
+    loanBeneficiary: FormControl<string>;
+    bank: FormControl<string>;
+    branchNumber: FormControl<string>;
+    accountNumber: FormControl<string>;
+}>;
+
+export type Step2Form31 = FormGroup<{
+    checked: FormControl<string>;
+    executedTransactionConsentExpiryDate: FormControl<string>;
+    nonExecutedTransactionConsentExpiryDate: FormControl<string>;
+}>;
+
+export type Step2Form3 = FormGroup<{
+    idIssueDate: FormControl<string>;
+    idExpiryDate: FormControl<string>;
+    biometricId: FormControl<string>;
+    birthDate: FormControl<string>;
+    birthCountry: FormControl<string>;
+    gender: FormControl<string>;
+    email: FormControl<string>;
+    familyStatus: FormControl<string>;
+    childreNumUnder18: FormControl<string>;
+    creditReportConsentExpiryDate: Step2Form31;
 }>;
 
 export type Step3Form1 = FormGroup<{
@@ -30,29 +46,64 @@ export type Step3Form1 = FormGroup<{
 }>;
 
 export type Step3Form2 = FormGroup<{
-    borrower2: FormControl<string>;
+    firstName: FormControl<string>;
+    lastName: FormControl<string>;
+    governmentId: FormControl<string>;
+    monthlyIncome: FormControl<string>;
 }>;
 
 export type Step3Form3 = FormGroup<{
-    borrower3: FormControl<string>;
+    city: FormControl<string>;
+    street: FormControl<string>;
+    houseNumber: FormControl<string>;
+    entranceNumber: FormControl<string>;
+    apartmentNumber: FormControl<string>;
+    zipCode: FormControl<string>;
+    isMailingAddressDifferent: FormControl<boolean>;
+    differentMailingAddress: Step3Form31
 }>;
 
-export type Step3Form4 = FormGroup<{
-    borrower4: FormControl<string>;
-}>;
-
-export type Step3Form5 = FormGroup<{
-    borrower5: FormControl<string>;
-}>;
-
-export type Step3Form6 = FormGroup<{
-    borrower6: FormControl<string>;
+export type Step3Form31 = FormGroup<{
+    city: FormControl<string>;
+    street: FormControl<string>;
+    houseNumber: FormControl<string>;
+    entranceNumber: FormControl<string>;
+    apartmentNumber: FormControl<string>;
+    zipCode: FormControl<string>;
+    poBoxNumber: FormControl<string>;
 }>;
 
 export type Step4Form1 = FormGroup<{
-    bank: FormControl<string>;
-    branch: FormControl<string>;
-    account: FormControl<string>;
+    businessActivity: FormControl<string[]>;  // FormArray<FormControl<string>>
+    fieldsOfOccupation: FormControl<string>;
+    employmentStatus: FormControl<string>;
+    tenureValue: FormControl<string>;
+    tenureUnit: FormControl<string>;
+    workplaceType: FormControl<string>;
+    education: FormControl<string>;
+    salaryPaymentDay: FormControl<string>;
+    monthlyIncome: FormControl<string>;
+    additionalHouseholdIncome: FormControl<string>;
+    monthlyAlimonyExpense: FormControl<string>;
+    monthlyRentExpense: FormControl<string>;
+    hasOwnedApartment: FormControl<string>;
+}>;
+
+export type Step4Form2 = FormGroup<{
+    publicPersonnel: CheckControl;
+    familyMemberPublicPersonnel: CheckControl;
+    additionalBeneficiaries: CheckControl;
+    nonIsraeliTaxResidency: CheckControl;
+    usTaxResidency: CheckControl;
+    notIsraeliTaxResidencyCountry: CheckControl;
+    marketingConsent: FormControl<boolean>;
+    bankNotifications: FormControl<boolean>;
+    notificationMethod: FormControl<number>;
+}>;
+
+export type CheckControl = FormGroup<{
+    checked: FormControl<null>;
+    value: FormControl<null>;
 }>;
 
 export type Step5Form1 = FormGroup<{
