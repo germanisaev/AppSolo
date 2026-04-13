@@ -74,7 +74,6 @@ export class WizardFlowService {
                 numberOfPayments: ['', Validators.required],
                 linkageType: [{ value: '', disabled: true }],
                 monthlyPayment: [{ value: '', disabled: true }],
-
             }) as Step2Form1,
             this.fb.nonNullable.group({
                 monthlyChargeDate: ['', Validators.required],

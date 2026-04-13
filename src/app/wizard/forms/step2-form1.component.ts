@@ -10,16 +10,31 @@ import { NgIf } from '@angular/common';
   template: `
     <div class="form-grid" [formGroup]="form">
       <div class="field">
-        <label [class.required-mark]="isControlRequired('carBrand')">
-        Car brand</label>
-        <input type="text" formControlName="carBrand" />
+        <label [class.required-mark]="isControlRequired('loanAmount')">
+        loanAmount</label>
+        <input type="text" formControlName="loanAmount" />
       </div>
 
       <div class="field">
-        <label [class.required-mark]="isControlRequired('carModel')">
-        Car model</label>
-        <input type="text" formControlName="carModel" />
-        <div class="error" *ngIf="form.get('carModel')?.touched && form.get('carModel')?.invalid">
+        <label [class.required-mark]="isControlRequired('numberOfPayments')">
+        numberOfPayments</label>
+        <input type="text" formControlName="numberOfPayments" />
+        <div class="error" *ngIf="form.get('numberOfPayments')?.touched && form.get('numberOfPayments')?.invalid">
+          Required field
+        </div>
+      </div>
+
+      <div class="field">
+        <label [class.required-mark]="isControlRequired('linkageType')">
+        linkageType</label>
+        <input type="text" formControlName="linkageType" />
+      </div>
+
+      <div class="field">
+        <label [class.required-mark]="isControlRequired('monthlyPayment')">
+        monthlyPayment</label>
+        <input type="text" formControlName="monthlyPayment" />
+        <div class="error" *ngIf="form.get('monthlyPayment')?.touched && form.get('monthlyPayment')?.invalid">
           Required field
         </div>
       </div>
@@ -29,3 +44,10 @@ import { NgIf } from '@angular/common';
 export class Step2Form1Component extends FormBaseComponent {
   @Input({ required: true }) override form!: FormGroup;
 }
+
+/* 
+loanAmount: [''],
+                numberOfPayments: ['', Validators.required],
+                linkageType: [{ value: '', disabled: true }],
+                monthlyPayment: [{ value: '', disabled: true }],
+*/
