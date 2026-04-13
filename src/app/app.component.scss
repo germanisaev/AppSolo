@@ -1,0 +1,9 @@
+:host {
+  display: block;
+  height: 100vh;
+}
+
+.app-main {
+  height: calc(100vh - 40px); /* высота без header */
+  display: block;
+}

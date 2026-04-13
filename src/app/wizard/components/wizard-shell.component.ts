@@ -69,12 +69,14 @@ import { WizardFlowService } from '../services/wizard-flow.service';
       z-index: 1;
     } */
 
+      .wizard-page {
+        background: transparent;
+      }
     .wizard-inner {
       position: relative;
       z-index: 2;
       max-width: 1180px;
       margin: 0 auto;
-      /* padding: 28px 24px 40px; */
       box-sizing: border-box;
     }
 

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { CUSTOMER_ROUTES } from './wizard/components/customer-shell/customer.routes';
+import { CUSTOMER_ROUTES } from './components/customer-shell/customer.routes';
 
 export const routes: Routes = [
   {
