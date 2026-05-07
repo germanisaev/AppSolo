@@ -1,43 +1,33 @@
 import { Component, Input } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
+import { Step1Form1 } from '../models/step.types';
+import { FormFieldComponent } from './form-field.component';
 
 @Component({
   selector: 'app-step1-form1',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormFieldComponent],
   template: `
     <div class="form-grid" [formGroup]="form">
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('firstName')">
-          First name
-        </label>
-        <input id="firstName" type="text" formControlName="firstName" />
-      </div>
+      <app-form-field [form]="form" controlName="firstName" label="שם פרטי">
+      </app-form-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('lastName')">
-          Last name
-        </label>
-        <input id="lastName" type="text" formControlName="lastName" />
-      </div>
+      <app-form-field [form]="form" controlName="lastName" label="שם משפחה">
+      </app-form-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('governmentId')">
-          Government Id
-        </label>
-        <input id="governmentId" type="text" formControlName="governmentId" />
-      </div>
+      <app-form-field
+        [form]="form"
+        controlName="governmentId"
+        label="מספר זהות"
+      >
+      </app-form-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('mobile')">
-          Mobile
-        </label>
-        <input id="mobile" type="text" formControlName="mobile" />
-      </div>
+      <app-form-field [form]="form" controlName="mobile" label="טלפון נייד">
+      </app-form-field>
     </div>
   `,
 })
 export class Step1Form1Component extends FormBaseComponent {
-  @Input({ required: true }) override form!: FormGroup;
+  @Input({ required: true }) override form!: Step1Form1;
 }

@@ -1,15 +1,12 @@
-:host {
+/* :host {
   display: block;
-  height: 100vh;
-  overflow: hidden;
+  // min-height: 100vh;
+  overflow: visible;
 }
 
 .app-header {
-  position: fixed;   // 🔥 фиксируем
+  position: sticky; // вместо fixed
   top: 0;
-  left: 0;
-  right: 0;
-
   height: 50px;
   background: #fff;
 
@@ -17,12 +14,44 @@
   align-items: center;
   padding: 0 12px;
 
-  z-index: 1000; // поверх всего
+  z-index: 1000;
 }
 
 .app-main {
-  margin-top: 50px; // 🔥 чтобы не залезал под header
+  min-height: calc(100vh - 50px);
+  overflow: visible;
+} */
 
-  height: calc(100vh - 50px);
-  overflow: hidden;;
+:host {
+  display: block;
+  height: 100vh;
+  overflow: hidden; // ❗ важно — убираем общий скролл
+}
+
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 64px;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.app-main {
+  position: absolute;
+  top: 64px; // ❗ отступ под header
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  overflow-y: auto; // ✅ скролл только здесь
 }

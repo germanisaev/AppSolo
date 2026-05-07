@@ -1,91 +1,346 @@
+:host {
+  display: block;
+}
+
 .step-page {
+  direction: rtl;
+  text-align: right;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  // min-height: 100vh;
+  padding: 24px 16px 80px;
+  /* overflow: visible; */
 }
 
 .step-caption {
-  width: 50%;
-  min-width: 620px;
+  width: min(760px, 100%);
   margin-bottom: 16px;
+
   color: #64748b;
   font-size: 14px;
+  text-align: right;
 }
 
 .form-card {
   position: relative;
-  overflow: hidden;
-  width: 50%;
-  min-width: 620px;
-  min-height: 260px;
+  width: min(760px, 100%);
+
+  overflow: visible;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 20px;
   padding: 28px;
+
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
+.form-card-inner {
+  position: relative;
+  /* overflow: visible; */
+  min-height: auto;
+}
+
 .actions {
-  width: 50%;
-  min-width: 620px;
+  width: min(760px, 100%);
+
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   margin-top: 24px;
+  padding-bottom: 24px;
 }
+
+.actions.rtl-actions {
+  direction: rtl;
+}
+
+/* =========================
+   Child form styles
+========================= */
 
 :host ::ng-deep .form-grid {
   display: grid;
   gap: 18px;
+  width: 100%;
+
+  direction: rtl;
+  text-align: right;
+}
+
+:host ::ng-deep .field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  direction: rtl;
+  text-align: right;
 }
 
 :host ::ng-deep .field > label {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 4px;
+
   font-weight: 600;
   color: #0f172a;
+  text-align: right;
 }
 
-:host ::ng-deep input[type='text'] {
+:host ::ng-deep .required-mark::after {
+  content: "*";
+  color: #d32f2f;
+  margin-inline-start: 4px;
+}
+
+/* =========================
+   Inputs
+========================= */
+
+:host ::ng-deep input[type="text"],
+:host ::ng-deep input[type="number"],
+:host ::ng-deep input[type="email"] {
+  width: 100%;
   height: 46px;
+
   border: 1px solid #cbd5e1;
   border-radius: 12px;
   padding: 0 14px;
+
   font-size: 15px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  direction: rtl;
+  text-align: right;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-:host ::ng-deep input[type='text']:focus {
+:host ::ng-deep input[type="text"]:focus,
+:host ::ng-deep input[type="number"]:focus,
+:host ::ng-deep input[type="email"]:focus {
   outline: none;
   border-color: #2563eb;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-:host ::ng-deep .checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+:host ::ng-deep input[type="email"],
+:host ::ng-deep input[type="number"] {
+  direction: ltr;
+  text-align: left;
 }
 
-.form-card-inner {
-  position: relative;
-  min-height: 220px;
+:host ::ng-deep input:disabled {
+  background: #f8fafc;
+  color: #64748b;
+  cursor: not-allowed;
 }
+
+/* =========================
+   Checkbox
+========================= */
+
+:host ::ng-deep .checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  direction: rtl;
+  text-align: right;
+}
+
+:host ::ng-deep input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================
+    Dropdown
+========================= */
+
+:host ::ng-deep .p-dropdown {
+  width: 100%;
+  height: 46px;
+  border-radius: 12px;
+  direction: rtl;
+}
+
+:host ::ng-deep .p-dropdown-label {
+  text-align: right;
+  direction: rtl;
+}
+
+:host ::ng-deep .p-dropdown-panel {
+  direction: rtl;
+  text-align: right;
+}
+
+:host ::ng-deep .p-dropdown.input-error,
+:host ::ng-deep .p-dropdown.ng-invalid.ng-touched {
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.18);
+}
+
+/* =========================
+  Terms of Use
+========================= */
+
+:host ::ng-deep .terms-box {
+  max-height: 180px;
+  overflow-y: auto;
+
+  padding: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #f8fafc;
+
+  line-height: 1.7;
+  color: #0f172a;
+}
+
+:host ::ng-deep .terms-box h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+:host ::ng-deep .hint {
+  color: #64748b;
+  font-size: 13px;
+}
+
+:host ::ng-deep .checkbox-row.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* =========================
+  Dropdown
+========================= */
+::ng-deep .p-dropdown.p-disabled {
+  opacity: 1 !important;
+  background: #f8fafc !important; // легкий серый
+  border-color: #e2e8f0 !important;
+}
+
+/* =========================
+  Upload Agree
+========================= */
+:host ::ng-deep .upload-section {
+  display: grid;
+  gap: 18px;
+}
+
+:host ::ng-deep .upload-header h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+:host ::ng-deep .upload-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+}
+
+:host ::ng-deep .upload-box {
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  padding: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  background: #f8fafc;
+}
+
+:host ::ng-deep .upload-box i {
+  font-size: 28px;
+  color: #ff6600;
+}
+
+:host ::ng-deep .upload-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+:host ::ng-deep .upload-text span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+:host ::ng-deep .upload-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: #ff6600;
+  color: #fff;
+  cursor: pointer;
+}
+
+:host ::ng-deep .upload-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #047857;
+  font-weight: 600;
+}
+
+/* =========================
+   Errors
+========================= */
+
+:host ::ng-deep .input-error,
+:host ::ng-deep input.ng-invalid.ng-touched {
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.18);
+}
+
+:host ::ng-deep .error {
+  margin-top: 4px;
+
+  color: #d32f2f;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+
+  text-align: right;
+}
+
+/* =========================
+   PrimeNG buttons
+========================= */
+
+:host ::ng-deep .p-button {
+  direction: rtl;
+}
+
+:host ::ng-deep .p-button .p-button-label {
+  direction: rtl;
+}
+
+/* =========================
+   Responsive
+========================= */
 
 @media (max-width: 1024px) {
   .step-caption,
   .form-card,
   .actions {
-    width: 70%;
-    min-width: unset;
+    width: min(92vw, 760px);
   }
 }
 
 @media (max-width: 768px) {
-  .step-caption,
-  .form-card,
-  .actions {
-    width: 94%;
+  .step-page {
+    padding: 16px 12px 64px;
   }
 
   .form-card {
@@ -95,5 +350,16 @@
 
   .actions {
     gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  :host ::ng-deep .p-button {
+    width: 100%;
   }
 }

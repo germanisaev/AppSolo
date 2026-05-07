@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,65 +8,29 @@ import { ButtonModule } from 'primeng/button';
 import { WizardFlowService } from '../../services/wizard-flow.service';
 
 import { WIZARD_FORM_COMPONENTS } from '../../forms';
-import { animate, group, query, style, transition, trigger } from '@angular/animations';
-
+import {
+  animate,
+  group,
+  query,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-wizard-step-page',
-  imports: [
-    CommonModule,
-    ButtonModule,
-    ...WIZARD_FORM_COMPONENTS
-  ],
+  imports: [CommonModule, ButtonModule, ...WIZARD_FORM_COMPONENTS],
   templateUrl: './wizard-step-page.component.html',
   styleUrl: './wizard-step-page.component.scss',
   animations: [
     trigger('slideForm', [
       transition('* => *', [
         query(
-          ':enter, :leave',
-          [
-            style({
-              position: 'absolute',
-              width: '100%',
-              top: 0,
-              left: 0,
-            }),
-          ],
-          { optional: true }
+          ':enter',
+          [style({ opacity: 0 }), animate('180ms ease', style({ opacity: 1 }))],
+          { optional: true },
         ),
-        group([
-          query(
-            ':leave',
-            [
-              animate(
-                '260ms ease',
-                style({
-                  opacity: 0,
-                  transform: 'translateX(-30px)',
-                })
-              ),
-            ],
-            { optional: true }
-          ),
-          query(
-            ':enter',
-            [
-              style({
-                opacity: 0,
-                transform: 'translateX(30px)',
-              }),
-              animate(
-                '260ms ease',
-                style({
-                  opacity: 1,
-                  transform: 'translateX(0)',
-                })
-              ),
-            ],
-            { optional: true }
-          ),
-        ]),
       ]),
     ]),
   ],
@@ -86,7 +49,9 @@ export class WizardStepPageComponent {
 
   readonly vm$ = combineLatest([
     this.route.paramMap.pipe(map((params) => Number(params.get('step') ?? 1))),
-    this.route.queryParamMap.pipe(map((params) => Number(params.get('form') ?? 1))),
+    this.route.queryParamMap.pipe(
+      map((params) => Number(params.get('form') ?? 1)),
+    ),
   ]).pipe(
     map(([stepParam, formParam]) => {
       const step = this.flow.normalizeStep(stepParam);
@@ -99,19 +64,70 @@ export class WizardStepPageComponent {
         form,
         totalForms: this.flow.getFormsCount(step),
       };
-    })
+    }),
   );
 
   getFormKey(step: number, formIndex: number): string {
     return `${step}-${formIndex}`;
   }
 
+  // next(step: number, formIndex: number): void {
+  //   this.animationDirection = 'next';
+
+  //   this.flow.markTouched(step, formIndex);
+
+  //   if (!this.flow.isValid(step, formIndex)) {
+  //     return;
+  //   }
+
+  //   // console.log({
+  //   //   step,
+  //   //   formIndex,
+  //   //   totalForms: this.flow.getFormsCount(step),
+  //   //   currentValid: this.flow.isValid(step, formIndex),
+  //   //   stepValid: this.flow.isStepValid(step),
+  //   //   value: this.flow.getForm(step, formIndex).getRawValue(),
+  //   // });
+
+  //   // if (!this.flow.isValid(step, formIndex)) {
+  //   //   const form = this.flow.getForm(step, formIndex);
+
+  //   //   // console.log('INVALID FORM:', form);
+  //   //   // console.log('RAW VALUE:', form.getRawValue());
+  //   //   // console.log('ERRORS:', this.getFormErrors(form));
+
+  //   //   return;
+  //   // }
+
+  //   const totalForms = this.flow.getFormsCount(step);
+  //   const isLastFormInStep = formIndex === totalForms;
+
+  //   if (isLastFormInStep && !this.flow.isStepValid(step)) {
+  //     return;
+  //   }
+
+  //   const next = this.flow.getNextPosition(step, formIndex);
+
+  //   if (!next) {
+  //     this.flow.saveCurrentPosition(step, formIndex);
+  //     this.submitAll();
+  //     return;
+  //   }
+
+  //   this.flow.saveCurrentPosition(next.step, next.form);
+
+  //   this.animationTick++;
+  //   this.navigate(next.step, next.form);
+  // }
+
   next(step: number, formIndex: number): void {
     this.animationDirection = 'next';
 
+    const form = this.flow.getForm(step, formIndex);
+
     this.flow.markTouched(step, formIndex);
 
-    if (!this.flow.isValid(step, formIndex)) {
+    if (!form.valid) {
       return;
     }
 
@@ -124,16 +140,18 @@ export class WizardStepPageComponent {
 
     const next = this.flow.getNextPosition(step, formIndex);
 
-    if (!next) {
-      this.flow.saveCurrentPosition(step, formIndex);
-      this.submitAll();
-      return;
-    }
+    this.flow.saveForm(step, formIndex, form.getRawValue()).subscribe(() => {
+      if (!next) {
+        this.flow.saveCurrentPosition(step, formIndex);
+        this.submitAll();
+        return;
+      }
 
-    this.flow.saveCurrentPosition(next.step, next.form);
+      this.flow.saveCurrentPosition(next.step, next.form);
 
-    this.animationTick++;
-    this.navigate(next.step, next.form);
+      this.animationTick++;
+      this.navigate(next.step, next.form);
+    });
   }
 
   prev(step: number, formIndex: number): void {
@@ -152,6 +170,30 @@ export class WizardStepPageComponent {
     this.router.navigate(['/wizard/step', step], {
       queryParams: { form },
     });
+  }
+
+  private getFormErrors(form: FormGroup): Record<string, unknown> {
+    const errors: Record<string, unknown> = {};
+
+    Object.keys(form.controls).forEach((key) => {
+      const control = form.get(key);
+
+      if (control instanceof FormGroup) {
+        const nestedErrors = this.getFormErrors(control);
+
+        if (Object.keys(nestedErrors).length) {
+          errors[key] = nestedErrors;
+        }
+
+        return;
+      }
+
+      if (control?.errors) {
+        errors[key] = control.errors;
+      }
+    });
+
+    return errors;
   }
 
   private submitAll(): void {

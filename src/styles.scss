@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
 
+html,
+body {
+  min-height: 100%;
+  /* overflow-y: auto;
+  overflow-x: hidden; */
+  overflow: hidden;
+
+  font-family: 'Rubik', sans-serif;
+  direction: rtl;
+}
+
 .field {
   display: grid;
   gap: 6px;
