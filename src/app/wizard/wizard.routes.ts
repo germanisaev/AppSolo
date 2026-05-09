@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { WizardShellComponent } from './components/wizard-shell.component';
 import { WizardStepPageComponent } from './components/wizard-step-page/wizard-step-page.component';
-import { wizardStepGuard } from './wizard-step.guard';
+import { wizardStepGuard } from './guards/wizard-step.guard';
 
 export const WIZARD_ROUTES: Routes = [
   {

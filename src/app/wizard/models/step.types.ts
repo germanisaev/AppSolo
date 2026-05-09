@@ -25,7 +25,7 @@ export type Step2Form2 = FormGroup<{
 export type Step2Form3 = FormGroup<{
   idIssueDate: FormControl<string>;
   idExpiryDate: FormControl<string>;
-  biometricId: FormControl<string | null>;
+  biometricId: FormControl<boolean | null>;
   birthDate: FormControl<string>;
   birthCountry: FormControl<string>;
   gender: FormControl<string>;
@@ -102,8 +102,8 @@ export type Step4Form2 = FormGroup<{
 }>;
 
 export type CheckControl = FormGroup<{
-  checked: FormControl<null>;
-  value: FormControl<null>;
+  checked: FormControl<string | null>;
+  value: FormControl<string | null>;
 }>;
 
 export type Step5Form1 = FormGroup<{

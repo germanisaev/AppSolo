@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { WizardFlowService } from './wizard/services/wizard-flow.service';
-import { LoaderComponent } from './wizard/services/loader.component';
+import { LoaderComponent } from './wizard/components/loader.component';
 import { LoaderService } from './wizard/services/loader.service';
 
 @Component({

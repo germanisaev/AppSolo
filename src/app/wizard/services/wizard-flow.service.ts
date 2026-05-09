@@ -14,17 +14,19 @@ import {
   createStep4Form2,
   createStep5Form1,
   createStep5Form2,
+  createStep5Form3,
 } from '../models/forms.factory';
 import { delay } from 'rxjs/operators';
-import { LoaderService } from './loader.service';
+// import { LoaderService } from './loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class WizardFlowService {
   private fb = inject(FormBuilder);
-  private loader = inject(LoaderService);
+  // private loader = inject(LoaderService);
   private http = inject(HttpClient);
 
   private readonly storageKey = 'wizard-progress';
+  private introCompleted = false;
 
   readonly steps: Omit<StepMeta, 'formsCount'>[] = [
     { step: 1, title: 'מילוי פרטים אישיים' },
@@ -39,8 +41,19 @@ export class WizardFlowService {
     2: ['loan-amount', 'loan-account-setup', 'additional-personal-details'],
     3: ['account-setup-confirmation', 'spouse-details', 'address-details'],
     4: ['salary-details', 'personal-declarations'],
-    5: ['loan-submission-completion', 'loan-summary'],
+    5: ['loan-submission-completion', 'loan-summary', 'loan-final-details'],
   } as const;
+
+  completeIntro(): void {
+    this.introCompleted = true;
+    sessionStorage.setItem('introCompleted', 'true');
+  }
+
+  isIntroCompleted(): boolean {
+    return (
+      this.introCompleted || sessionStorage.getItem('introCompleted') === 'true'
+    );
+  }
 
   getFormSlug(step: number, formIndex: number): string {
     const normalizedStep = this.normalizeStep(
@@ -67,11 +80,13 @@ export class WizardFlowService {
   }
 
   saveForm(step: number, formIndex: number, value: unknown) {
-    return this.http.post('https://jsonplaceholder.typicode.com/posts', {
-      step,
-      formIndex,
-      value,
-    }).pipe(delay(500));
+    return this.http
+      .post('https://jsonplaceholder.typicode.com/posts', {
+        step,
+        formIndex,
+        value,
+      })
+      .pipe(delay(500));
   }
 
   readonly formsByStep = {
@@ -87,7 +102,11 @@ export class WizardFlowService {
       createStep3Form3(this.fb),
     ],
     4: [createStep4Form1(this.fb), createStep4Form2(this.fb)],
-    5: [createStep5Form1(this.fb), createStep5Form2(this.fb)],
+    5: [
+      createStep5Form1(this.fb),
+      createStep5Form2(this.fb),
+      createStep5Form3(this.fb),
+    ],
   } as const;
 
   constructor() {
@@ -387,34 +406,14 @@ export class WizardFlowService {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //   saveForm(step: number, formIndex: number, value: unknown) {
-  //     this.loader.show();
+//     this.loader.show();
 
-  //     return of(true).pipe(
-  //       delay(1500),
-  //       finalize(() => this.loader.hide()),
-  //     );
-  //   }
+//     return of(true).pipe(
+//       delay(1500),
+//       finalize(() => this.loader.hide()),
+//     );
+//   }
 
 /* getAllRawValue() {
         return {

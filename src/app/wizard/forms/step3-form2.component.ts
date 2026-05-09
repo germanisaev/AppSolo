@@ -3,35 +3,31 @@ import { NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step3Form2 } from '../models/step.types';
-import { FormFieldComponent } from './form-field.component';
+import { FormFieldComponent } from '../controls/form-field.component';
 import { NumberFormatDirective } from '../services/number-format.directive';
+import { NumberFieldComponent } from "../controls/number-field.component";
 
 @Component({
   selector: 'app-step3-form2',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, FormFieldComponent, NumberFormatDirective],
+  imports: [
+    ReactiveFormsModule,
+    FormFieldComponent,
+    NumberFieldComponent
+],
   template: `
-    <div class="form-grid" [formGroup]="form">
-      <app-form-field [form]="form" controlName="firstName" label="שם פרטי" />
-      <app-form-field [form]="form" controlName="lastName" label="שם משפחה" />
-      <app-form-field [form]="form" controlName="governmentId" label="מספר זהות" />
+    <div class="final-card">
+      <h3 class="card-title">פרטים בן/בת זוג</h3>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('monthlyIncome')">
-          הכנסה חודשית
-        </label>
-
-        <input
-          type="text"
-          formControlName="monthlyIncome"
-          numberFormat
-          [class.input-error]="isControlInvalid('monthlyIncome')"
-        />
-
-        <div class="error" *ngIf="isControlInvalid('monthlyIncome')">
-          {{ getControlErrorMessage('monthlyIncome') }}
-        </div>
+      <div class="form-grid two-columns" [formGroup]="form">
+        <app-form-field [form]="form" controlName="firstName" label="שם פרטי" />
+        <app-form-field [form]="form" controlName="lastName" label="שם משפחה" />
+        <app-form-field [form]="form" controlName="governmentId" label="מספר זהות" />
+        <app-number-field [form]="form" controlName="monthlyIncome" label="הכנסה חודשית" />
       </div>
+
+      <div class="service-note">נתקשר אליך ממוקד השירות שלנו: 03-0000000</div>
+        
     </div>
   `,
 })

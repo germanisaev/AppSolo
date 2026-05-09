@@ -4,164 +4,151 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step4Form2 } from '../models/step.types';
+import { SelectFieldComponent } from '../controls/select-field.component';
+import { SwitchFieldComponent } from '../controls/switch-field.component';
+import { RadioGroupFieldComponent } from '../controls/radio-group-field.component';
 
 @Component({
   selector: 'app-step4-form2',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, DropdownModule],
+  imports: [
+    ReactiveFormsModule,
+    DropdownModule,
+    SelectFieldComponent,
+    SwitchFieldComponent,
+    RadioGroupFieldComponent,
+  ],
   template: `
-    <div class="form-grid" [formGroup]="form">
-      <div class="field" formGroupName="publicPersonnel">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('publicPersonnel', 'checked')
-          "
-        >
-          האם אתה אדם בעל תפקיד ציבורי?
-        </label>
+    <div class="declarations-layout" [formGroup]="form">
+      <section class="declaration-card">
+        <h3 class="card-title">הצהרות אישיות</h3>
 
-        <input type="checkbox" formControlName="checked" />
-
-        <div
-          class="error"
-          *ngIf="isNestedControlInvalid('publicPersonnel', 'checked')"
+        <app-switch-field
+          [form]="form.controls.publicPersonnel"
+          controlName="checked"
+          label="אני משמש בתפקיד ציבורי"
+          detailsControlName="value"
+          detailsLabel="תיאור התפקיד"
+          [isDetails]="true"
         >
-          {{ getNestedControlErrorMessage('publicPersonnel', 'checked') }}
+        </app-switch-field>
+
+        <app-switch-field
+          [form]="form.controls.familyMemberPublicPersonnel"
+          controlName="checked"
+          label="בן משפחה משמש בתפקיד ציבורי"
+          detailsControlName="value"
+          detailsLabel="תיאור תפקיד בן משפחה"
+          [isDetails]="true"
+        >
+        </app-switch-field>
+
+        <app-switch-field
+          [form]="form.controls.additionalBeneficiaries"
+          controlName="checked"
+          label="אין עוד נהנים בחשבון מלבדי"
+          sublabel="לא ניתן להמשיך בתהליך במידה ויש נהנים נוספים בחשבון"
+          detailsControlName="value"
+          detailsLabel="תיאור נהנים בחשבון"
+          [isDetails]="true"
+        >
+        </app-switch-field>
+
+        <app-switch-field
+          [form]="form.controls.nonIsraeliTaxResidency"
+          controlName="checked"
+          label="יש לי תושבות מס שאינה ישראל"
+          detailsControlName="value"
+          detailsLabel="תיאור תושבות מס"
+          [isDetails]="true"
+        >
+        </app-switch-field>
+
+        <app-select-field
+          [form]="form"
+          controlName="workplaceType"
+          label="האם אתה עוסק בתחומים הבאים?"
+          [options]="businessAreaOptions"
+          [filter]="true"
+          placeholder=""
+        >
+        </app-select-field>
+
+        <div class="service-note">
+          נתקלת בבעיה? מוקד השירות שלנו: 03-0000000
         </div>
-      </div>
+      </section>
 
-      <div class="field" formGroupName="familyMemberPublicPersonnel">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('familyMemberPublicPersonnel', 'checked')
-          "
-        >
-          האם בן משפחה שלך הוא בעל תפקיד ציבורי?
+      <section class="declaration-card">
+        <h3 class="card-title">קבלת הודעות מהבנק</h3>
+
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="marketingConsent" />
+          אישור לקבלת מידע שיווקי במסרון / דואר אלקטרוני
         </label>
 
-        <input type="checkbox" formControlName="checked" />
-
-        <div
-          class="error"
-          *ngIf="
-            isNestedControlInvalid('familyMemberPublicPersonnel', 'checked')
-          "
-        >
-          {{
-            getNestedControlErrorMessage(
-              'familyMemberPublicPersonnel',
-              'checked'
-            )
-          }}
-        </div>
-      </div>
-
-      <div class="field" formGroupName="additionalBeneficiaries">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('additionalBeneficiaries', 'checked')
-          "
-        >
-          האם קיימים נהנים נוספים בחשבון?
+        <label class="checkbox-row">
+          <input type="checkbox" formControlName="bankNotifications" />
+          אני רוצה לקבל הודעות מהבנק
         </label>
 
-        <input type="checkbox" formControlName="checked" />
-
-        <div
-          class="error"
-          *ngIf="isNestedControlInvalid('additionalBeneficiaries', 'checked')"
-        >
-          {{
-            getNestedControlErrorMessage('additionalBeneficiaries', 'checked')
-          }}
-        </div>
-      </div>
-
-      <div class="field" formGroupName="nonIsraeliTaxResidency">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('nonIsraeliTaxResidency', 'checked')
-          "
-        >
-          האם אתה תושב מס מחוץ לישראל?
-        </label>
-
-        <input type="checkbox" formControlName="checked" />
-
-        <div
-          class="error"
-          *ngIf="isNestedControlInvalid('nonIsraeliTaxResidency', 'checked')"
-        >
-          {{
-            getNestedControlErrorMessage('nonIsraeliTaxResidency', 'checked')
-          }}
-        </div>
-      </div>
-
-      <div class="field" formGroupName="usTaxResidency">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('usTaxResidency', 'checked')
-          "
-        >
-          האם אתה תושב מס בארה״ב?
-        </label>
-
-        <input type="checkbox" formControlName="checked" />
-      </div>
-
-      <div class="field" formGroupName="notIsraeliTaxResidencyCountry">
-        <label
-          [class.required-mark]="
-            isNestedControlRequired('notIsraeliTaxResidencyCountry', 'checked')
-          "
-        >
-          האם יש לך מדינת תושבות מס נוספת?
-        </label>
-
-        <input type="checkbox" formControlName="checked" />
-      </div>
-
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('marketingConsent')">
-          הסכמה לקבלת חומר שיווקי
-        </label>
-
-        <input type="checkbox" formControlName="marketingConsent" />
-      </div>
-
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('bankNotifications')">
-          קבלת התראות מהבנק
-        </label>
-
-        <input type="checkbox" formControlName="bankNotifications" />
-      </div>
-
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('notificationMethod')">
-          אופן קבלת ההתראות
-        </label>
-
-        <p-dropdown
-          formControlName="notificationMethod"
+        <app-radio-group-field
+          [form]="form"
+          controlName="notificationMethod"
           [options]="notificationMethodOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר אופן קבלת התראות"
-          [class.input-error]="isControlInvalid('notificationMethod')"
         >
-        </p-dropdown>
-      </div>
+        </app-radio-group-field>
+
+        <div class="service-note">
+          נתקלת בבעיה? מוקד השירות שלנו: 03-0000000
+        </div>
+      </section>
     </div>
+
+    <!-- </div> -->
   `,
+  styles: [
+    `
+      .declarations-layout {
+        display: grid;
+        gap: 1.25rem;
+        direction: rtl;
+      }
+
+      .declaration-card {
+        width: min(46rem, 100%);
+        margin: 0 auto;
+        padding: 2rem 3rem;
+
+        background: #fff;
+        border-radius: 1.25rem;
+        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+      }
+
+      .declaration-card h3 {
+        margin: 0 0 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #2f2f2f;
+      }
+    `,
+  ],
 })
 export class Step4Form2Component extends FormBaseComponent {
   @Input({ required: true }) override form!: Step4Form2;
 
   notificationMethodOptions = [
-    { label: 'SMS', value: 1 },
-    { label: 'דואר אלקטרוני', value: 2 },
-    { label: 'התראה באפליקציה', value: 3 },
+    { label: 'בתיבת הודעות ובמייל', value: 1 },
+    { label: 'תיבת הודעות בלבד', value: 2 },
+    { label: 'במייל בלבד', value: 3 },
+  ];
+
+  businessAreaOptions = [
+    { label: 'נדל״ן', value: 'realEstate' },
+    { label: 'יהלומים', value: 'diamonds' },
+    { label: 'מטבעות דיגיטליים', value: 'crypto' },
+    { label: 'שירותים פיננסיים', value: 'financialServices' },
+    { label: 'אחר', value: 'other' },
+    { label: 'לא', value: 'none' },
   ];
 }

@@ -2,6 +2,10 @@
   display: block;
 }
 
+.full-width {
+  display: block;
+}
+
 .step-page {
   direction: rtl;
   text-align: right;
@@ -15,6 +19,15 @@
   /* overflow: visible; */
 }
 
+.step-title {
+  background: transparent !important;
+  margin: 0 0 20px;
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  font-weight: 600;
+}
+
 .step-caption {
   width: min(760px, 100%);
   margin-bottom: 16px;
@@ -24,17 +37,28 @@
   text-align: right;
 }
 
+:host ::ng-deep .card {
+  overflow: visible;
+  width: min(1040px, 88vw);
+  min-height: 280px;
+
+  background: #fff !important;
+  border: 1px solid #fff !important;
+
+  padding: 48px 72px;
+  border-radius: 22px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
 .form-card {
   position: relative;
-  width: min(760px, 100%);
 
   overflow: visible;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 28px;
+  background: transparent !important;
+  border: none !important;
 
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  width: min(1040px, 88vw);
+  min-height: 280px;
 }
 
 .form-card-inner {
@@ -47,7 +71,7 @@
   width: min(760px, 100%);
 
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   margin-top: 24px;
@@ -59,17 +83,477 @@
 }
 
 /* =========================
+  Step 2 Form 1
+========================= */
+:host ::ng-deep .amount-input-wrap {
+  margin-top: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-bottom: 1px solid #d9d9d9;
+  padding-bottom: 8px;
+
+  width: 240px;
+}
+
+:host ::ng-deep .amount-input {
+  width: auto;
+  height: auto;
+
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+
+  padding: 0 !important;
+
+  font-size: 48px !important;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center !important;
+  color: #333;
+}
+
+:host ::ng-deep .currency {
+  font-size: 32px;
+  font-weight: 600 !important;
+  color: #333;
+}
+
+:host ::ng-deep .loan-details-form {
+  direction: rtl;
+  min-height: 520px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 34px;
+
+  padding: 30px 0;
+}
+
+:host ::ng-deep .amount-block {
+  text-align: center;
+}
+
+:host ::ng-deep .amount-block label,
+:host ::ng-deep .payments-block label,
+:host ::ng-deep .linkage-field label {
+  font-weight: 600;
+  color: #333;
+  display: block;
+}
+
+:host ::ng-deep .amount-value {
+  margin-top: 8px;
+  padding-bottom: 8px;
+
+  font-size: 32px;
+  font-weight: 600;
+  color: #333;
+
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:host ::ng-deep .payments-block {
+  width: 420px;
+  text-align: center;
+}
+
+:host ::ng-deep .p-slider {
+  margin-top: 22px;
+}
+
+:host ::ng-deep .p-slider .p-slider-range {
+  background: #ff6600;
+}
+
+:host ::ng-deep .p-slider .p-slider-handle {
+  background: #ff6600;
+  border-color: #ff6600;
+}
+
+:host ::ng-deep .slider-labels {
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: space-between;
+
+  font-size: 14px;
+  color: #333;
+}
+
+:host ::ng-deep .linkage-field {
+  width: 280px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  text-align: center;
+}
+
+:host ::ng-deep .monthly-payment-card {
+  width: 260px;
+  min-height: 96px;
+
+  border: 1.5px solid #ff6600;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  color: #333;
+}
+
+:host ::ng-deep .monthly-payment-card span {
+  font-size: 14px;
+}
+
+:host ::ng-deep .monthly-payment-card strong {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+:host ::ng-deep .rate-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 14px;
+  color: #333;
+}
+
+:host ::ng-deep .rate-info i {
+  color: #4f46e5;
+}
+
+/* =========================
+  Step 2 Form 2
+========================= */
+:host ::ng-deep .loan-account-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+:host ::ng-deep .question-title,
+:host ::ng-deep .section-title {
+  margin: 0;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+:host ::ng-deep .service-note {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}
+
+:host ::ng-deep .payment-options {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+:host ::ng-deep .payment-option {
+  height: 88px;
+  border: 1px solid #d9dde5;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 22px;
+  font-weight: 600 !important;
+  color: #333;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+}
+
+:host ::ng-deep .payment-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+:host ::ng-deep .payment-option.active {
+  border: 2px solid #ff6600;
+  box-shadow:
+    0 4px 14px rgba(255, 102, 0, 0.15),
+    0 0 0 2px rgba(255, 102, 0, 0.08);
+
+  transform: translateY(-2px);
+}
+
+:host ::ng-deep .beneficiary-field {
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:host ::ng-deep .beneficiary-field label {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+}
+
+:host ::ng-deep .bank-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* =========================
+  Step 2 Form 3
+========================= */
+:host ::ng-deep .additional-details-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+:host ::ng-deep .additional-card,
+:host ::ng-deep .credit-card {
+  width: min(1040px, 88vw);
+  margin: 0 auto;
+
+  background: #fff;
+  border-radius: 18px;
+  padding: 34px 56px;
+
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+:host ::ng-deep .card-title {
+  margin: 0 0 20px;
+  text-align: right;
+
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+}
+
+:host ::ng-deep .additional-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px 34px;
+}
+
+:host ::ng-deep .credit-card {
+  text-align: center;
+}
+
+:host ::ng-deep .credit-text {
+  max-width: 720px;
+  margin: 0 auto 22px;
+
+  color: #333;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+:host ::ng-deep .consent-switch {
+  width: 460px;
+  max-width: 100%;
+  height: 48px;
+  margin: 0 auto 28px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border: 1px solid #711aaa;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .consent-switch-btn {
+  border: 0;
+  background: #fff;
+
+  color: #711aaa;
+  font-size: 15px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+:host ::ng-deep .consent-switch-btn.active {
+  background: #711aaa;
+  color: #fff;
+}
+
+:host ::ng-deep .credit-dates {
+  width: 640px;
+  max-width: 100%;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+:host ::ng-deep .input-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+:host ::ng-deep .input-with-icon input {
+  width: 100%;
+  padding-left: 44px;
+}
+
+:host ::ng-deep .input-with-icon .calendar-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 16px;
+  color: #64748b;
+  pointer-events: none;
+}
+
+:host ::ng-deep .input-with-icon input:focus ~ .calendar-icon {
+  color: #ff6600;
+}
+
+:host ::ng-deep .input-with-icon input.input-error ~ .calendar-icon {
+  color: #d32f2f;
+}
+
+/* ==================================
+  Checkbo Field
+===================================== */
+:host ::ng-deep .checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+:host ::ng-deep .checkbox-row input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #711aaa;
+}
+
+:host ::ng-deep .checkbox-row.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+:host ::ng-deep .checkbox-row.disabled input {
+  pointer-events: none;
+}
+
+/* ==================================
+  Switch Field
+==================================== */
+/* :host ::ng-deep .biometric-switch-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:host ::ng-deep .biometric-switch-field label {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: right;
+}
+
+:host ::ng-deep .yes-no-switch {
+  width: 96px;
+  height: 38px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border: 1px solid #711aaa;
+  border-radius: 6px;
+  overflow: hidden;
+
+  background: #fff;
+}
+
+:host ::ng-deep .yes-no-switch button {
+  border: 0;
+  background: #fff;
+
+  color: #711aaa;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+  border-left: 1px solid #711aaa;
+  border-right: 1px solid #711aaa;
+}
+
+:host ::ng-deep .yes-no-switch button.active {
+  background: #711aaa;
+  color: #fff;
+} */
+
+/* 
+:host ::ng-deep .yes-no-switch {
+  display: flex;
+  gap: 8px;
+}
+
+:host ::ng-deep .yes-no-switch button {
+  min-width: 88px;
+  height: 42px;
+  border: 1px solid #711aaa;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+:host ::ng-deep .yes-no-switch button.active {
+  background: #711aaa;
+  border-color: #711aaa;
+  color: #fff;
+  font-weight: 700;
+}
+ */
+/* ==================================
+  Service Note
+==================================== */
+
+:host ::ng-deep .service-note {
+  margin-top: 28px;
+  text-align: center;
+  color: #555;
+  font-size: 13px;
+}
+
+/* =========================
    Child form styles
 ========================= */
 
-:host ::ng-deep .form-grid {
+/* :host ::ng-deep .form-grid {
   display: grid;
   gap: 18px;
   width: 100%;
 
   direction: rtl;
   text-align: right;
-}
+} 
 
 :host ::ng-deep .field {
   display: flex;
@@ -89,6 +573,37 @@
   font-weight: 600;
   color: #0f172a;
   text-align: right;
+} */
+
+:host ::ng-deep .form-grid {
+  display: grid;
+  gap: 28px 40px;
+  width: 100%;
+}
+
+:host ::ng-deep .form-grid.two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:host ::ng-deep app-form-field {
+  display: block;
+}
+
+:host ::ng-deep .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+:host ::ng-deep .field > label {
+  /* font-size: 14px; */
+  font-weight: 600;
+  color: #111827;
+  text-align: right;
+}
+
+:host ::ng-deep .field input {
+  width: 100%;
 }
 
 :host ::ng-deep .required-mark::after {
@@ -141,24 +656,6 @@
 }
 
 /* =========================
-   Checkbox
-========================= */
-
-:host ::ng-deep .checkbox-row {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  direction: rtl;
-  text-align: right;
-}
-
-:host ::ng-deep input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-}
-
-/* =========================
     Dropdown
 ========================= */
 
@@ -183,6 +680,12 @@
 :host ::ng-deep .p-dropdown.ng-invalid.ng-touched {
   border-color: #d32f2f !important;
   box-shadow: 0 0 0 1px rgba(211, 47, 47, 0.18);
+}
+
+::ng-deep .p-dropdown.p-disabled {
+  opacity: 1 !important;
+  background: #f8fafc !important; // легкий серый
+  border-color: #e2e8f0 !important;
 }
 
 /* =========================
@@ -210,20 +713,6 @@
 :host ::ng-deep .hint {
   color: #64748b;
   font-size: 13px;
-}
-
-:host ::ng-deep .checkbox-row.disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-/* =========================
-  Dropdown
-========================= */
-::ng-deep .p-dropdown.p-disabled {
-  opacity: 1 !important;
-  background: #f8fafc !important; // легкий серый
-  border-color: #e2e8f0 !important;
 }
 
 /* =========================
@@ -320,6 +809,24 @@
 
 :host ::ng-deep .p-button {
   direction: rtl;
+  border-radius: 20px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin: 0 10px;
+}
+
+:host ::ng-deep p-button.next .p-button {
+  background: #711aaa;
+  color: #ffffff;
+
+  border: 1px solid #711aaa;
+}
+
+:host ::ng-deep p-button.prev .p-button {
+  background: #ffffff;
+  color: #711aaa;
+
+  border: 1px solid #711aaa;
 }
 
 :host ::ng-deep .p-button .p-button-label {
@@ -338,21 +845,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .step-page {
-    padding: 16px 12px 64px;
-  }
-
-  .form-card {
-    padding: 20px;
-    border-radius: 16px;
-  }
-
-  .actions {
-    gap: 12px;
-  }
-}
-
 @media (max-width: 480px) {
   .actions {
     flex-direction: column-reverse;
@@ -361,5 +853,98 @@
 
   :host ::ng-deep .p-button {
     width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .bg-layer {
+    position: fixed;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+    height: 72vh;
+
+    background-size: auto 100%;
+    background-position: bottom center;
+  }
+
+  .page-shell {
+    overflow: visible;
+  }
+
+  :host ::ng-deep .p-button {
+    margin: 0 0 !important;
+  }
+
+  :host ::ng-deep .form-grid.two-columns {
+    grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .step-title {
+    display: none !important;
+  }
+
+  .step-page {
+    padding: 16px 12px 64px;
+  }
+
+  .form-card {
+    // padding: 20px;
+    border-radius: 16px;
+  }
+
+  .actions {
+    gap: 12px;
+  }
+
+  /* =========================
+    Step 2 Form 1
+  ========================= */
+
+  :host ::ng-deep .payments-block {
+    width: 320px;
+    text-align: center;
+  }
+
+  /* =========================
+    Step 2 Form 2
+  ========================= */
+  :host ::ng-deep .payment-options {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  :host ::ng-deep .bank-grid {
+    grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .beneficiary-field {
+    width: 100%;
+  }
+
+  /* =========================
+    Step 2 Form 3
+  ========================= */
+  :host ::ng-deep .additional-card,
+  :host ::ng-deep .credit-card {
+    width: 92vw;
+    padding: 24px 18px;
+  }
+
+  :host ::ng-deep .additional-grid,
+  :host ::ng-deep .credit-dates {
+    grid-template-columns: 1fr;
+  }
+
+  :host ::ng-deep .consent-switch {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  :host ::ng-deep .consent-switch-btn {
+    height: 44px;
   }
 }

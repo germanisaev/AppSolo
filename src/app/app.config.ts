@@ -8,7 +8,7 @@ import { routes } from './app.routes';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { loaderInterceptor } from './wizard/services/loader.interceptor';
+import { loaderInterceptor } from './wizard/interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

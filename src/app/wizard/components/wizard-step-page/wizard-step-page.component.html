@@ -1,9 +1,11 @@
 <ng-container *ngIf="vm$ | async as vm">
   <div class="step-page">
-    <div class="step-caption">
+    <!-- <div class="step-caption">
       שלב {{ vm.step }} · טופס {{ vm.formIndex }} / {{ vm.totalForms }}
+    </div> -->
+    <div class="step-title" *ngIf="currentFormTitle">
+      {{ currentFormTitle }}
     </div>
-
     <div class="form-card">
       <div class="form-card-inner" [@slideForm]="getAnimationState(vm.step, vm.formIndex)">
 
@@ -23,6 +25,7 @@
 
           <app-step5-form1 *ngSwitchCase="'5-1'" [form]="$any(vm.form)"></app-step5-form1>
           <app-step5-form2 *ngSwitchCase="'5-2'" [form]="$any(vm.form)"></app-step5-form2>
+          <app-step5-form3 *ngSwitchCase="'5-3'"></app-step5-form3>
 
           <div *ngSwitchDefault>
             לא נמצא טופס עבור {{ getFormKey(vm.step, vm.formIndex) }}
@@ -32,12 +35,12 @@
     </div>
 
     <div class="actions rtl-actions">
-      <p-button label="חזור" icon="pi pi-arrow-right" iconPos="right" severity="secondary" [outlined]="true"
-        [disabled]="vm.step === 1 && vm.formIndex === 1" (onClick)="prev(vm.step, vm.formIndex)">
+      <p-button label="לשלב הקודם" severity="secondary" [outlined]="true"
+        [disabled]="vm.step === 1 && vm.formIndex === 1" class="prev" (onClick)="prev(vm.step, vm.formIndex)">
       </p-button>
 
-      <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'הבא'" icon="pi pi-arrow-left"
-        iconPos="left" (onClick)="next(vm.step, vm.formIndex)">
+      <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'לשלב הבא'" class="next"
+        (onClick)="next(vm.step, vm.formIndex)">
       </p-button>
     </div>
   </div>
@@ -45,7 +48,9 @@
 
 
 
+<!-- icon="pi pi-arrow-left" iconPos="left" -->
 
+<!-- icon="pi pi-arrow-right" iconPos="right" -->
 
 <!-- <div class="actions">
       <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"

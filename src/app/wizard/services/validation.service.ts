@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class ValidationService {
-    
+
   private errorMessages: Record<string, string> = {
     required: 'שדה חובה',
     requiredTrue: 'יש לאשר את השדה',
@@ -19,8 +19,8 @@ export class ValidationService {
   };
 
   private patternMessages: Record<string, string> = {
-    firstName: 'יש להזין אותיות בלבד',
-    lastName: 'יש להזין אותיות בלבד',
+    firstName: 'יש להזין אותיות בעיברית בלבד',
+    lastName: 'יש להזין אותיות בעיברית בלבד',
 
     governmentId: 'יש להזין 9 ספרות',
 

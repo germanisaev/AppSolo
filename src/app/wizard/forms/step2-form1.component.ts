@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+/* import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step2Form1 } from '../models/step.types';
@@ -42,9 +42,6 @@ import { DropdownModule } from 'primeng/dropdown';
         label="כמות התשלומים"
       >
       </app-form-field>
-
-      <!-- <app-form-field [form]="form" controlName="linkageType" label="סוג הצמדה">
-      </app-form-field> -->
 
       <div class="field">
         <label [class.required-mark]="isControlRequired('linkageType')">
@@ -90,29 +87,144 @@ export class Step2Form1Component extends FormBaseComponent {
     { label: 'צמוד למדד', value: 'indexLinked' },
     { label: 'צמוד לפריים', value: 'primeLinked' },
   ];
+} */
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { Step2Form1 } from '../models/step.types';
+import { FormBaseComponent } from '../../shared/base/form-base.component';
+
+@Component({
+  selector: 'app-step2-form1',
+  standalone: true,
+  imports: [ReactiveFormsModule, DropdownModule, SliderModule],
+  template: `
+    <div class="final-card">
+      <div class="loan-details-form" [formGroup]="form">
+        <div class="amount-block">
+          <label [class.required-mark]="isControlRequired('loanAmount')">
+            סכום ההלוואה
+          </label>
+
+          <div class="amount-input-wrap">
+            <span class="currency">₪</span>
+
+            <input
+              class="amount-input"
+              type="text"
+              formControlName="loanAmount"
+              (input)="onLoanAmountInput($event)"
+            />
+          </div>
+        </div>
+
+        <div class="payments-block">
+          <label [class.required-mark]="isControlRequired('numberOfPayments')">
+            כמות תשלומים
+          </label>
+
+          <p-slider
+            formControlName="numberOfPayments"
+            [min]="2"
+            [max]="20"
+            [step]="1"
+            (onChange)="calculateMonthlyPayment()"
+          />
+
+          <div class="slider-labels">
+            <span>2</span>
+            <span>{{ form.controls.numberOfPayments.value }}</span>
+            <span>20</span>
+          </div>
+        </div>
+
+        <div class="linkage-field">
+          <label [class.required-mark]="isControlRequired('linkageType')">
+            סוג הצמדה
+          </label>
+
+          <p-dropdown
+            formControlName="linkageType"
+            [options]="linkageTypeOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="בחר"
+          />
+        </div>
+
+        <div class="monthly-payment-card">
+          <span>החזר חודשי משוער:</span>
+          <strong>{{ form.controls.monthlyPayment.value || '0' }} ₪</strong>
+        </div>
+
+        <div class="rate-info">
+          <i class="pi pi-info-circle"></i>
+          <span>ריבית משתנה על בסיס הפריים [%]</span>
+        </div>
+      </div>
+      
+      <div class="service-note">נתקלת בבעיה? מוקד השירות שלנו: 03-0000000</div>
+      
+    </div>
+  `,
+})
+export class Step2Form1Component extends FormBaseComponent implements OnInit {
+  @Input({ required: true }) override form!: Step2Form1;
+  // @Output() titleChange = new EventEmitter<string>();
+
+  linkageTypeOptions = [
+    { label: 'ללא הצמדה', value: 'none' },
+    { label: 'פריים', value: 'prime' },
+    { label: 'צמוד למדד', value: 'indexLinked' },
+  ];
+
+  ngOnInit(): void {
+    // this.titleChange.emit('');
+    this.calculateMonthlyPayment();
+
+    this.form.controls.loanAmount.valueChanges.subscribe(() => {
+      this.calculateMonthlyPayment();
+    });
+
+    this.form.controls.numberOfPayments.valueChanges.subscribe(() => {
+      this.calculateMonthlyPayment();
+    });
+  }
+
+  onLoanAmountInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    const rawValue = input.value.replace(/\D/g, '');
+    const formattedValue = rawValue
+      ? Number(rawValue).toLocaleString('en-US')
+      : '';
+
+    this.form.controls.loanAmount.setValue(formattedValue, {
+      emitEvent: true,
+    });
+  }
+
+  calculateMonthlyPayment(): void {
+    const amount = Number(
+      String(this.form.controls.loanAmount.value).replace(/,/g, ''),
+    );
+
+    const payments = Number(this.form.controls.numberOfPayments.value);
+
+    if (!amount || !payments) {
+      this.form.controls.monthlyPayment.setValue('');
+      return;
+    }
+
+    const monthlyPayment = Math.round(amount / payments);
+
+    this.form.controls.monthlyPayment.setValue(
+      monthlyPayment.toLocaleString('en-US'),
+      { emitEvent: false },
+    );
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';

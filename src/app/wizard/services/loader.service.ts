@@ -8,34 +8,6 @@ export class LoaderService {
 
   readonly isLoading = signal(false);
 
-  //   show(): void {
-  //     this.requestsCount++;
-  //     this.isLoading.set(true);
-  //   }
-
-  //   hide(): void {
-  //     this.requestsCount = Math.max(0, this.requestsCount - 1);
-
-  //     if (this.requestsCount === 0) {
-  //       this.isLoading.set(false);
-  //     }
-  //   }
-
-  //   show(): void {
-  //     this.requestsCount++;
-  //     this.isLoading.set(true);
-  //     console.log('LOADER SHOW', this.requestsCount, this.isLoading());
-  //   }
-
-  //   hide(): void {
-  //     this.requestsCount = Math.max(0, this.requestsCount - 1);
-
-  //     if (this.requestsCount === 0) {
-  //       this.isLoading.set(false);
-  //     }
-
-  //     console.log('LOADER HIDE', this.requestsCount, this.isLoading());
-  //   }
   show(): void {
     this.requestsCount++;
     this.startTime = Date.now();

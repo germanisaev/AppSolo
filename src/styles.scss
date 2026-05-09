@@ -3,13 +3,28 @@
 
 html,
 body {
-  min-height: 100%;
-  /* overflow-y: auto;
-  overflow-x: hidden; */
+  height: 100%;
+  margin: 0;
   overflow: hidden;
 
-  font-family: 'Rubik', sans-serif;
+  font-family: "Rubik", sans-serif;
   direction: rtl;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.final-card {
+  width: min(760px, calc(100vw - 48px));
+  margin-inline: auto;
+  border-radius: 24px;
+  background: #fff;
+  padding: 48px 64px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
 }
 
 .field {

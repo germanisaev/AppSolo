@@ -6,216 +6,150 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step4Form1 } from '../models/step.types';
 import { NumberFormatDirective } from '../services/number-format.directive';
+import { SwitchFieldComponent } from '../controls/switch-field.component';
+import { SelectFieldComponent } from '../controls/select-field.component';
+import { NumberFieldComponent } from '../controls/number-field.component';
+import { FormFieldComponent } from '../controls/form-field.component';
 
 @Component({
   selector: 'app-step4-form1',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, DropdownModule, NumberFormatDirective],
+  imports: [
+    ReactiveFormsModule,
+    NgIf,
+    DropdownModule,
+    NumberFormatDirective,
+    SwitchFieldComponent,
+    SelectFieldComponent,
+    NumberFieldComponent,
+    FormFieldComponent,
+  ],
   template: `
-    <div class="form-grid" [formGroup]="form">
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('businessActivity')">
-          תחום פעילות
-        </label>
-        <p-dropdown
-          formControlName="businessActivity"
+    <div class="final-card">
+      <h3 class="card-title">פרטי הכנסות</h3>
+
+      <div class="form-grid two-columns" [formGroup]="form">
+        <app-select-field
+          [form]="form"
+          controlName="businessActivity"
+          label="תחום פעילות"
           [options]="businessActivityOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר תחום פעילות"
-          [class.input-error]="isControlInvalid('businessActivity')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('businessActivity')">
-          {{ getControlErrorMessage('businessActivity') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('fieldsOfOccupation')">
-          תחום עיסוק
-        </label>
-        <p-dropdown
-          formControlName="fieldsOfOccupation"
+        <app-select-field
+          [form]="form"
+          controlName="fieldsOfOccupation"
+          label="תחום עסקים"
           [options]="occupationOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר תחום עיסוק"
-          [class.input-error]="isControlInvalid('fieldsOfOccupation')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('fieldsOfOccupation')">
-          {{ getControlErrorMessage('fieldsOfOccupation') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('employmentStatus')">
-          מצב תעסוקתי
-        </label>
-        <p-dropdown
-          formControlName="employmentStatus"
+        <app-select-field
+          [form]="form"
+          controlName="employmentStatus"
+          label="מצב תעסוקתי"
           [options]="employmentStatusOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר מצב תעסוקתי"
-          [class.input-error]="isControlInvalid('employmentStatus')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('employmentStatus')">
-          {{ getControlErrorMessage('employmentStatus') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('tenureValue')">
-          ותק
-        </label>
-        <input
-          type="text"
-          formControlName="tenureValue"
-          [class.input-error]="isControlInvalid('tenureValue')"
-        />
-        <div class="error" *ngIf="isControlInvalid('tenureValue')">
-          {{ getControlErrorMessage('tenureValue') }}
-        </div>
-      </div>
+        <app-form-field [form]="form" controlName="tenureValue" label="ותק">
+        </app-form-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('tenureUnit')">
-          יחידת ותק
-        </label>
-        <p-dropdown
-          formControlName="tenureUnit"
+        <app-select-field
+          [form]="form"
+          controlName="tenureUnit"
+          label="יחידת ותק"
           [options]="tenureUnitOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר יחידה"
-          [class.input-error]="isControlInvalid('tenureUnit')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('tenureUnit')">
-          {{ getControlErrorMessage('tenureUnit') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('workplaceType')">
-          סוג מקום עבודה
-        </label>
-        <p-dropdown
-          formControlName="workplaceType"
+        <app-select-field
+          [form]="form"
+          controlName="workplaceType"
+          label="סוג מקום עבודה"
           [options]="workplaceTypeOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר סוג מקום עבודה"
-          [class.input-error]="isControlInvalid('workplaceType')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('workplaceType')">
-          {{ getControlErrorMessage('workplaceType') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('education')">
-          השכלה
-        </label>
-        <p-dropdown
-          formControlName="education"
+        <app-select-field
+          [form]="form"
+          controlName="education"
+          label="השכלה"
           [options]="educationOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר השכלה"
-          [class.input-error]="isControlInvalid('education')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('education')">
-          {{ getControlErrorMessage('education') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('salaryPaymentDay')">
-          יום תשלום משכורת
-        </label>
-        <p-dropdown
-          formControlName="salaryPaymentDay"
+        <app-select-field
+          [form]="form"
+          controlName="salaryPaymentDay"
+          label="יום תשלום משכורת"
           [options]="salaryPaymentDayOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר יום"
-          [class.input-error]="isControlInvalid('salaryPaymentDay')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('salaryPaymentDay')">
-          {{ getControlErrorMessage('salaryPaymentDay') }}
-        </div>
-      </div>
+          [filter]="false"
+        ></app-select-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('monthlyIncome')">
-          הכנסה חודשית
-        </label>
-        <input
-          type="text"
-          numberFormat
-          formControlName="monthlyIncome"
-          [class.input-error]="isControlInvalid('monthlyIncome')"
+        <app-number-field
+          [form]="form"
+          controlName="monthlyIncome"
+          label="הכנסה חודשית"
         />
-        <div class="error" *ngIf="isControlInvalid('monthlyIncome')">
-          {{ getControlErrorMessage('monthlyIncome') }}
-        </div>
-      </div>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('additionalHouseholdIncome')">
-          הכנסה נוספת במשק הבית
-        </label>
-        <input
-          type="text"
-          numberFormat
-          formControlName="additionalHouseholdIncome"
-          [class.input-error]="isControlInvalid('additionalHouseholdIncome')"
+        <div class="field">
+          <label
+            [class.required-mark]="
+              isControlRequired('additionalHouseholdIncome')
+            "
+          >
+            הכנסה נוספת במשק הבית
+          </label>
+          <input
+            type="text"
+            numberFormat
+            formControlName="additionalHouseholdIncome"
+            [class.input-error]="isControlInvalid('additionalHouseholdIncome')"
+          />
+          <div
+            class="error"
+            *ngIf="isControlInvalid('additionalHouseholdIncome')"
+          >
+            {{ getControlErrorMessage('additionalHouseholdIncome') }}
+          </div>
+        </div>
+
+        <app-form-field
+          [form]="form"
+          controlName="monthlyAlimonyExpense"
+          label="תשלומי מזונות חודשיים"
         />
-        <div class="error" *ngIf="isControlInvalid('additionalHouseholdIncome')">
-          {{ getControlErrorMessage('additionalHouseholdIncome') }}
-        </div>
-      </div>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('monthlyAlimonyExpense')">
-          תשלומי מזונות חודשיים
-        </label>
-        <input type="text" formControlName="monthlyAlimonyExpense" />
-      </div>
-
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('monthlyRentExpense')">
-          שכר דירה חודשי
-        </label>
-        <input
-          type="text"
-          numberFormat
-          formControlName="monthlyRentExpense"
-          [class.input-error]="isControlInvalid('monthlyRentExpense')"
+        <app-number-field
+          [form]="form"
+          controlName="monthlyRentExpense"
+          label="שכר דירה חודשי"
         />
-        <div class="error" *ngIf="isControlInvalid('monthlyRentExpense')">
-          {{ getControlErrorMessage('monthlyRentExpense') }}
-        </div>
+
+        <app-switch-field
+          [form]="form"
+          controlName="hasOwnedApartment"
+          label="האם בבעלותך דירה"
+        />
       </div>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('hasOwnedApartment')">
-          האם בבעלותך דירה
-        </label>
-        <p-dropdown
-          formControlName="hasOwnedApartment"
-          [options]="yesNoOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר"
-          [class.input-error]="isControlInvalid('hasOwnedApartment')">
-        </p-dropdown>
-        <div class="error" *ngIf="isControlInvalid('hasOwnedApartment')">
-          {{ getControlErrorMessage('hasOwnedApartment') }}
-        </div>
-      </div>
+      <div class="service-note">נתקשר אליך ממוקד השירות שלנו: 03-0000000</div>
     </div>
   `,
+  styles: [
+    `
+      /* .final-card {
+        width: min(760px, calc(100vw - 48px));
+        margin-inline: auto;
+        border-radius: 24px;
+        background: #fff;
+        padding: 48px 64px;
+        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+      } */
+    `,
+  ],
 })
 export class Step4Form1Component extends FormBaseComponent {
   @Input({ required: true }) override form!: Step4Form1;
@@ -279,4 +213,10 @@ export class Step4Form1Component extends FormBaseComponent {
     { label: 'כן', value: 'yes' },
     { label: 'לא', value: 'no' },
   ];
+
+  setHasOwnedApartment(value: 'yes' | 'no'): void {
+    this.form.controls.hasOwnedApartment.setValue(value);
+    this.form.controls.hasOwnedApartment.markAsTouched();
+    this.form.controls.hasOwnedApartment.updateValueAndValidity();
+  }
 }

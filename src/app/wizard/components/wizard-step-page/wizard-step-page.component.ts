@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import { combineLatest, map } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 
 import { WizardFlowService } from '../../services/wizard-flow.service';
@@ -42,10 +42,19 @@ export class WizardStepPageComponent {
 
   animationDirection: 'next' | 'prev' = 'next';
   animationTick = 0;
+  currentFormTitle = 'בואו נכיר אותכם קצת';
+
+  onFormTitleChange(title: string): void {
+    this.currentFormTitle = title;
+  }
 
   getAnimationState(step: number, formIndex: number): string {
     return `${this.animationDirection}-${step}-${formIndex}-${this.animationTick}`;
   }
+
+  /* tap(() => {
+      this.currentFormTitle = '';
+    }), */
 
   readonly vm$ = combineLatest([
     this.route.paramMap.pipe(map((params) => Number(params.get('step') ?? 1))),
@@ -128,6 +137,12 @@ export class WizardStepPageComponent {
     this.flow.markTouched(step, formIndex);
 
     if (!form.valid) {
+      console.log('RAW VALUE:', form.getRawValue());
+      console.log('ERRORS:', this.getFormErrors(form));
+      return;
+    }
+
+    if (!form.valid) {
       return;
     }
 
@@ -198,6 +213,6 @@ export class WizardStepPageComponent {
 
   private submitAll(): void {
     console.log('submit all', this.flow.getAllRawValue());
-    alert('Wizard completed. Check console.');
+    // alert('Wizard completed. Check console.');
   }
 }

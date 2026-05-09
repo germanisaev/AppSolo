@@ -13,6 +13,7 @@ import { Step4Form2Component } from './step4-form2.component';
 
 import { Step5Form1Component } from './step5-form1.component';
 import { Step5Form2Component } from './step5-form2.component';
+import { Step5Form3Component } from './step5-form3.component';
 
 export {
     Step1Form1Component,
@@ -26,6 +27,7 @@ export {
     Step4Form2Component,
     Step5Form1Component,
     Step5Form2Component,
+    Step5Form3Component,
 };
 
 export const WIZARD_FORM_COMPONENTS = [
@@ -40,4 +42,5 @@ export const WIZARD_FORM_COMPONENTS = [
     Step4Form2Component,
     Step5Form1Component,
     Step5Form2Component,
+    Step5Form3Component
 ] as const;

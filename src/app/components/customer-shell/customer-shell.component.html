@@ -1,13 +1,13 @@
+<div class="page-shell">
+  <!-- <ng-container *ngIf="isIntroPage; else isCustomerPage">
+    <div class="bg-intro"></div>
+  </ng-container>
+  <ng-template #isCustomerPage>
+    <div class="bg-layer"></div>
+  </ng-template> -->
+  <div [ngClass]="{'bg-intro': isIntroPage, 'bg-layer': !isIntroPage}"></div>
 
-  <div class="page-shell">
-    <img
-      class="bg-bottom"
-      src="/background-customer.png"
-      alt=""
-      aria-hidden="true"
-    />
-
-    <div class="page-content">
-      <router-outlet></router-outlet>
-    </div>
+  <div class="page-content">
+    <router-outlet></router-outlet>
   </div>
+</div>

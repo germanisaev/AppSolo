@@ -1,171 +1,158 @@
 import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step2Form3 } from '../models/step.types';
-import { DateMaskDirective } from '../services/date-mask.directive';
+import { DateFieldComponent } from '../controls/date-field.component';
+import { SelectFieldComponent } from '../controls/select-field.component';
+import { FormFieldComponent } from '../controls/form-field.component';
+import { SwitchFieldComponent } from '../controls/switch-field.component';
+import { dateValidator } from '../models/validators';
 
 @Component({
   selector: 'app-step2-form3',
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, DropdownModule, DateMaskDirective],
+  imports: [
+    ReactiveFormsModule,
+    DropdownModule,
+    DateFieldComponent,
+    SelectFieldComponent,
+    FormFieldComponent,
+    SwitchFieldComponent,
+    NgIf,
+  ],
   template: `
-    <div class="form-grid" [formGroup]="form">
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('idIssueDate')">
-          תאריך הנפקת תעודת זהות
-        </label>
-        <input
-          type="text"
-          placeholder="dd/mm/yyyy"
-          formControlName="idIssueDate"
-          appDateMask
-          [class.input-error]="isControlInvalid('idIssueDate')"
-        />
-        <div class="error" *ngIf="isControlInvalid('idIssueDate')">
-          {{ getControlErrorMessage('idIssueDate') }}
+    <div class="additional-details-page" [formGroup]="form">
+      <div class="additional-card card">
+        <h3 class="card-title">פרטים נוספים</h3>
+
+        <div class="additional-grid">
+          <app-date-field
+            [form]="form"
+            controlName="idIssueDate"
+            label="תאריך הנפקת ת״ז"
+          ></app-date-field>
+
+          <app-date-field
+            [form]="form"
+            controlName="idExpiryDate"
+            label="תוקף ת״ז"
+          ></app-date-field>
+
+          <app-switch-field
+            [form]="form"
+            controlName="biometricId"
+            label="האם תעודת הזהות ביומטרית?"
+            [yesValue]="true"
+            [noValue]="false"
+            [showDetailsOnValue]="true"
+          />
+
+          <app-date-field
+            [form]="form"
+            controlName="birthDate"
+            label="תאריך לידה"
+          ></app-date-field>
+
+          <app-select-field
+            [form]="form"
+            controlName="birthCountry"
+            label="ארץ לידה"
+            [options]="birthCountryOptions"
+            [filter]="true"
+          ></app-select-field>
+
+          <app-select-field
+            [form]="form"
+            controlName="gender"
+            label="מין"
+            [options]="genderOptions"
+            [filter]="false"
+          ></app-select-field>
+
+          <app-form-field [form]="form" controlName="email" label="כתובת דוא״ל">
+          </app-form-field>
+
+          <app-select-field
+            [form]="form"
+            controlName="familyStatus"
+            label="מצב משפחתי"
+            [options]="familyStatusOptions"
+            [filter]="false"
+          ></app-select-field>
+
+          <app-form-field
+            [form]="form"
+            controlName="childreNumUnder18"
+            label="18 מספר ילדים עד גיל"
+          >
+          </app-form-field>
         </div>
+
+        <div class="service-note">נתקשר אליך ממוקד השירות שלנו: 03-0000000</div>
       </div>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('idExpiryDate')">
-          תאריך תוקף תעודת זהות
-        </label>
-        <input
-          type="text"
-          placeholder="dd/mm/yyyy"
-          formControlName="idExpiryDate"
-          appDateMask
-          [class.input-error]="isControlInvalid('idExpiryDate')"
-        />
-        <div class="error" *ngIf="isControlInvalid('idExpiryDate')">
-          {{ getControlErrorMessage('idExpiryDate') }}
-        </div>
-      </div>
+      <div
+        class="credit-card card"
+        formGroupName="creditReportConsentExpiryDate"
+      >
+        <h3 class="card-title">תוקף הסכמה לקבלת דוח אשראי</h3>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('biometricId')">
-          תעודה ביומטרית
-        </label>
-        <p-dropdown
-          formControlName="biometricId"
-          [options]="biometricIdOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר"
-          [class.input-error]="isControlInvalid('biometricId')"
-        />
-        <div class="error" *ngIf="isControlInvalid('biometricId')">
-          {{ getControlErrorMessage('biometricId') }}
-        </div>
-      </div>
+        <p class="credit-text">
+          שים לב, ההסכמה שלא נמצאה במאגר תהיה בתוקף 60 ימים מיום הגשת הבקשה.
+          עבור הסכמה שיצאה לפועל, התוקף יהיה עד סוף תקופת ההלוואה.
+        </p>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('birthDate')">
-          תאריך לידה
-        </label>
-        <input
-          type="text"
-          placeholder="dd/mm/yyyy"
-          formControlName="birthDate"
-          appDateMask
-          [class.input-error]="isControlInvalid('birthDate')"
-        />
-        <div class="error" *ngIf="isControlInvalid('birthDate')">
-          {{ getControlErrorMessage('birthDate') }}
-        </div>
-      </div>
+        <div class="consent-switch">
+          <button
+            type="button"
+            class="consent-switch-btn"
+            [class.active]="
+              form.controls.creditReportConsentExpiryDate.controls.checked
+                .value === false
+            "
+            (click)="setCreditConsent(false)"
+          >
+            שינוי תוקף ההסכמה
+          </button>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('birthCountry')">
-          ארץ לידה
-        </label>
-        <p-dropdown
-          formControlName="birthCountry"
-          [options]="birthCountryOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר ארץ לידה"
-          [filter]="true"
-          filterBy="label"
-          [class.input-error]="isControlInvalid('birthCountry')"
-        />
-        <div class="error" *ngIf="isControlInvalid('birthCountry')">
-          {{ getControlErrorMessage('birthCountry') }}
+          <button
+            type="button"
+            class="consent-switch-btn"
+            [class.active]="
+              form.controls.creditReportConsentExpiryDate.controls.checked
+                .value === true
+            "
+            (click)="setCreditConsent(true)"
+          >
+            איני מאשר את תוקף ההסכמה
+          </button>
         </div>
-      </div>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('gender')"> מין </label>
-        <p-dropdown
-          formControlName="gender"
-          [options]="genderOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר מין"
-          [class.input-error]="isControlInvalid('gender')"
-        />
-        <div class="error" *ngIf="isControlInvalid('gender')">
-          {{ getControlErrorMessage('gender') }}
-        </div>
-      </div>
+        <ng-container
+          *ngIf="
+            form.controls.creditReportConsentExpiryDate.controls.checked
+              .value === false
+          "
+        >
+          <div class="credit-dates">
+            <app-date-field
+              [form]="form.controls.creditReportConsentExpiryDate"
+              controlName="executedTransactionConsentExpiryDate"
+              label="תוקף ההסכמה לעסקה שיצאה לפועל"
+            ></app-date-field>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('email')">
-          דואר אלקטרוני
-        </label>
-        <input
-          type="email"
-          formControlName="email"
-          [class.input-error]="isControlInvalid('email')"
-        />
-        <div class="error" *ngIf="isControlInvalid('email')">
-          {{ getControlErrorMessage('email') }}
-        </div>
-      </div>
+            <app-date-field
+              [form]="form.controls.creditReportConsentExpiryDate"
+              controlName="nonExecutedTransactionConsentExpiryDate"
+              label="תוקף ההסכמה לעסקה שלא יצאה לפועל"
+            ></app-date-field>
+          </div>
+        </ng-container>
 
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('familyStatus')">
-          מצב משפחתי
-        </label>
-        <p-dropdown
-          formControlName="familyStatus"
-          [options]="familyStatusOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="בחר מצב משפחתי"
-          [class.input-error]="isControlInvalid('familyStatus')"
-        />
-        <div class="error" *ngIf="isControlInvalid('familyStatus')">
-          {{ getControlErrorMessage('familyStatus') }}
-        </div>
-      </div>
-
-      <div class="field">
-        <label [class.required-mark]="isControlRequired('childreNumUnder18')">
-          מספר ילדים מתחת לגיל 18
-        </label>
-        <input
-          type="text"
-          formControlName="childreNumUnder18"
-          [class.input-error]="isControlInvalid('childreNumUnder18')"
-        />
-        <div class="error" *ngIf="isControlInvalid('childreNumUnder18')">
-          {{ getControlErrorMessage('childreNumUnder18') }}
-        </div>
-      </div>
-
-      <div class="field" formGroupName="creditReportConsentExpiryDate">
-        <label class="checkbox-row" [class.required-mark]="isNestedControlRequired('creditReportConsentExpiryDate', 'checked')">
-          <input type="checkbox" formControlName="checked" />
-          אני מאשר קבלת דוח אשראי
-        </label>
-
-        <div class="error" *ngIf="isNestedControlInvalid('creditReportConsentExpiryDate', 'checked')">
-          {{ getNestedControlErrorMessage('creditReportConsentExpiryDate', 'checked') }}
-        </div>
+        <div class="service-note">נתקשר אליך ממוקד השירות שלנו: 03-0000000</div>
       </div>
     </div>
   `,
@@ -199,4 +186,50 @@ export class Step2Form3Component extends FormBaseComponent {
     { label: 'בריטניה', value: 'GB' },
     { label: 'אחר', value: 'OTHER' },
   ];
+
+  setBiometricId(value: boolean): void {
+    this.form.controls.biometricId.setValue(value);
+    this.form.controls.biometricId.markAsTouched();
+    this.form.controls.biometricId.updateValueAndValidity();
+  }
+
+  setCreditConsent(value: boolean): void {
+    const group = this.form.controls.creditReportConsentExpiryDate;
+
+    group.controls.checked.setValue(value);
+    group.controls.checked.markAsTouched();
+
+    const executed = group.controls.executedTransactionConsentExpiryDate;
+    const nonExecuted = group.controls.nonExecutedTransactionConsentExpiryDate;
+
+    if (value === false) {
+      executed.setValidators([Validators.required, dateValidator]);
+      nonExecuted.setValidators([Validators.required, dateValidator]);
+
+      executed.markAsTouched();
+      nonExecuted.markAsTouched();
+    } else {
+      executed.clearValidators();
+      nonExecuted.clearValidators();
+
+      executed.setValue('');
+      nonExecuted.setValue('');
+
+      executed.markAsUntouched();
+      nonExecuted.markAsUntouched();
+    }
+
+    executed.updateValueAndValidity();
+    nonExecuted.updateValueAndValidity();
+    group.updateValueAndValidity();
+  }
 }
+
+/* setCreditConsent(value: boolean): void {
+    const control =
+      this.form.controls.creditReportConsentExpiryDate.controls.checked;
+
+    control.setValue(value);
+    control.markAsTouched();
+    control.updateValueAndValidity();
+  } */
