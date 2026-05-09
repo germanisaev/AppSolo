@@ -1,8 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
-
 import { ValidationService } from '../services/validation.service';
 
 export interface SelectOption<T = string> {
@@ -13,7 +12,7 @@ export interface SelectOption<T = string> {
 @Component({
   selector: 'app-select-field',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, DropdownModule],
+  imports: [ReactiveFormsModule, NgIf, DropdownModule, JsonPipe],
   template: `
     <div class="field" [formGroup]="form">
       <label [class.required-mark]="isRequired">
@@ -36,6 +35,21 @@ export interface SelectOption<T = string> {
       </div>
     </div>
   `,
+  styles: [
+    `
+      .error {
+        display: block;
+        margin-top: 4px;
+
+        color: #d32f2f;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.3;
+
+        text-align: right;
+      }
+    `,
+  ],
 })
 export class SelectFieldComponent<T = string> {
   private readonly validation = inject(ValidationService);
@@ -60,7 +74,9 @@ export class SelectFieldComponent<T = string> {
   }
 
   get isInvalid(): boolean {
-    return !!this.control && this.control.touched && this.control.invalid;
+    const control = this.control;
+
+    return !!control && control.invalid && (control.touched || control.dirty);
   }
 
   get errorMessage(): string {
@@ -68,6 +84,10 @@ export class SelectFieldComponent<T = string> {
 
     if (!errors) {
       return '';
+    }
+
+    if (errors['required']) {
+      return 'שדה חובה';
     }
 
     return this.validation.getError(this.controlName, errors);

@@ -48,6 +48,7 @@
   padding: 48px 72px;
   border-radius: 22px;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  box-sizing: border-box;
 }
 
 .form-card {
@@ -59,6 +60,7 @@
 
   width: min(1040px, 88vw);
   min-height: 280px;
+  box-sizing: border-box;
 }
 
 .form-card-inner {
@@ -193,14 +195,20 @@
   flex-direction: column;
   gap: 8px;
 
-  text-align: center;
+  text-align: right;
 }
 
 :host ::ng-deep .monthly-payment-card {
-  width: 260px;
+  width: 280px;
   min-height: 96px;
 
-  border: 1.5px solid #ff6600;
+  border: 2px solid #ff6600;
+  box-shadow:
+    0 4px 14px rgba(255, 102, 0, 0.15),
+    0 0 0 2px rgba(255, 102, 0, 0.08);
+
+  transform: translateY(-2px);
+
   border-radius: 10px;
 
   display: flex;
@@ -218,7 +226,7 @@
 
 :host ::ng-deep .monthly-payment-card strong {
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 :host ::ng-deep .rate-info {
@@ -343,6 +351,10 @@
   font-size: 22px;
   font-weight: 600;
   color: #333;
+
+  &.text-center {
+    text-align: center;
+  }
 }
 
 :host ::ng-deep .additional-grid {
@@ -390,8 +402,12 @@
 }
 
 :host ::ng-deep .consent-switch-btn.active {
-  background: #711aaa;
-  color: #fff;
+  background: #711aaa !important;
+  color: #fff !important;
+}
+
+:host ::ng-deep .consent-switch-btn + .consent-switch-btn {
+  border-right: 1px solid #711aaa;
 }
 
 :host ::ng-deep .credit-dates {
@@ -658,12 +674,24 @@
 /* =========================
     Dropdown
 ========================= */
-
 :host ::ng-deep .p-dropdown {
   width: 100%;
   height: 46px;
   border-radius: 12px;
   direction: rtl;
+}
+
+:host ::ng-deep .p-select-label {
+  display: flex !important;
+  align-items: center !important;
+
+  height: 100%;
+
+  text-align: right;
+  direction: rtl;
+
+  padding-right: 14px !important;
+  padding-left: 8px !important;
 }
 
 :host ::ng-deep .p-dropdown-label {
@@ -891,9 +919,16 @@
     padding: 16px 12px 64px;
   }
 
+  :host ::ng-deep .card,
+  :host ::ng-deep .final-card {
+    width: 100% !important;
+    padding: 20px 20px !important;
+    border-radius: 12px !important;
+  }
+
   .form-card {
     // padding: 20px;
-    border-radius: 16px;
+    border-radius: 12px;
   }
 
   .actions {

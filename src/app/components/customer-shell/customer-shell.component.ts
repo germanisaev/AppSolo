@@ -1,11 +1,11 @@
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-customer-shell',
-  imports: [RouterOutlet, NgIf],
+  imports: [RouterOutlet, NgClass],
   templateUrl: './customer-shell.component.html',
   styleUrl: './customer-shell.component.scss',
 })

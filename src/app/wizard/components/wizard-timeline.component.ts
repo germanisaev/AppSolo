@@ -249,7 +249,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
 
       .timeline-warning {
         width: 50%;
-        min-width: 620px;
+        min-width: 400px;
         margin: 0 auto;
         margin-bottom: 1rem;
         padding: 10px 14px;
@@ -315,6 +315,11 @@ import { WizardFlowService } from '../services/wizard-flow.service';
           --active-size: 42px;
           padding: 0 12px 20px;
           direction: rtl;
+        }
+
+        .timeline-warning {
+          margin-left: 1rem;
+          margin-right: 1rem;
         }
 
         .stripe-timeline__track,

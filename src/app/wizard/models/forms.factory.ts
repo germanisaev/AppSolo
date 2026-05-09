@@ -15,24 +15,30 @@ import {
   Step5Form1,
   Step5Form2,
 } from './step.types';
-import { dateValidator, israeliIdValidator, mobilePhoneValidator } from './validators';
+import {
+  dateValidator,
+  israeliIdValidator,
+  mobilePhoneValidator,
+} from './validators';
 
 export function createStep1Form1(fb: FormBuilder): Step1Form1 {
   const form = fb.nonNullable.group({
     firstName: ['', [Validators.required, Validators.pattern(/^[א-ת\s-]+$/)]],
     lastName: ['', [Validators.required, Validators.pattern(/^[א-ת\s-]+$/)]],
-    governmentId: ['314327735', [
-      Validators.required, 
-      Validators.pattern(/^\d+$/),
-      Validators.maxLength(9), 
-      Validators.minLength(9),
-      israeliIdValidator,
-    ]],
-    mobile: ['0549452396', [
-      Validators.required,
-      Validators.pattern(/^\d+$/),
-      mobilePhoneValidator,
-    ]],
+    governmentId: [
+      '314327735',
+      [
+        Validators.required,
+        Validators.pattern(/^\d+$/),
+        Validators.maxLength(9),
+        Validators.minLength(9),
+        israeliIdValidator,
+      ],
+    ],
+    mobile: [
+      '0549452396',
+      [Validators.required, Validators.pattern(/^\d+$/), mobilePhoneValidator],
+    ],
   });
 
   form.controls.governmentId.disable();
@@ -44,42 +50,53 @@ export function createStep1Form1(fb: FormBuilder): Step1Form1 {
 export function createStep2Form1(fb: FormBuilder): Step2Form1 {
   const form = fb.nonNullable.group({
     loanAmount: ['', Validators.required],
-    numberOfPayments: ['', [Validators.pattern(/^\d+$/)]],
-    linkageType: ['none', Validators.required],
-    monthlyPayment: ['3000', Validators.pattern(/^\d+$/)],
+    numberOfPayments: [2,[Validators.required, Validators.min(2), Validators.max(20)],],
+    linkageType: ['', Validators.required],
+    monthlyPayment: [{ value: '', disabled: true }],
   });
-
-  // form.controls.linkageType.disable();
-  form.controls.monthlyPayment.disable();
 
   return form;
 }
 
 export function createStep2Form2(fb: FormBuilder): Step2Form2 {
   return fb.nonNullable.group({
-    monthlyChargeDate: ['', [
-      Validators.required, 
-      Validators.min(1), 
-      Validators.max(28),
-      Validators.minLength(1), 
-      Validators.maxLength(2),
-    ]],
+    monthlyChargeDate: [
+      '',
+      [
+        Validators.required,
+        Validators.min(1),
+        Validators.max(28),
+        Validators.minLength(1),
+        Validators.maxLength(2),
+      ],
+    ],
     loanBeneficiary: ['', [Validators.required]],
     bank: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
     branchNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-    accountNumber: ['', [Validators.required, 
-      Validators.pattern(/^\d+$/),
-      Validators.minLength(6), 
-      Validators.maxLength(7)]],
+    accountNumber: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^\d+$/),
+        Validators.minLength(6),
+        Validators.maxLength(7),
+      ],
+    ],
   });
 }
 
 export function createStep2Form3(fb: FormBuilder): Step2Form3 {
   return fb.group({
-    idIssueDate: fb.nonNullable.control('', { validators: [Validators.required, dateValidator] }),
-    idExpiryDate: fb.nonNullable.control('', { validators: [Validators.required, dateValidator] }),
+    idIssueDate: fb.nonNullable.control('', {
+      validators: [Validators.required, dateValidator],
+    }),
+    idExpiryDate: fb.nonNullable.control('', {
+      validators: [Validators.required, dateValidator],
+    }),
     biometricId: fb.control<boolean | null>(null, Validators.required),
-    birthDate: fb.nonNullable.control('', { validators: [Validators.required, dateValidator] }),
+    birthDate: fb.nonNullable.control('', {
+      validators: [Validators.required, dateValidator],
+    }),
     birthCountry: fb.nonNullable.control('', Validators.required),
     gender: fb.nonNullable.control('', Validators.required),
     email: fb.nonNullable.control('', [
@@ -96,10 +113,10 @@ export function createStep2Form3(fb: FormBuilder): Step2Form3 {
 }
 
 export function createStep2Form31(fb: FormBuilder): Step2Form31 {
-  return fb.nonNullable.group({
-    checked: [true],
-    executedTransactionConsentExpiryDate: [''],
-    nonExecutedTransactionConsentExpiryDate: [''],
+  return fb.group({
+    checked: fb.nonNullable.control(false),
+    executedTransactionConsentExpiryDate: fb.nonNullable.control(''),
+    nonExecutedTransactionConsentExpiryDate: fb.nonNullable.control(''),
   });
 }
 
@@ -113,37 +130,69 @@ export function createStep3Form1(fb: FormBuilder): Step3Form1 {
 
 export function createStep3Form2(fb: FormBuilder): Step3Form2 {
   return fb.nonNullable.group({
-    firstName: ['', [
-      Validators.required, 
-      Validators.minLength(3),
-      Validators.maxLength(30), 
-      Validators.pattern(/^[א-ת\s-]+$/)
-    ]],
-    lastName: ['', [
-      Validators.required, 
-      Validators.minLength(3),
-      Validators.maxLength(30), 
-      Validators.pattern(/^[א-ת\s-]+$/)]],
-    governmentId: ['', [Validators.required, Validators.maxLength(9), Validators.minLength(9), israeliIdValidator]],
-    monthlyIncome: ['', [Validators.required, Validators.pattern(/^\d{1,3}(,\d{3})*$/)]],
+    firstName: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.pattern(/^[א-ת\s-]+$/),
+      ],
+    ],
+    lastName: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.pattern(/^[א-ת\s-]+$/),
+      ],
+    ],
+    governmentId: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(9),
+        Validators.minLength(9),
+        israeliIdValidator,
+      ],
+    ],
+    monthlyIncome: [
+      '',
+      [Validators.required, Validators.pattern(/^\d{1,3}(,\d{3})*$/)],
+    ],
   });
 }
 
 export function createStep3Form3(fb: FormBuilder): Step3Form3 {
   const form = fb.nonNullable.group({
-    city: ['קרית גת', [
-      Validators.minLength(3),
-      Validators.maxLength(30),
-      Validators.pattern(/^[א-ת\s-]+$/)
-    ]],
-    street: ['נחל ירקון', [
-      Validators.minLength(5),
-      Validators.maxLength(35),
-      Validators.pattern(/^[א-ת\s-]+$/)]],
+    city: [
+      'קרית גת',
+      [
+        Validators.minLength(3),
+        Validators.maxLength(30),
+        Validators.pattern(/^[א-ת\s-]+$/),
+      ],
+    ],
+    street: [
+      'נחל ירקון',
+      [
+        Validators.minLength(5),
+        Validators.maxLength(35),
+        Validators.pattern(/^[א-ת\s-]+$/),
+      ],
+    ],
     houseNumber: ['5', Validators.pattern(/^\d+$/)],
     entranceNumber: ['1', Validators.pattern(/^\d+$/)],
     apartmentNumber: ['76', Validators.pattern(/^\d+$/)],
-    zipCode: ['867870', [Validators.maxLength(7), Validators.minLength(6), Validators.pattern(/^\d+$/)]],
+    zipCode: [
+      '867870',
+      [
+        Validators.maxLength(7),
+        Validators.minLength(6),
+        Validators.pattern(/^\d+$/),
+      ],
+    ],
     isMailingAddressDifferent: [false],
     differentMailingAddress: createStep3Form31(fb),
   });
@@ -162,11 +211,41 @@ export function createStep3Form3(fb: FormBuilder): Step3Form3 {
 export function createStep3Form31(fb: FormBuilder): Step3Form31 {
   return fb.nonNullable.group({
     city: ['', Validators.pattern(/^[א-ת\s-]+$/)],
-    street: fb.nonNullable.control({ value: '', disabled: true }, [Validators.pattern(/^[א-ת\s-]+$/)]),
-    houseNumber: ['', [Validators.minLength(1), Validators.maxLength(3), Validators.pattern(/^\d+$/)]],
-    entranceNumber: ['', [Validators.minLength(1), Validators.maxLength(2), Validators.pattern(/^\d+$/)]],
-    apartmentNumber: ['', [Validators.minLength(1), Validators.maxLength(3), Validators.pattern(/^\d+$/)]],
-    zipCode: ['', [Validators.minLength(6), Validators.maxLength(7), Validators.pattern(/^\d+$/)]],
+    street: fb.nonNullable.control({ value: '', disabled: true }, [
+      Validators.pattern(/^[א-ת\s-]+$/),
+    ]),
+    houseNumber: [
+      '',
+      [
+        Validators.minLength(1),
+        Validators.maxLength(3),
+        Validators.pattern(/^\d+$/),
+      ],
+    ],
+    entranceNumber: [
+      '',
+      [
+        Validators.minLength(1),
+        Validators.maxLength(2),
+        Validators.pattern(/^\d+$/),
+      ],
+    ],
+    apartmentNumber: [
+      '',
+      [
+        Validators.minLength(1),
+        Validators.maxLength(3),
+        Validators.pattern(/^\d+$/),
+      ],
+    ],
+    zipCode: [
+      '',
+      [
+        Validators.minLength(6),
+        Validators.maxLength(7),
+        Validators.pattern(/^\d+$/),
+      ],
+    ],
     poBoxNumber: [''],
   });
 }

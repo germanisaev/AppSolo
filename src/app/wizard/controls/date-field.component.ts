@@ -1,6 +1,6 @@
 import { Component, Input, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
-import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
 import { DateMaskDirective } from '../services/date-mask.directive';
 
@@ -43,11 +43,23 @@ export class DateFieldComponent {
     return this.form.get(this.controlName);
   }
 
-  get isRequired(): boolean {
+  /* get isRequired(): boolean {
     return (
       !!this.control?.hasValidator(Validators.required) ||
       !!this.control?.hasValidator(Validators.requiredTrue)
     );
+  } */
+
+  get isRequired(): boolean {
+    const control = this.control;
+
+    if (!control) {
+      return false;
+    }
+
+    const validator = control.validator?.({} as AbstractControl);
+
+    return !!validator?.['required'];
   }
 
   get isInvalid(): boolean {

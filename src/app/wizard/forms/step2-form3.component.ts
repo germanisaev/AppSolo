@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { JsonPipe, NgIf } from '@angular/common';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 
@@ -98,7 +98,7 @@ import { dateValidator } from '../models/validators';
         class="credit-card card"
         formGroupName="creditReportConsentExpiryDate"
       >
-        <h3 class="card-title">תוקף הסכמה לקבלת דוח אשראי</h3>
+        <h3 class="card-title text-center">תוקף הסכמה לקבלת דוח אשראי</h3>
 
         <p class="credit-text">
           שים לב, ההסכמה שלא נמצאה במאגר תהיה בתוקף 60 ימים מיום הגשת הבקשה.
@@ -109,10 +109,7 @@ import { dateValidator } from '../models/validators';
           <button
             type="button"
             class="consent-switch-btn"
-            [class.active]="
-              form.controls.creditReportConsentExpiryDate.controls.checked
-                .value === false
-            "
+            [class.active]="creditConsentChecked === false"
             (click)="setCreditConsent(false)"
           >
             שינוי תוקף ההסכמה
@@ -121,10 +118,7 @@ import { dateValidator } from '../models/validators';
           <button
             type="button"
             class="consent-switch-btn"
-            [class.active]="
-              form.controls.creditReportConsentExpiryDate.controls.checked
-                .value === true
-            "
+            [class.active]="creditConsentChecked === true"
             (click)="setCreditConsent(true)"
           >
             איני מאשר את תוקף ההסכמה
@@ -157,7 +151,7 @@ import { dateValidator } from '../models/validators';
     </div>
   `,
 })
-export class Step2Form3Component extends FormBaseComponent {
+export class Step2Form3Component extends FormBaseComponent implements OnInit {
   @Input({ required: true }) override form!: Step2Form3;
 
   biometricIdOptions = [
@@ -187,6 +181,24 @@ export class Step2Form3Component extends FormBaseComponent {
     { label: 'אחר', value: 'OTHER' },
   ];
 
+  ngOnInit(): void {
+    const checkedControl =
+      this.form.controls.creditReportConsentExpiryDate.controls.checked;
+
+    if (typeof checkedControl.value !== 'boolean') {
+      checkedControl.setValue(false, { emitEvent: false });
+    }
+
+    this.applyCreditConsentValidators(checkedControl.value);
+  }
+
+  get creditConsentChecked(): boolean {
+    const value =
+      this.form.controls.creditReportConsentExpiryDate.controls.checked.value;
+
+    return value === true;
+  }
+
   setBiometricId(value: boolean): void {
     this.form.controls.biometricId.setValue(value);
     this.form.controls.biometricId.markAsTouched();
@@ -194,10 +206,17 @@ export class Step2Form3Component extends FormBaseComponent {
   }
 
   setCreditConsent(value: boolean): void {
-    const group = this.form.controls.creditReportConsentExpiryDate;
+    const checked =
+      this.form.controls.creditReportConsentExpiryDate.controls.checked;
 
-    group.controls.checked.setValue(value);
-    group.controls.checked.markAsTouched();
+    checked.setValue(value);
+    checked.markAsTouched();
+
+    this.applyCreditConsentValidators(value);
+  }
+
+  private applyCreditConsentValidators(value: boolean): void {
+    const group = this.form.controls.creditReportConsentExpiryDate;
 
     const executed = group.controls.executedTransactionConsentExpiryDate;
     const nonExecuted = group.controls.nonExecutedTransactionConsentExpiryDate;
@@ -205,31 +224,18 @@ export class Step2Form3Component extends FormBaseComponent {
     if (value === false) {
       executed.setValidators([Validators.required, dateValidator]);
       nonExecuted.setValidators([Validators.required, dateValidator]);
-
-      executed.markAsTouched();
-      nonExecuted.markAsTouched();
     } else {
       executed.clearValidators();
       nonExecuted.clearValidators();
 
-      executed.setValue('');
-      nonExecuted.setValue('');
-
-      executed.markAsUntouched();
-      nonExecuted.markAsUntouched();
+      executed.setValue('', { emitEvent: false });
+      nonExecuted.setValue('', { emitEvent: false });
     }
 
-    executed.updateValueAndValidity();
-    nonExecuted.updateValueAndValidity();
-    group.updateValueAndValidity();
+    executed.updateValueAndValidity({ emitEvent: false });
+    nonExecuted.updateValueAndValidity({ emitEvent: false });
+
+    group.updateValueAndValidity({ emitEvent: false });
+    this.form.updateValueAndValidity({ emitEvent: false });
   }
 }
-
-/* setCreditConsent(value: boolean): void {
-    const control =
-      this.form.controls.creditReportConsentExpiryDate.controls.checked;
-
-    control.setValue(value);
-    control.markAsTouched();
-    control.updateValueAndValidity();
-  } */

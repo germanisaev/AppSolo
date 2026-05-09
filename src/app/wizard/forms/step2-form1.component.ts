@@ -129,13 +129,13 @@ import { FormBaseComponent } from '../../shared/base/form-base.component';
             [min]="2"
             [max]="20"
             [step]="1"
-            (onChange)="calculateMonthlyPayment()"
           />
+          <!-- (onChange)="calculateMonthlyPayment()" -->
 
           <div class="slider-labels">
-            <span>2</span>
-            <span>{{ form.controls.numberOfPayments.value }}</span>
             <span>20</span>
+            <span>{{ form.controls.numberOfPayments.value }}</span>
+            <span>2</span>
           </div>
         </div>
 
@@ -163,11 +163,17 @@ import { FormBaseComponent } from '../../shared/base/form-base.component';
           <span>ריבית משתנה על בסיס הפריים [%]</span>
         </div>
       </div>
-      
+
       <div class="service-note">נתקלת בבעיה? מוקד השירות שלנו: 03-0000000</div>
-      
     </div>
   `,
+  styles: [
+    `
+      .slider-labels {
+        direction: ltr;
+      }
+    `,
+  ],
 })
 export class Step2Form1Component extends FormBaseComponent implements OnInit {
   @Input({ required: true }) override form!: Step2Form1;
@@ -179,7 +185,17 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
     { label: 'צמוד למדד', value: 'indexLinked' },
   ];
 
-  ngOnInit(): void {
+  get paymentsValue(): number {
+    const value = Number(this.form.controls.numberOfPayments.value);
+
+    if (!Number.isFinite(value)) {
+      return 2;
+    }
+
+    return Math.min(20, Math.max(2, value));
+  }
+
+  /* ngOnInit(): void {
     // this.titleChange.emit('');
     this.calculateMonthlyPayment();
 
@@ -190,6 +206,31 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
     this.form.controls.numberOfPayments.valueChanges.subscribe(() => {
       this.calculateMonthlyPayment();
     });
+  } */
+
+  ngOnInit(): void {
+    this.normalizePaymentsControl();
+
+    this.calculateMonthlyPayment();
+
+    this.form.controls.loanAmount.valueChanges.subscribe(() => {
+      this.calculateMonthlyPayment();
+    });
+
+    this.form.controls.numberOfPayments.valueChanges.subscribe(() => {
+      this.normalizePaymentsControl();
+      this.calculateMonthlyPayment();
+    });
+  }
+
+  private normalizePaymentsControl(): void {
+    const value = Number(this.form.controls.numberOfPayments.value);
+
+    if (!Number.isFinite(value) || value < 2 || value > 20) {
+      this.form.controls.numberOfPayments.setValue(2, {
+        emitEvent: false,
+      });
+    }
   }
 
   onLoanAmountInput(event: Event): void {
@@ -205,7 +246,7 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
     });
   }
 
-  calculateMonthlyPayment(): void {
+  /* calculateMonthlyPayment(): void {
     const amount = Number(
       String(this.form.controls.loanAmount.value).replace(/,/g, ''),
     );
@@ -214,6 +255,49 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
 
     if (!amount || !payments) {
       this.form.controls.monthlyPayment.setValue('');
+      return;
+    }
+
+    const monthlyPayment = Math.round(amount / payments);
+
+    this.form.controls.monthlyPayment.setValue(
+      monthlyPayment.toLocaleString('en-US'),
+      { emitEvent: false },
+    );
+  } */
+  /* calculateMonthlyPayment(): void {
+    const rawAmount = this.form.controls.loanAmount.value ?? '';
+    const rawPayments = this.form.controls.numberOfPayments.value;
+
+    const amount = Number(String(rawAmount).replace(/[^\d]/g, ''));
+    const payments = Number(rawPayments);
+
+    if (
+      !Number.isFinite(amount) ||
+      !Number.isFinite(payments) ||
+      amount <= 0 ||
+      payments <= 0
+    ) {
+      this.form.controls.monthlyPayment.setValue('', { emitEvent: false });
+      return;
+    }
+
+    const monthlyPayment = Math.round(amount / payments);
+
+    this.form.controls.monthlyPayment.setValue(
+      monthlyPayment.toLocaleString('en-US'),
+      { emitEvent: false },
+    );
+  } */
+  calculateMonthlyPayment(): void {
+    const amount = Number(
+      String(this.form.controls.loanAmount.value ?? '').replace(/[^\d]/g, ''),
+    );
+
+    const payments = this.paymentsValue;
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      this.form.controls.monthlyPayment.setValue('', { emitEvent: false });
       return;
     }
 

@@ -379,7 +379,7 @@ export class WizardFlowService {
     this.patchStepData(5, data['step5'] as unknown[] | undefined);
   }
 
-  private patchStepData(step: number, values?: unknown[]): void {
+  /* private patchStepData(step: number, values?: unknown[]): void {
     if (!Array.isArray(values)) {
       return;
     }
@@ -394,6 +394,43 @@ export class WizardFlowService {
         form.patchValue(value, { emitEvent: false });
       }
     });
+  } */
+
+  private patchStepData(step: number, values?: unknown[]): void {
+    if (!Array.isArray(values)) {
+      return;
+    }
+
+    const forms = this.formsByStep[step as keyof typeof this.formsByStep];
+
+    values.forEach((item, index) => {
+      const form = forms?.[index];
+      const value = this.extractFormValue(item);
+
+      if (!form || !value) {
+        return;
+      }
+
+      const normalizedValue = this.normalizePatchValue(value);
+      form.patchValue(normalizedValue, { emitEvent: false });
+    });
+  }
+
+  private normalizePatchValue(value: any): any {
+    if (!value?.creditReportConsentExpiryDate) {
+      return value;
+    }
+
+    return {
+      ...value,
+      creditReportConsentExpiryDate: {
+        ...value.creditReportConsentExpiryDate,
+        checked:
+          typeof value.creditReportConsentExpiryDate.checked === 'boolean'
+            ? value.creditReportConsentExpiryDate.checked
+            : false,
+      },
+    };
   }
 
   private readStorageState(): WizardStorageState | null {

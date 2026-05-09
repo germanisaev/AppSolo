@@ -9,7 +9,7 @@ export type Step1Form1 = FormGroup<{
 
 export type Step2Form1 = FormGroup<{
   loanAmount: FormControl<string>;
-  numberOfPayments: FormControl<string>;
+  numberOfPayments: FormControl<number>;
   linkageType: FormControl<string>;
   monthlyPayment: FormControl<string>;
 }>;
