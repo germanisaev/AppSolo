@@ -4,6 +4,7 @@ import {
   LoanDecisionModalComponent,
   LoanDecisionModalType,
 } from '../components/loan-decision-modal.component';
+import { WizardCardComponent } from '../components/wizard-card.component';
 
 export type LoanDecisionStatus = 'checking' | 'partialApproved' | 'final';
 /* | 'checking'
@@ -15,7 +16,7 @@ export type LoanDecisionStatus = 'checking' | 'partialApproved' | 'final';
 @Component({
   selector: 'app-step5-form3',
   standalone: true,
-  imports: [LoanDecisionModalComponent],
+  imports: [LoanDecisionModalComponent, WizardCardComponent],
   template: `
     @if (isApprovedLoaded) {
       <section class="final-message-card final-card">
@@ -32,127 +33,131 @@ export type LoanDecisionStatus = 'checking' | 'partialApproved' | 'final';
 
     @if (decisionStatus === 'checking') {
       <section class="loan-summary-card final-card">
-        <h3>פרטי ההלוואה</h3>
+        <app-wizard-card>
+          <h3>פרטי ההלוואה</h3>
 
-        <!-- @if (!isApprovedLoaded) { -->
-        <div class="notice success">
-          <span class="notice-icon">✓</span>
-          <div>
-            <strong>תנאי ההלוואה אושרו</strong>
-            <p>נתוני ההלוואה שביקשת תקינים, חשוב לדעת שהתהליך עוד לא נגמר</p>
+          <!-- @if (!isApprovedLoaded) { -->
+          <div class="notice success">
+            <span class="notice-icon">✓</span>
+            <div>
+              <strong>תנאי ההלוואה אושרו</strong>
+              <p>נתוני ההלוואה שביקשת תקינים, חשוב לדעת שהתהליך עוד לא נגמר</p>
+            </div>
           </div>
-        </div>
-        <!-- } -->
+          <!-- } -->
 
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span>סכום ההלוואה</span>
-            <strong>{{ loanDetails.amount }} ₪</strong>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span>סכום ההלוואה</span>
+              <strong>{{ loanDetails.amount }} ₪</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>מספר תשלומים</span>
+              <strong>{{ loanDetails.payments }}</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>סוג הצמדה</span>
+              <strong>{{
+                linkageTypeMap[loanDetails.linkageType] || '-'
+              }}</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>ריבית</span>
+              <strong>2%</strong>
+            </div>
+
+            <div class="summary-item">
+              <span>החזר חודשי משוערך</span>
+              <strong>{{ loanDetails.monthlyPayment }} ₪</strong>
+            </div>
           </div>
-
-          <div class="summary-item">
-            <span>מספר תשלומים</span>
-            <strong>{{ loanDetails.payments }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>סוג הצמדה</span>
-            <strong>{{
-              linkageTypeMap[loanDetails.linkageType] || '-'
-            }}</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>ריבית</span>
-            <strong>2%</strong>
-          </div>
-
-          <div class="summary-item">
-            <span>החזר חודשי משוערך</span>
-            <strong>{{ loanDetails.monthlyPayment }} ₪</strong>
-          </div>
-        </div>
-
-        <p class="service-note">נתקלת בבעיה? מוקד השירות שלנו: 03-0000000</p>
+        </app-wizard-card>
       </section>
     }
 
     @if (decisionStatus === 'partialApproved') {
       <section class="loan-summary-card final-card">
-        <h3>פרטי ההלוואה - אושרו חלקית</h3>
+        <app-wizard-card>
+          <h3>פרטי ההלוואה - אושרו חלקית</h3>
 
-        <div class="notice warning">
-          <span class="notice-icon">
-            <i class="pi pi-exclamation-triangle"></i>
-          </span>
-          <div>
-            <strong>שים לב</strong>
-            <p>
-              ניתן לקחת הלוואה בתנאים שונים מהתנאים שביקשת. התנאים החדשים
-              מופיעים מטה
-            </p>
-          </div>
-        </div>
-
-        <h4>נתוני ההלוואה שאושרו</h4>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span>סכום ההלוואה</span>
-            <div class="approved-color">{{ loanDetails.amount }} ₪</div>
-          </div>
-
-          <div class="summary-item">
-            <span>מספר תשלומים</span>
-            <div>{{ loanDetails.payments }}</div>
-          </div>
-
-          <div class="summary-item">
-            <span>סוג הצמדה</span>
-            <div>{{ linkageTypeMap[loanDetails.linkageType] || '-' }}</div>
-          </div>
-
-          <div class="summary-item">
-            <span>ריבית</span>
-            <div>2%</div>
-          </div>
-
-          <div class="summary-item">
-            <span>החזר חודשי משוערך</span>
-            <div class="approved-color">{{ loanDetails.monthlyPayment }} ₪</div>
-          </div>
-        </div>
-        <!-- approved loan -->
-
-        <h4>נתוני ההלוואה שביקשת</h4>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span>סכום ההלוואה</span>
-            <div class="requested-color">{{ loanDetails.amount }} ₪</div>
-          </div>
-
-          <div class="summary-item">
-            <span>מספר תשלומים</span>
-            <div>{{ loanDetails.payments }}</div>
-          </div>
-
-          <div class="summary-item">
-            <span>סוג הצמדה</span>
-            <div>{{ linkageTypeMap[loanDetails.linkageType] || '-' }}</div>
-          </div>
-
-          <div class="summary-item">
-            <span>ריבית</span>
-            <div>2%</div>
-          </div>
-
-          <div class="summary-item">
-            <span>החזר חודשי משוערך</span>
-            <div class="requested-color">
-              {{ loanDetails.monthlyPayment }} ₪
+          <div class="notice warning">
+            <span class="notice-icon">
+              <i class="pi pi-exclamation-triangle"></i>
+            </span>
+            <div>
+              <strong>שים לב</strong>
+              <p>
+                ניתן לקחת הלוואה בתנאים שונים מהתנאים שביקשת. התנאים החדשים
+                מופיעים מטה
+              </p>
             </div>
           </div>
-        </div>
-        <!-- requested loan -->
+
+          <h4>נתוני ההלוואה שאושרו</h4>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span>סכום ההלוואה</span>
+              <div class="approved-color">{{ loanDetails.amount }} ₪</div>
+            </div>
+
+            <div class="summary-item">
+              <span>מספר תשלומים</span>
+              <div>{{ loanDetails.payments }}</div>
+            </div>
+
+            <div class="summary-item">
+              <span>סוג הצמדה</span>
+              <div>{{ linkageTypeMap[loanDetails.linkageType] || '-' }}</div>
+            </div>
+
+            <div class="summary-item">
+              <span>ריבית</span>
+              <div>2%</div>
+            </div>
+
+            <div class="summary-item">
+              <span>החזר חודשי משוערך</span>
+              <div class="approved-color">
+                {{ loanDetails.monthlyPayment }} ₪
+              </div>
+            </div>
+          </div>
+          <!-- approved loan -->
+
+          <h4>נתוני ההלוואה שביקשת</h4>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span>סכום ההלוואה</span>
+              <div class="requested-color">{{ loanDetails.amount }} ₪</div>
+            </div>
+
+            <div class="summary-item">
+              <span>מספר תשלומים</span>
+              <div>{{ loanDetails.payments }}</div>
+            </div>
+
+            <div class="summary-item">
+              <span>סוג הצמדה</span>
+              <div>{{ linkageTypeMap[loanDetails.linkageType] || '-' }}</div>
+            </div>
+
+            <div class="summary-item">
+              <span>ריבית</span>
+              <div>2%</div>
+            </div>
+
+            <div class="summary-item">
+              <span>החזר חודשי משוערך</span>
+              <div class="requested-color">
+                {{ loanDetails.monthlyPayment }} ₪
+              </div>
+            </div>
+          </div>
+          <!-- requested loan -->
+        </app-wizard-card>
       </section>
     }
 

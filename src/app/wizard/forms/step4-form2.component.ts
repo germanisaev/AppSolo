@@ -7,6 +7,7 @@ import { Step4Form2 } from '../models/step.types';
 import { SelectFieldComponent } from '../controls/select-field.component';
 import { SwitchFieldComponent } from '../controls/switch-field.component';
 import { RadioGroupFieldComponent } from '../controls/radio-group-field.component';
+import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
   selector: 'app-step4-form2',
@@ -17,91 +18,88 @@ import { RadioGroupFieldComponent } from '../controls/radio-group-field.componen
     SelectFieldComponent,
     SwitchFieldComponent,
     RadioGroupFieldComponent,
+    WizardCardComponent,
   ],
   template: `
     <div class="declarations-layout" [formGroup]="form">
       <section class="declaration-card">
-        <h3 class="card-title">הצהרות אישיות</h3>
+        <app-wizard-card>
+          <h3 class="card-title">הצהרות אישיות</h3>
 
-        <app-switch-field
-          [form]="form.controls.publicPersonnel"
-          controlName="checked"
-          label="אני משמש בתפקיד ציבורי"
-          detailsControlName="value"
-          detailsLabel="תיאור התפקיד"
-          [isDetails]="true"
-        >
-        </app-switch-field>
+          <app-switch-field
+            [form]="form.controls.publicPersonnel"
+            controlName="checked"
+            label="אני משמש בתפקיד ציבורי"
+            detailsControlName="value"
+            detailsLabel="תיאור התפקיד"
+            [isDetails]="true"
+          >
+          </app-switch-field>
 
-        <app-switch-field
-          [form]="form.controls.familyMemberPublicPersonnel"
-          controlName="checked"
-          label="בן משפחה משמש בתפקיד ציבורי"
-          detailsControlName="value"
-          detailsLabel="תיאור תפקיד בן משפחה"
-          [isDetails]="true"
-        >
-        </app-switch-field>
+          <app-switch-field
+            [form]="form.controls.familyMemberPublicPersonnel"
+            controlName="checked"
+            label="בן משפחה משמש בתפקיד ציבורי"
+            detailsControlName="value"
+            detailsLabel="תיאור תפקיד בן משפחה"
+            [isDetails]="true"
+          >
+          </app-switch-field>
 
-        <app-switch-field
-          [form]="form.controls.additionalBeneficiaries"
-          controlName="checked"
-          label="אין עוד נהנים בחשבון מלבדי"
-          sublabel="לא ניתן להמשיך בתהליך במידה ויש נהנים נוספים בחשבון"
-          detailsControlName="value"
-          detailsLabel="תיאור נהנים בחשבון"
-          [isDetails]="true"
-        >
-        </app-switch-field>
+          <app-switch-field
+            [form]="form.controls.additionalBeneficiaries"
+            controlName="checked"
+            label="אין עוד נהנים בחשבון מלבדי"
+            sublabel="לא ניתן להמשיך בתהליך במידה ויש נהנים נוספים בחשבון"
+            detailsControlName="value"
+            detailsLabel="תיאור נהנים בחשבון"
+            [isDetails]="true"
+          >
+          </app-switch-field>
 
-        <app-switch-field
-          [form]="form.controls.nonIsraeliTaxResidency"
-          controlName="checked"
-          label="יש לי תושבות מס שאינה ישראל"
-          detailsControlName="value"
-          detailsLabel="תיאור תושבות מס"
-          [isDetails]="true"
-        >
-        </app-switch-field>
+          <app-switch-field
+            [form]="form.controls.nonIsraeliTaxResidency"
+            controlName="checked"
+            label="יש לי תושבות מס שאינה ישראל"
+            detailsControlName="value"
+            detailsLabel="תיאור תושבות מס"
+            [isDetails]="true"
+          >
+          </app-switch-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="workplaceType"
-          label="האם אתה עוסק בתחומים הבאים?"
-          [options]="businessAreaOptions"
-          [filter]="true"
-          placeholder=""
-        >
-        </app-select-field>
-
-        <div class="service-note">
-          נתקלת בבעיה? מוקד השירות שלנו: 03-0000000
-        </div>
+          <app-select-field
+            [form]="form"
+            controlName="workplaceType"
+            label="האם אתה עוסק בתחומים הבאים?"
+            [options]="businessAreaOptions"
+            [filter]="true"
+            placeholder=""
+          >
+          </app-select-field>
+        </app-wizard-card>
       </section>
 
       <section class="declaration-card">
-        <h3 class="card-title">קבלת הודעות מהבנק</h3>
+        <app-wizard-card>
+          <h3 class="card-title">קבלת הודעות מהבנק</h3>
 
-        <label class="checkbox-row">
-          <input type="checkbox" formControlName="marketingConsent" />
-          אישור לקבלת מידע שיווקי במסרון / דואר אלקטרוני
-        </label>
+          <label class="checkbox-row">
+            <input type="checkbox" formControlName="marketingConsent" />
+            אישור לקבלת מידע שיווקי במסרון / דואר אלקטרוני
+          </label>
 
-        <label class="checkbox-row">
-          <input type="checkbox" formControlName="bankNotifications" />
-          אני רוצה לקבל הודעות מהבנק
-        </label>
+          <label class="checkbox-row">
+            <input type="checkbox" formControlName="bankNotifications" />
+            אני רוצה לקבל הודעות מהבנק
+          </label>
 
-        <app-radio-group-field
-          [form]="form"
-          controlName="notificationMethod"
-          [options]="notificationMethodOptions"
-        >
-        </app-radio-group-field>
-
-        <div class="service-note">
-          נתקלת בבעיה? מוקד השירות שלנו: 03-0000000
-        </div>
+          <app-radio-group-field
+            [form]="form"
+            controlName="notificationMethod"
+            [options]="notificationMethodOptions"
+          >
+          </app-radio-group-field>
+        </app-wizard-card>
       </section>
     </div>
 

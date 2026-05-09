@@ -10,6 +10,7 @@ import { SwitchFieldComponent } from '../controls/switch-field.component';
 import { SelectFieldComponent } from '../controls/select-field.component';
 import { NumberFieldComponent } from '../controls/number-field.component';
 import { FormFieldComponent } from '../controls/form-field.component';
+import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
   selector: 'app-step4-form1',
@@ -23,131 +24,126 @@ import { FormFieldComponent } from '../controls/form-field.component';
     SelectFieldComponent,
     NumberFieldComponent,
     FormFieldComponent,
+    WizardCardComponent,
   ],
   template: `
     <div class="final-card">
-      <h3 class="card-title">פרטי הכנסות</h3>
+      <app-wizard-card>
+        <h3 class="card-title">פרטי הכנסות</h3>
 
-      <div class="form-grid two-columns" [formGroup]="form">
-        <app-select-field
-          [form]="form"
-          controlName="businessActivity"
-          label="תחום פעילות"
-          [options]="businessActivityOptions"
-          [filter]="false"
-        ></app-select-field>
+        <div class="form-grid two-columns" [formGroup]="form">
+          <app-select-field
+            [form]="form"
+            controlName="businessActivity"
+            label="תחום פעילות"
+            [options]="businessActivityOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="fieldsOfOccupation"
-          label="תחום עסקים"
-          [options]="occupationOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="fieldsOfOccupation"
+            label="תחום עסקים"
+            [options]="occupationOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="employmentStatus"
-          label="מצב תעסוקתי"
-          [options]="employmentStatusOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="employmentStatus"
+            label="מצב תעסוקתי"
+            [options]="employmentStatusOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-form-field [form]="form" controlName="tenureValue" label="ותק">
-        </app-form-field>
+          <app-form-field [form]="form" controlName="tenureValue" label="ותק">
+          </app-form-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="tenureUnit"
-          label="יחידת ותק"
-          [options]="tenureUnitOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="tenureUnit"
+            label="יחידת ותק"
+            [options]="tenureUnitOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="workplaceType"
-          label="סוג מקום עבודה"
-          [options]="workplaceTypeOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="workplaceType"
+            label="סוג מקום עבודה"
+            [options]="workplaceTypeOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="education"
-          label="השכלה"
-          [options]="educationOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="education"
+            label="השכלה"
+            [options]="educationOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-select-field
-          [form]="form"
-          controlName="salaryPaymentDay"
-          label="יום תשלום משכורת"
-          [options]="salaryPaymentDayOptions"
-          [filter]="false"
-        ></app-select-field>
+          <app-select-field
+            [form]="form"
+            controlName="salaryPaymentDay"
+            label="יום תשלום משכורת"
+            [options]="salaryPaymentDayOptions"
+            [filter]="false"
+          ></app-select-field>
 
-        <app-number-field
-          [form]="form"
-          controlName="monthlyIncome"
-          label="הכנסה חודשית"
-        />
-
-        <div class="field">
-          <label
-            [class.required-mark]="
-              isControlRequired('additionalHouseholdIncome')
-            "
-          >
-            הכנסה נוספת במשק הבית
-          </label>
-          <input
-            type="text"
-            numberFormat
-            formControlName="additionalHouseholdIncome"
-            [class.input-error]="isControlInvalid('additionalHouseholdIncome')"
+          <app-number-field
+            [form]="form"
+            controlName="monthlyIncome"
+            label="הכנסה חודשית"
           />
-          <div
-            class="error"
-            *ngIf="isControlInvalid('additionalHouseholdIncome')"
-          >
-            {{ getControlErrorMessage('additionalHouseholdIncome') }}
+
+          <div class="field">
+            <label
+              [class.required-mark]="
+                isControlRequired('additionalHouseholdIncome')
+              "
+            >
+              הכנסה נוספת במשק הבית
+            </label>
+            <input
+              type="text"
+              numberFormat
+              formControlName="additionalHouseholdIncome"
+              [class.input-error]="
+                isControlInvalid('additionalHouseholdIncome')
+              "
+            />
+            <div
+              class="error"
+              *ngIf="isControlInvalid('additionalHouseholdIncome')"
+            >
+              {{ getControlErrorMessage('additionalHouseholdIncome') }}
+            </div>
           </div>
+
+          <app-form-field
+            [form]="form"
+            controlName="monthlyAlimonyExpense"
+            label="תשלומי מזונות חודשיים"
+          />
+
+          <app-number-field
+            [form]="form"
+            controlName="monthlyRentExpense"
+            label="שכר דירה חודשי"
+          />
+
+          <app-switch-field
+            [form]="form"
+            controlName="hasOwnedApartment"
+            label="האם בבעלותך דירה"
+          />
         </div>
-
-        <app-form-field
-          [form]="form"
-          controlName="monthlyAlimonyExpense"
-          label="תשלומי מזונות חודשיים"
-        />
-
-        <app-number-field
-          [form]="form"
-          controlName="monthlyRentExpense"
-          label="שכר דירה חודשי"
-        />
-
-        <app-switch-field
-          [form]="form"
-          controlName="hasOwnedApartment"
-          label="האם בבעלותך דירה"
-        />
-      </div>
-
-      <div class="service-note">נתקשר אליך ממוקד השירות שלנו: 03-0000000</div>
+      </app-wizard-card>
     </div>
   `,
   styles: [
     `
-      /* .final-card {
-        width: min(760px, calc(100vw - 48px));
-        margin-inline: auto;
-        border-radius: 24px;
-        background: #fff;
-        padding: 48px 64px;
-        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
-      } */
     `,
   ],
 })

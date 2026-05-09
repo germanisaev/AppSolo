@@ -2,11 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
-import { combineLatest, map, tap } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-
 import { WizardFlowService } from '../../services/wizard-flow.service';
-
 import { WIZARD_FORM_COMPONENTS } from '../../forms';
 import {
   animate,
@@ -16,7 +14,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-wizard-step-page',
@@ -52,10 +49,6 @@ export class WizardStepPageComponent {
     return `${this.animationDirection}-${step}-${formIndex}-${this.animationTick}`;
   }
 
-  /* tap(() => {
-      this.currentFormTitle = '';
-    }), */
-
   readonly vm$ = combineLatest([
     this.route.paramMap.pipe(map((params) => Number(params.get('step') ?? 1))),
     this.route.queryParamMap.pipe(
@@ -80,67 +73,12 @@ export class WizardStepPageComponent {
     return `${step}-${formIndex}`;
   }
 
-  // next(step: number, formIndex: number): void {
-  //   this.animationDirection = 'next';
-
-  //   this.flow.markTouched(step, formIndex);
-
-  //   if (!this.flow.isValid(step, formIndex)) {
-  //     return;
-  //   }
-
-  //   // console.log({
-  //   //   step,
-  //   //   formIndex,
-  //   //   totalForms: this.flow.getFormsCount(step),
-  //   //   currentValid: this.flow.isValid(step, formIndex),
-  //   //   stepValid: this.flow.isStepValid(step),
-  //   //   value: this.flow.getForm(step, formIndex).getRawValue(),
-  //   // });
-
-  //   // if (!this.flow.isValid(step, formIndex)) {
-  //   //   const form = this.flow.getForm(step, formIndex);
-
-  //   //   // console.log('INVALID FORM:', form);
-  //   //   // console.log('RAW VALUE:', form.getRawValue());
-  //   //   // console.log('ERRORS:', this.getFormErrors(form));
-
-  //   //   return;
-  //   // }
-
-  //   const totalForms = this.flow.getFormsCount(step);
-  //   const isLastFormInStep = formIndex === totalForms;
-
-  //   if (isLastFormInStep && !this.flow.isStepValid(step)) {
-  //     return;
-  //   }
-
-  //   const next = this.flow.getNextPosition(step, formIndex);
-
-  //   if (!next) {
-  //     this.flow.saveCurrentPosition(step, formIndex);
-  //     this.submitAll();
-  //     return;
-  //   }
-
-  //   this.flow.saveCurrentPosition(next.step, next.form);
-
-  //   this.animationTick++;
-  //   this.navigate(next.step, next.form);
-  // }
-
   next(step: number, formIndex: number): void {
     this.animationDirection = 'next';
 
     const form = this.flow.getForm(step, formIndex);
 
     this.flow.markTouched(step, formIndex);
-
-    if (!form.valid) {
-      console.log('RAW VALUE:', form.getRawValue());
-      console.log('ERRORS:', this.getFormErrors(form));
-      return;
-    }
 
     if (!form.valid) {
       return;

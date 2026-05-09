@@ -56,6 +56,7 @@ import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step2Form2 } from '../models/step.types';
 import { FormFieldComponent } from '../controls/form-field.component';
 import { NgFor, NgIf } from '@angular/common';
+import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
   selector: 'app-step2-form2',
@@ -66,66 +67,69 @@ import { NgFor, NgIf } from '@angular/common';
     FormFieldComponent,
     NgFor,
     NgIf,
+    WizardCardComponent,
   ],
   template: `
     <div class="card">
-      <div class="loan-account-form" [formGroup]="form">
-        <h3 class="question-title">מה מועד החיוב החודשי שתרצה?</h3>
+      <app-wizard-card>
+        <div class="loan-account-form" [formGroup]="form">
+          <h3 class="question-title">מה מועד החיוב החודשי שתרצה?</h3>
 
-        <div class="payment-options">
-          <button
-            type="button"
-            class="payment-option"
-            *ngFor="let option of monthlyChargeOptions"
-            [class.active]="
-              form.controls.monthlyChargeDate.value === option.value
-            "
-            (click)="selectMonthlyChargeDate(option.value)"
-          >
-            {{ option.label }}
-          </button>
-        </div>
+          <div class="payment-options">
+            <button
+              type="button"
+              class="payment-option"
+              *ngFor="let option of monthlyChargeOptions"
+              [class.active]="
+                form.controls.monthlyChargeDate.value === option.value
+              "
+              (click)="selectMonthlyChargeDate(option.value)"
+            >
+              {{ option.label }}
+            </button>
+          </div>
 
-        <div class="beneficiary-field">
-          <label class="question-title" [class.required-mark]="isControlRequired('loanBeneficiary')">
-            עבור מי ההלוואה?
-          </label>
+          <div class="beneficiary-field">
+            <label
+              class="question-title"
+              [class.required-mark]="isControlRequired('loanBeneficiary')"
+            >
+              עבור מי ההלוואה?
+            </label>
 
-          <p-dropdown
-            formControlName="loanBeneficiary"
-            [options]="loanBeneficiaryOptions"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="בחר"
-            [class.input-error]="isControlInvalid('loanBeneficiary')"
-          />
+            <p-dropdown
+              formControlName="loanBeneficiary"
+              [options]="loanBeneficiaryOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="בחר"
+              [class.input-error]="isControlInvalid('loanBeneficiary')"
+            />
 
-          <div class="error" *ngIf="isControlInvalid('loanBeneficiary')">
-            {{ getControlErrorMessage('loanBeneficiary') }}
+            <div class="error" *ngIf="isControlInvalid('loanBeneficiary')">
+              {{ getControlErrorMessage('loanBeneficiary') }}
+            </div>
+          </div>
+
+          <h3 class="section-title">פרטי חשבון בנק לחיוב</h3>
+
+          <div class="bank-grid">
+            <app-form-field [form]="form" controlName="bank" label="בנק" />
+
+            <app-form-field
+              [form]="form"
+              controlName="branchNumber"
+              label="מספר סניף"
+            />
+
+            <app-form-field
+              [form]="form"
+              controlName="accountNumber"
+              label="מספר חשבון"
+            />
           </div>
         </div>
-
-        <h3 class="section-title">פרטי חשבון בנק לחיוב</h3>
-
-        <div class="bank-grid">
-          <app-form-field [form]="form" controlName="bank" label="בנק" />
-
-          <app-form-field
-            [form]="form"
-            controlName="branchNumber"
-            label="מספר סניף"
-          />
-
-          <app-form-field
-            [form]="form"
-            controlName="accountNumber"
-            label="מספר חשבון"
-          />
-        </div>
-      </div>
-
-      <div class="service-note">נתקלת בבעיה? מוקד השירות שלנו: 03-0000000</div>
-      
+      </app-wizard-card>
     </div>
   `,
 })

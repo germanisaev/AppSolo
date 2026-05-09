@@ -3,73 +3,68 @@ import { NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step5Form1 } from '../models/step.types';
+import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
   selector: 'app-step5-form1',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, WizardCardComponent],
   template: `
     <div class="final-card">
-      <div class="upload-section" [formGroup]="form">
-        <div class="upload-header">
-          <h3 class="card-title">העלאת מסמכים</h3>
-          <p>יש להעלות את המסמך הנדרש כדי להמשיך בתהליך.</p>
-        </div>
-
-        <div class="upload-box">
-          <i class="pi pi-cloud-upload"></i>
-
-          <div class="upload-text">
-            <strong>גרור קובץ לכאן או לחץ לבחירה</strong>
-            <span>קבצים נתמכים: PDF, JPG, PNG</span>
+      <app-wizard-card>
+        <div class="upload-section" [formGroup]="form">
+          <div class="upload-header">
+            <h3 class="card-title">העלאת מסמכים</h3>
+            <p>יש להעלות את המסמך הנדרש כדי להמשיך בתהליך.</p>
           </div>
 
-          <input
-            #fileInput
-            type="file"
-            hidden
-            accept=".pdf,.jpg,.jpeg,.png"
-            (change)="onFileSelected($event)"
-          />
+          <div class="upload-box">
+            <i class="pi pi-cloud-upload"></i>
 
-          <button
-            type="button"
-            class="upload-button"
-            (click)="fileInput.click()"
+            <div class="upload-text">
+              <strong>גרור קובץ לכאן או לחץ לבחירה</strong>
+              <span>קבצים נתמכים: PDF, JPG, PNG</span>
+            </div>
+
+            <input
+              #fileInput
+              type="file"
+              hidden
+              accept=".pdf,.jpg,.jpeg,.png"
+              (change)="onFileSelected($event)"
+            />
+
+            <button
+              type="button"
+              class="upload-button"
+              (click)="fileInput.click()"
+            >
+              בחירת קובץ
+            </button>
+          </div>
+
+          <div class="upload-status" *ngIf="selectedFileName">
+            <i class="pi pi-check-circle"></i>
+            <span>הקובץ נבחר: {{ selectedFileName }}</span>
+          </div>
+
+          <label
+            class="checkbox-row"
+            [class.required-mark]="isControlRequired('documentUploaded')"
           >
-            בחירת קובץ
-          </button>
-        </div>
+            <input type="checkbox" formControlName="documentUploaded" />
+            אני מאשר/ת שהמסמך הועלה ונבדק
+          </label>
 
-        <div class="upload-status" *ngIf="selectedFileName">
-          <i class="pi pi-check-circle"></i>
-          <span>הקובץ נבחר: {{ selectedFileName }}</span>
+          <div class="error" *ngIf="isControlInvalid('documentUploaded')">
+            {{ getControlErrorMessage('documentUploaded') }}
+          </div>
         </div>
-
-        <label
-          class="checkbox-row"
-          [class.required-mark]="isControlRequired('documentUploaded')"
-        >
-          <input type="checkbox" formControlName="documentUploaded" />
-          אני מאשר/ת שהמסמך הועלה ונבדק
-        </label>
-
-        <div class="error" *ngIf="isControlInvalid('documentUploaded')">
-          {{ getControlErrorMessage('documentUploaded') }}
-        </div>
-      </div>
+      </app-wizard-card>
     </div>
   `,
   styles: [
     `
-      /* .final-card {
-        width: min(760px, calc(100vw - 48px));
-        margin-inline: auto;
-        border-radius: 24px;
-        background: #fff;
-        padding: 48px 64px;
-        box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
-      } */
     `,
   ],
 })

@@ -17,7 +17,6 @@ import {
   createStep5Form3,
 } from '../models/forms.factory';
 import { delay } from 'rxjs/operators';
-// import { LoaderService } from './loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class WizardFlowService {
@@ -379,23 +378,6 @@ export class WizardFlowService {
     this.patchStepData(5, data['step5'] as unknown[] | undefined);
   }
 
-  /* private patchStepData(step: number, values?: unknown[]): void {
-    if (!Array.isArray(values)) {
-      return;
-    }
-
-    const forms = this.formsByStep[step as keyof typeof this.formsByStep];
-
-    values.forEach((item, index) => {
-      const form = forms?.[index];
-      const value = this.extractFormValue(item);
-
-      if (form && value) {
-        form.patchValue(value, { emitEvent: false });
-      }
-    });
-  } */
-
   private patchStepData(step: number, values?: unknown[]): void {
     if (!Array.isArray(values)) {
       return;
@@ -442,61 +424,3 @@ export class WizardFlowService {
     }
   }
 }
-
-//   saveForm(step: number, formIndex: number, value: unknown) {
-//     this.loader.show();
-
-//     return of(true).pipe(
-//       delay(1500),
-//       finalize(() => this.loader.hide()),
-//     );
-//   }
-
-/* getAllRawValue() {
-        return {
-            step1: this.formsByStep[1].map((f) => f.getRawValue()),
-            step2: this.formsByStep[2].map((f) => f.getRawValue()),
-            step3: this.formsByStep[3].map((f) => f.getRawValue()),
-            step4: this.formsByStep[4].map((f) => f.getRawValue()),
-            // step5: this.formsByStep[5].map((f) => f.getRawValue()),
-        };
-    } */
-
-/* private registerAutoSave(): void {
-        const controls = Object.values(this.formsByStep)
-            .flat()
-            .map((form) => form as AbstractControl);
-
-        merge(...controls.map((control) => control.valueChanges))
-            .pipe(debounceTime(300))
-            .subscribe((item) => {
-                console.log(item);
-                const state = this.readStorageState();
-
-                this.saveCurrentPosition(
-                    state?.currentStep ?? 1,
-                    state?.currentForm ?? 1
-                );
-            });
-    } */
-
-/* private patchStepData(step: number, values?: unknown[]): void {
-        if (!Array.isArray(values)) {
-            return;
-        }
-
-        const forms = this.formsByStep[step as keyof typeof this.formsByStep];
-
-        values.forEach((value, index) => {
-            const form = forms?.[index];
-
-            if (form && value && typeof value === 'object') {
-                form.patchValue(value as object, { emitEvent: false });
-            }
-        });
-    } */
-
-/* getForm(step: number, formIndex: number): FormGroup | null {
-    const forms = this.formsByStep[step as keyof typeof this.formsByStep];
-    return forms?.[formIndex - 1] ?? null;
-  } */
