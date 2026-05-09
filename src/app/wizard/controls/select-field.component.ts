@@ -1,5 +1,5 @@
 import { Component, Input, inject } from '@angular/core';
-import { JsonPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { ValidationService } from '../services/validation.service';
@@ -12,7 +12,7 @@ export interface SelectOption<T = string> {
 @Component({
   selector: 'app-select-field',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, DropdownModule, JsonPipe],
+  imports: [ReactiveFormsModule, NgIf, DropdownModule],
   template: `
     <div class="field" [formGroup]="form">
       <label [class.required-mark]="isRequired">
