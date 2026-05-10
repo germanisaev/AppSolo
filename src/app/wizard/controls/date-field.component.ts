@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { AbstractControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
@@ -21,6 +21,7 @@ import { DateMaskDirective } from '../services/date-mask.directive';
           appDateMask
           placeholder="00/00/0000"
           [class.input-error]="isInvalid"
+          (blur)="fieldBlur.emit()"
         />
 
         <i class="pi pi-calendar calendar-icon"></i>
@@ -38,6 +39,8 @@ export class DateFieldComponent {
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) controlName!: string;
   @Input({ required: true }) label!: string;
+
+  @Output() fieldBlur = new EventEmitter<void>();
 
   get control() {
     return this.form.get(this.controlName);

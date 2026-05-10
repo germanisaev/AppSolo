@@ -20,7 +20,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         <section class="intro-card" dir="rtl">
           <h1>
             הגעתם למערכת אשראי צרכני של בנק מזרחי טפחות.<br />
-           <span>כדי להתחיל, מלאו את פרטי הלקוח כדי לשלוח לו קישור</span>
+            <span>כדי להתחיל, מלאו את פרטי הלקוח כדי לשלוח לו קישור</span>
           </h1>
 
           <div class="intro-steps">
@@ -243,6 +243,141 @@ import { WizardFlowService } from '../services/wizard-flow.service';
       }
 
       @media (max-width: 768px) {
+        .intro-layout {
+          width: 100%;
+          min-height: calc(100vh - 60px);
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+
+          padding: 0 16px 40px;
+          gap: 0;
+        }
+
+        .intro-hero {
+          width: 100%;
+          min-height: 350px;
+
+          justify-content: flex-start;
+          align-items: center;
+
+          padding: 70px 16px 0;
+
+          text-align: center;
+        }
+
+        .hero-small {
+          font-size: 34px;
+          font-weight: 600;
+        }
+
+        .hero-title {
+          font-size: 48px;
+          font-weight: 800;
+        }
+
+        .hero-small,
+        .hero-title {
+          width: 100%;
+          max-width: none;
+          line-height: 1.15;
+          white-space: nowrap !important;
+          text-align: center;
+        }
+
+        .intro-card {
+          width: 100%;
+          min-height: auto;
+
+          margin-top: -74px;
+          padding: 28px 20px 24px;
+
+          border-radius: 16px;
+          text-align: center;
+          z-index: 2;
+        }
+
+        h1 {
+          margin: 0 0 26px;
+
+          font-size: 15px;
+          line-height: 1.45;
+          font-weight: 700;
+        }
+
+        .intro-card h1 > span {
+          display: block;
+          margin-top: 4px;
+
+          font-size: 13px;
+          line-height: 1.5;
+          font-weight: 500;
+        }
+
+        .intro-steps {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 24px;
+
+          margin-bottom: 24px;
+        }
+
+        .step-circle {
+          width: 54px;
+          height: 54px;
+          margin-bottom: 12px;
+
+          font-size: 24px;
+        }
+
+        .intro-step h3 {
+          margin-bottom: 5px;
+          font-size: 14px;
+        }
+
+        .intro-step p {
+          max-width: 190px;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+
+        .start-button {
+          min-width: 112px;
+          height: 36px;
+          margin-bottom: 20px;
+
+          font-size: 13px;
+        }
+
+        .legal-text {
+          max-width: 230px;
+          margin-bottom: 14px;
+
+          font-size: 10px;
+          line-height: 1.55;
+        }
+
+        .intro-footer {
+          width: min(100%, 280px);
+          margin-top: 14px;
+
+          text-align: center;
+          font-size: 11px;
+        }
+
+        .intro-footer div {
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .intro-footer span {
+          font-size: 10px;
+        }
+      }
+
+      /* @media (max-width: 768px) {
         .intro-card {
           padding: 32px 24px;
         }
@@ -255,7 +390,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         h1 {
           font-size: 22px;
         }
-      }
+      } */
     `,
   ],
 })

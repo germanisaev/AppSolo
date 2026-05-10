@@ -22,7 +22,7 @@ export type Step2Form2 = FormGroup<{
   accountNumber: FormControl<string>;
 }>;
 
-export type Step2Form3 = FormGroup<{
+export type Step3Form1 = FormGroup<{
   idIssueDate: FormControl<string>;
   idExpiryDate: FormControl<string>;
   biometricId: FormControl<boolean | null>;
@@ -32,27 +32,27 @@ export type Step2Form3 = FormGroup<{
   email: FormControl<string>;
   familyStatus: FormControl<string>;
   childreNumUnder18: FormControl<string>;
-  creditReportConsentExpiryDate: Step2Form31;
+  creditReportConsentExpiryDate: Step3Form11;
 }>;
 
-export type Step2Form31 = FormGroup<{
+export type Step3Form11 = FormGroup<{
   checked: FormControl<boolean>;
   executedTransactionConsentExpiryDate: FormControl<string>;
   nonExecutedTransactionConsentExpiryDate: FormControl<string>;
 }>;
 
-export type Step3Form1 = FormGroup<{
+export type Step3Form2 = FormGroup<{
   borrower1: FormControl<boolean>;
 }>;
 
-export type Step3Form2 = FormGroup<{
+export type Step3Form3 = FormGroup<{
   firstName: FormControl<string>;
   lastName: FormControl<string>;
   governmentId: FormControl<string>;
   monthlyIncome: FormControl<string>;
 }>;
 
-export type Step3Form3 = FormGroup<{
+export type Step3Form4 = FormGroup<{
   city: FormControl<string>;
   street: FormControl<string>;
   houseNumber: FormControl<string>;
@@ -60,10 +60,10 @@ export type Step3Form3 = FormGroup<{
   apartmentNumber: FormControl<string>;
   zipCode: FormControl<string>;
   isMailingAddressDifferent: FormControl<boolean>;
-  differentMailingAddress: Step3Form31;
+  differentMailingAddress: Step3Form41;
 }>;
 
-export type Step3Form31 = FormGroup<{
+export type Step3Form41 = FormGroup<{
   city: FormControl<string>;
   street: FormControl<string>;
   houseNumber: FormControl<string>;

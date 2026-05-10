@@ -4,12 +4,13 @@ import {
   Step1Form1,
   Step2Form1,
   Step2Form2,
-  Step2Form3,
-  Step2Form31,
   Step3Form1,
+  Step3Form11,
   Step3Form2,
   Step3Form3,
-  Step3Form31,
+
+  Step3Form4,
+  Step3Form41,
   Step4Form1,
   Step4Form2,
   Step5Form1,
@@ -42,7 +43,7 @@ export function createStep1Form1(fb: FormBuilder): Step1Form1 {
   });
 
   form.controls.governmentId.disable();
-  // form.controls.mobile.disable();
+  form.controls.mobile.disable();
 
   return form;
 }
@@ -85,7 +86,7 @@ export function createStep2Form2(fb: FormBuilder): Step2Form2 {
   });
 }
 
-export function createStep2Form3(fb: FormBuilder): Step2Form3 {
+export function createStep3Form1(fb: FormBuilder): Step3Form1 {
   return fb.group({
     idIssueDate: fb.nonNullable.control('', {
       validators: [Validators.required, dateValidator],
@@ -97,7 +98,8 @@ export function createStep2Form3(fb: FormBuilder): Step2Form3 {
     birthDate: fb.nonNullable.control('', {
       validators: [Validators.required, dateValidator],
     }),
-    birthCountry: fb.nonNullable.control('', Validators.required),
+    // birthCountry: fb.nonNullable.control('', Validators.required),
+    birthCountry: fb.nonNullable.control('IL', Validators.required),
     gender: fb.nonNullable.control('', Validators.required),
     email: fb.nonNullable.control('', [
       Validators.required,
@@ -108,11 +110,11 @@ export function createStep2Form3(fb: FormBuilder): Step2Form3 {
       Validators.required,
       Validators.pattern(/^\d+$/),
     ]),
-    creditReportConsentExpiryDate: createStep2Form31(fb),
+    creditReportConsentExpiryDate: createStep3Form11(fb),
   });
 }
 
-export function createStep2Form31(fb: FormBuilder): Step2Form31 {
+export function createStep3Form11(fb: FormBuilder): Step3Form11 {
   return fb.group({
     checked: fb.nonNullable.control(false),
     executedTransactionConsentExpiryDate: fb.nonNullable.control(''),
@@ -120,7 +122,7 @@ export function createStep2Form31(fb: FormBuilder): Step2Form31 {
   });
 }
 
-export function createStep3Form1(fb: FormBuilder): Step3Form1 {
+export function createStep3Form2(fb: FormBuilder): Step3Form2 {
   return fb.nonNullable.group({
     borrower1: fb.nonNullable.control(false, {
       validators: [Validators.requiredTrue],
@@ -128,7 +130,7 @@ export function createStep3Form1(fb: FormBuilder): Step3Form1 {
   });
 }
 
-export function createStep3Form2(fb: FormBuilder): Step3Form2 {
+export function createStep3Form3(fb: FormBuilder): Step3Form3 {
   return fb.nonNullable.group({
     firstName: [
       '',
@@ -164,7 +166,7 @@ export function createStep3Form2(fb: FormBuilder): Step3Form2 {
   });
 }
 
-export function createStep3Form3(fb: FormBuilder): Step3Form3 {
+export function createStep3Form4(fb: FormBuilder): Step3Form4 {
   const form = fb.nonNullable.group({
     city: [
       'קרית גת',
@@ -194,7 +196,7 @@ export function createStep3Form3(fb: FormBuilder): Step3Form3 {
       ],
     ],
     isMailingAddressDifferent: [false],
-    differentMailingAddress: createStep3Form31(fb),
+    differentMailingAddress: createStep3Form41(fb),
   });
 
   // 👉 disable AFTER creation
@@ -208,7 +210,7 @@ export function createStep3Form3(fb: FormBuilder): Step3Form3 {
   return form;
 }
 
-export function createStep3Form31(fb: FormBuilder): Step3Form31 {
+export function createStep3Form41(fb: FormBuilder): Step3Form41 {
   return fb.nonNullable.group({
     city: ['', Validators.pattern(/^[א-ת\s-]+$/)],
     street: fb.nonNullable.control({ value: '', disabled: true }, [

@@ -149,6 +149,12 @@ export class WizardStepPageComponent {
     return errors;
   }
 
+  /* private hasSpouse(): boolean {
+    const form = this.formsByStep[2]?.[2] as Step2Form3 | undefined;
+
+    return form?.controls.familyStatus.value === 'married';
+  } */
+
   private submitAll(): void {
     console.log('submit all', this.flow.getAllRawValue());
     // alert('Wizard completed. Check console.');

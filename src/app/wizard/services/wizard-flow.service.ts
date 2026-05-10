@@ -6,10 +6,10 @@ import {
   createStep1Form1,
   createStep2Form1,
   createStep2Form2,
-  createStep2Form3,
   createStep3Form1,
   createStep3Form2,
   createStep3Form3,
+  createStep3Form4,
   createStep4Form1,
   createStep4Form2,
   createStep5Form1,
@@ -90,15 +90,12 @@ export class WizardFlowService {
 
   readonly formsByStep = {
     1: [createStep1Form1(this.fb)],
-    2: [
-      createStep2Form1(this.fb),
-      createStep2Form2(this.fb),
-      createStep2Form3(this.fb),
-    ],
+    2: [createStep2Form1(this.fb), createStep2Form2(this.fb)],
     3: [
       createStep3Form1(this.fb),
       createStep3Form2(this.fb),
       createStep3Form3(this.fb),
+      createStep3Form4(this.fb),
     ],
     4: [createStep4Form1(this.fb), createStep4Form2(this.fb)],
     5: [
@@ -231,7 +228,7 @@ export class WizardFlowService {
   }
 
   /*  */
-  getNextPosition(
+  /* getNextPosition(
     step: number,
     formIndex: number,
   ): { step: number; form: number } | null {
@@ -255,13 +252,77 @@ export class WizardFlowService {
     }
 
     return null;
+  } */
+  getNextPosition(
+    step: number,
+    formIndex: number,
+  ): { step: number; form: number } | null {
+    const normalizedStep = this.normalizeStep(step);
+
+    if (normalizedStep === 3 && formIndex === 2 && !this.isMarried()) {
+      return {
+        step: 3,
+        form: 4,
+      };
+    }
+
+    const totalForms = this.getFormsCount(normalizedStep);
+
+    if (formIndex < totalForms) {
+      return {
+        step: normalizedStep,
+        form: formIndex + 1,
+      };
+    }
+
+    const nextStep = normalizedStep + 1;
+
+    if (nextStep <= this.steps.length) {
+      return {
+        step: nextStep,
+        form: 1,
+      };
+    }
+
+    return null;
   }
 
+  /* getPrevPosition(
+    step: number,
+    formIndex: number,
+  ): { step: number; form: number } | null {
+    const normalizedStep = this.normalizeStep(step);
+
+    if (formIndex > 1) {
+      return {
+        step: normalizedStep,
+        form: formIndex - 1,
+      };
+    }
+
+    const prevStep = normalizedStep - 1;
+
+    if (prevStep >= 1) {
+      return {
+        step: prevStep,
+        form: this.getFormsCount(prevStep),
+      };
+    }
+
+    return null;
+  } */
   getPrevPosition(
     step: number,
     formIndex: number,
   ): { step: number; form: number } | null {
     const normalizedStep = this.normalizeStep(step);
+
+    if (normalizedStep === 3 && formIndex === 4 && !this.isMarried()) {
+      return {
+        step: 3,
+        form: 2,
+      };
+    }
 
     if (formIndex > 1) {
       return {
@@ -399,6 +460,44 @@ export class WizardFlowService {
   }
 
   private normalizePatchValue(value: any): any {
+    if (!value) {
+      return value;
+    }
+
+    return {
+      ...value,
+
+      birthCountry: value.birthCountry || 'IL',
+
+      creditReportConsentExpiryDate: value.creditReportConsentExpiryDate
+        ? {
+            ...value.creditReportConsentExpiryDate,
+            checked:
+              typeof value.creditReportConsentExpiryDate.checked === 'boolean'
+                ? value.creditReportConsentExpiryDate.checked
+                : false,
+          }
+        : value.creditReportConsentExpiryDate,
+    };
+  }
+
+  private readStorageState(): WizardStorageState | null {
+    try {
+      const raw = localStorage.getItem(this.storageKey);
+      return raw ? (JSON.parse(raw) as WizardStorageState) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private isMarried(): boolean {
+    const form = this.formsByStep[3]?.[0] as any;
+
+    return form?.controls?.familyStatus?.value === 'married';
+  }
+}
+
+/* private normalizePatchValue(value: any): any {
     if (!value?.creditReportConsentExpiryDate) {
       return value;
     }
@@ -411,16 +510,7 @@ export class WizardFlowService {
           typeof value.creditReportConsentExpiryDate.checked === 'boolean'
             ? value.creditReportConsentExpiryDate.checked
             : false,
+        birthCountry: value.birthCountry || 'IL',
       },
     };
-  }
-
-  private readStorageState(): WizardStorageState | null {
-    try {
-      const raw = localStorage.getItem(this.storageKey);
-      return raw ? (JSON.parse(raw) as WizardStorageState) : null;
-    } catch {
-      return null;
-    }
-  }
-}
+  } */
