@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
@@ -27,6 +27,7 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
     LoanBlockedPopupComponent,
   ],
   template: `
+    <!-- <pre>{{ form.getRawValue() | json }}</pre> -->
     <div class="additional-details-page" [formGroup]="form">
       <div class="additional-card card">
         <app-wizard-card>
@@ -122,7 +123,7 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
               [class.active]="creditConsentChecked === true"
               (click)="setCreditConsent(true)"
             >
-              איני מאשר את תוקף ההסכמה
+              אני מאשר את תוקף ההסכמה
             </button>
 
             <button

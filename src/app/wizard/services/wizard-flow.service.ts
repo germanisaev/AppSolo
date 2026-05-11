@@ -1,7 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { StepMeta, WizardStorageState } from '../models/step.model';
+import {
+  BankRequestDraft,
+  StepMeta,
+  WizardStorageState,
+} from '../models/step.model';
 import {
   createStep1Form1,
   createStep2Form1,
@@ -17,6 +21,7 @@ import {
   createStep5Form3,
 } from '../models/forms.factory';
 import { delay } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class WizardFlowService {
@@ -26,6 +31,7 @@ export class WizardFlowService {
 
   private readonly storageKey = 'wizard-progress';
   private introCompleted = false;
+  readonly showLoanBlockedPopup$ = new BehaviorSubject<boolean>(false);
 
   readonly steps: Omit<StepMeta, 'formsCount'>[] = [
     { step: 1, title: 'מילוי פרטים אישיים' },
@@ -37,8 +43,13 @@ export class WizardFlowService {
 
   readonly formSlugsByStep = {
     1: ['personal-details'],
-    2: ['loan-amount', 'loan-account-setup', 'additional-personal-details'],
-    3: ['account-setup-confirmation', 'spouse-details', 'address-details'],
+    2: ['loan-amount', 'loan-account-setup'],
+    3: [
+      'additional-personal-details',
+      'account-setup-confirmation',
+      'spouse-details',
+      'address-details',
+    ],
     4: ['salary-details', 'personal-declarations'],
     5: ['loan-submission-completion', 'loan-summary', 'loan-final-details'],
   } as const;
@@ -108,6 +119,106 @@ export class WizardFlowService {
   constructor() {
     this.restoreProgress();
     // this.registerAutoSave();
+  }
+
+  /* patchBankRequestData(data: BankRequestDraft): void {
+    this.clearProgress();
+
+    this.formsByStep[1][0].patchValue(
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        governmentId: data.governmentId,
+        mobile: data.mobile,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[2][0].patchValue(
+      {
+        loanAmount: data.loanAmount,
+        numberOfPayments: Number(data.numberOfPayments),
+        linkageType: data.linkageType,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[2][1].patchValue(
+      {
+        loanBeneficiary: data.loanBeneficiary,
+        bank: data.bank,
+        branchNumber: data.branchNumber,
+        accountNumber: data.accountNumber,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[3][0].patchValue(
+      {
+        email: data.email,
+        birthCountry: 'IL',
+      },
+      { emitEvent: false },
+    );
+
+    this.saveCurrentPosition(1, 1);
+  } */
+  patchBankRequestData(data: BankRequestDraft): void {
+    this.clearProgress();
+
+    this.formsByStep[1][0].patchValue(
+      {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        governmentId: data.governmentId,
+        mobile: data.mobile,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[2][0].patchValue(
+      {
+        loanAmount: data.loanAmount,
+        numberOfPayments: Number(data.numberOfPayments),
+        linkageType: data.linkageType,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[2][1].patchValue(
+      {
+        loanBeneficiary: data.loanBeneficiary,
+        bank: data.bank,
+        branchNumber: data.branchNumber,
+        accountNumber: data.accountNumber,
+      },
+      { emitEvent: false },
+    );
+
+    this.formsByStep[3][0].patchValue(
+      {
+        email: data.email,
+        birthCountry: 'IL',
+      },
+      { emitEvent: false },
+    );
+
+    this.saveCurrentPosition(1, 1);
+
+    localStorage.setItem(
+      'wizard-progress',
+      JSON.stringify({
+        current: { step: 1, form: 1 },
+        data: this.getAllRawValue(),
+      }),
+    );
+  }
+
+  isUsTaxResident(): boolean {
+    const form = this.formsByStep[4][1] as any;
+    const raw = form?.getRawValue?.() ?? {};
+
+    return raw.nonIsraeliTaxResidency?.isUsCitizen === true;
   }
 
   getFormsCount(step: number): number {
@@ -227,37 +338,18 @@ export class WizardFlowService {
     };
   }
 
-  /*  */
-  /* getNextPosition(
-    step: number,
-    formIndex: number,
-  ): { step: number; form: number } | null {
-    const normalizedStep = this.normalizeStep(step);
-    const totalForms = this.getFormsCount(normalizedStep);
-
-    if (formIndex < totalForms) {
-      return {
-        step: normalizedStep,
-        form: formIndex + 1,
-      };
-    }
-
-    const nextStep = normalizedStep + 1;
-
-    if (nextStep <= this.steps.length) {
-      return {
-        step: nextStep,
-        form: 1,
-      };
-    }
-
-    return null;
-  } */
   getNextPosition(
     step: number,
     formIndex: number,
   ): { step: number; form: number } | null {
     const normalizedStep = this.normalizeStep(step);
+
+    if (normalizedStep === 5 && (formIndex === 1 || formIndex === 2)) {
+      return {
+        step: 5,
+        form: 3,
+      };
+    }
 
     if (normalizedStep === 3 && formIndex === 2 && !this.isMarried()) {
       return {
@@ -287,30 +379,6 @@ export class WizardFlowService {
     return null;
   }
 
-  /* getPrevPosition(
-    step: number,
-    formIndex: number,
-  ): { step: number; form: number } | null {
-    const normalizedStep = this.normalizeStep(step);
-
-    if (formIndex > 1) {
-      return {
-        step: normalizedStep,
-        form: formIndex - 1,
-      };
-    }
-
-    const prevStep = normalizedStep - 1;
-
-    if (prevStep >= 1) {
-      return {
-        step: prevStep,
-        form: this.getFormsCount(prevStep),
-      };
-    }
-
-    return null;
-  } */
   getPrevPosition(
     step: number,
     formIndex: number,
@@ -340,7 +408,32 @@ export class WizardFlowService {
       };
     }
 
+    if (normalizedStep === 5 && formIndex === 3) {
+      return {
+        step: 5,
+        form: 1,
+      };
+    }
+
     return null;
+  }
+
+  isStepValidForNavigation(step: number): boolean {
+    const forms = this.formsByStep[step as keyof typeof this.formsByStep];
+
+    if (!forms) {
+      return false;
+    }
+
+    return forms.every((form, index) => {
+      const formNumber = index + 1;
+
+      if (step === 3 && formNumber === 3 && !this.isMarried()) {
+        return true;
+      }
+
+      return form.valid;
+    });
   }
 
   /*  */
@@ -491,26 +584,9 @@ export class WizardFlowService {
   }
 
   private isMarried(): boolean {
-    const form = this.formsByStep[3]?.[0] as any;
+    const step3Forms = this.formsByStep[3] as unknown as any[];
+    const step3Form1 = step3Forms?.[0];
 
-    return form?.controls?.familyStatus?.value === 'married';
+    return step3Form1?.controls?.familyStatus?.value === 'married';
   }
 }
-
-/* private normalizePatchValue(value: any): any {
-    if (!value?.creditReportConsentExpiryDate) {
-      return value;
-    }
-
-    return {
-      ...value,
-      creditReportConsentExpiryDate: {
-        ...value.creditReportConsentExpiryDate,
-        checked:
-          typeof value.creditReportConsentExpiryDate.checked === 'boolean'
-            ? value.creditReportConsentExpiryDate.checked
-            : false,
-        birthCountry: value.birthCountry || 'IL',
-      },
-    };
-  } */

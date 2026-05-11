@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { WizardFlowService } from '../services/wizard-flow.service';
 
@@ -396,9 +396,64 @@ import { WizardFlowService } from '../services/wizard-flow.service';
 })
 export class WizardIntroComponent {
   private router = inject(Router);
-  private flow = inject(WizardFlowService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly flow = inject(WizardFlowService);
 
+  ngOnInit(): void {
+    const token = this.route.snapshot.queryParamMap.get('token');
+
+    if (!token) {
+      return;
+    }
+
+    /* this.flow.patchBankRequestData({
+      firstName: 'יוסי',
+      lastName: 'אהרוני',
+      governmentId: '223343456',
+      mobile: '0508832233',
+      email: 'yossi@gmail.com',
+
+      loanAmount: '20000',
+      numberOfPayments: '20',
+      linkageType: 'indexLinked',
+
+      loanBeneficiary: 'applicant',
+      bank: '10',
+      branchNumber: '941',
+      accountNumber: '382382',
+
+      orderNumber: '2356',
+      loanType: 'consumer',
+      serviceType: 'consulting',
+    });*/
+  }
+
+  /* start(): void {
+    this.flow.completeIntro();
+
+    this.router.navigate(['/wizard/step', 1], {
+      queryParams: { form: 1 },
+    });
+  }  */
   start(): void {
+    this.flow.patchBankRequestData({
+      firstName: 'יוסי',
+      lastName: 'ישראלי',
+      governmentId: '223343456',
+      mobile: '0508832233',
+      email: 'yossi@gmail.com',
+      loanAmount: '20000',
+      numberOfPayments: '20',
+      linkageType: 'none',
+      loanBeneficiary: 'applicant',
+      bank: '10',
+      branchNumber: '941',
+      accountNumber: '382382',
+      orderNumber: '2356',
+      loanType: 'consumer',
+      serviceType: 'consulting',
+    });
+
     this.flow.completeIntro();
 
     this.router.navigate(['/wizard/step', 1], {

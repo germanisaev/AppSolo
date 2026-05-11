@@ -1,0 +1,78 @@
+<div class="bank-start-page" dir="rtl">
+  <section class="welcome-card">
+    <h1>ברוכים הבאים!</h1>
+
+    <p>
+      הגעתם למערכת אשראי צרכני של בנק מזרחי טפחות. כדי להתחיל,
+      מלאו את פרטי הלקוח כדי לשלוח לו קישור.
+    </p>
+  </section>
+
+  <section class="bank-form-card" [formGroup]="form">
+    <h2>יש למלא את פרטי הלקוח</h2>
+
+    <div class="form-grid three-columns">
+      <div class="field">
+        <label>שם פרטי</label>
+        <input type="text" formControlName="firstName" />
+      </div>
+
+      <div class="field">
+        <label>שם משפחה</label>
+        <input type="text" formControlName="lastName" />
+      </div>
+
+      <div class="field">
+        <label>מספר ת״ז</label>
+        <input type="text" formControlName="governmentId" />
+      </div>
+
+      <div class="field">
+        <label>טלפון נייד</label>
+        <input type="text" formControlName="mobile" />
+      </div>
+
+      <div class="field">
+        <label>כתובת דוא״ל</label>
+        <input type="email" formControlName="email" />
+      </div>
+
+      <div class="field">
+        <label>סוג הצמדה</label>
+        <input type="text" formControlName="linkageType" />
+      </div>
+
+      <div class="field">
+        <label>סכום ההלוואה המבוקשת</label>
+        <input type="text" formControlName="loanAmount" />
+      </div>
+
+      <div class="field">
+        <label>מספר הזמנה</label>
+        <input type="text" formControlName="orderNumber" />
+      </div>
+
+      <div class="field">
+        <label>סוג השירות</label>
+        <input type="text" formControlName="serviceType" />
+      </div>
+    </div>
+
+    <label class="privacy-row">
+      <input type="checkbox" formControlName="privacyApproved" />
+      <span>
+        ידעתי את הלקוח על מדיניות הפרטיות
+        <a href="#">למדיניות הפרטיות</a>
+      </span>
+    </label>
+
+    <button
+      type="button"
+      class="send-button"
+      [disabled]="isSending"
+      (click)="sendLinkToCustomer()"
+    >
+      {{ isSending ? 'שולח...' : 'שליחת קישור ללקוח' }}
+    </button>
+  </section>
+</div>

@@ -461,7 +461,7 @@
   margin-bottom: 1rem;
 }
 
-:host ::ng-deep .checkbox-row input[type='checkbox'] {
+:host ::ng-deep .checkbox-row input[type="checkbox"] {
   width: 20px;
   height: 20px;
   margin: 0;
@@ -599,6 +599,10 @@
 
 :host ::ng-deep .form-grid.two-columns {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+:host ::ng-deep .form-grid.three-columns {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 :host ::ng-deep app-form-field {
@@ -862,9 +866,124 @@
 }
 
 /* =========================
+  Wizard
+========================= */
+:host ::ng-deep app-wizard-card,
+:host ::ng-deep .wizard-card,
+:host ::ng-deep .final-card {
+  width: min(1040px, 88vw);
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================
+  Step 5 Form 1
+========================= */
+:host ::ng-deep app-step5-form1 .final-card {
+  width: min(1040px, 88vw);
+  margin: 0 auto;
+}
+
+:host ::ng-deep app-step5-form1 app-wizard-card {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep app-step5-form1 .wizard-card {
+  width: 100%;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+/* =========================
+  Step 5 Form 2
+========================= */
+:host ::ng-deep app-step5-form2 .final-card {
+  width: min(1040px, 88vw);
+  margin: 0 auto;
+}
+
+:host ::ng-deep app-step5-form2 app-wizard-card {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep app-step5-form2 .wizard-card {
+  width: 100%;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+/* =========================
+  Step 4 Form 2
+========================= */
+:host ::ng-deep .declarations-layout {
+  /* width: min(920px, 92vw); */
+  width: min(1040px, 88vw);
+  max-width: 100%;
+  margin: 0 auto;
+
+  display: grid;
+  gap: 1.25rem;
+  direction: rtl;
+}
+
+:host ::ng-deep .declaration-card {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  background: #fff;
+  border-radius: 12px;
+  padding: 48px 64px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+:host ::ng-deep .declaration-card app-wizard-card {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep .declaration-card .wizard-card {
+  width: 100%;
+  max-width: none !important;
+  box-sizing: border-box;
+}
+
+:host ::ng-deep .declaration-card h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #2f2f2f;
+}
+
+/* .declarations-layout {
+        display: grid;
+        gap: 1.25rem;
+        direction: rtl;
+      }
+
+      .declaration-card {
+        width: min(46rem, 100%);
+        margin: 0 auto;
+        padding: 2rem 3rem;
+
+        background: #fff;
+        border-radius: 1.25rem;
+        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+      }
+
+      .declaration-card h3 {
+        margin: 0 0 1.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #2f2f2f;
+      } */
+
+/* =========================
    Responsive
 ========================= */
-
 @media (max-width: 1024px) {
   .step-caption,
   .form-card,
@@ -907,7 +1026,8 @@
     margin: 0 0 !important;
   }
 
-  :host ::ng-deep .form-grid.two-columns {
+  :host ::ng-deep .form-grid.two-columns,
+  :host ::ng-deep .form-grid.three-columns {
     grid-template-columns: 1fr;
   }
 
@@ -933,6 +1053,12 @@
 
   .actions {
     gap: 12px;
+  }
+
+  :host ::ng-deep app-wizard-card,
+  :host ::ng-deep .wizard-card,
+  :host ::ng-deep .final-card {
+    width: 100% !important;
   }
 
   /* =========================

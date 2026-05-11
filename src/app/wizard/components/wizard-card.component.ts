@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ServiceNoteComponent } from "./service-note.component";
 
 @Component({
@@ -16,4 +16,6 @@ import { ServiceNoteComponent } from "./service-note.component";
     </div>
   `,
 })
-export class WizardCardComponent {}
+export class WizardCardComponent {
+  
+}

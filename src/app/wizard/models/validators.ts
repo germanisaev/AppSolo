@@ -260,3 +260,22 @@ export const accountNumberValidator: ValidatorFn = (control) => {
 
   return /^\d{4,10}$/.test(String(value)) ? null : { accountNumber: true };
 };
+
+/* =========================================
+  ZipCode
+============================================ */
+export const zipCodeValidator: ValidatorFn = (
+  control: AbstractControl,
+): ValidationErrors | null => {
+  const value = control.value;
+
+  if (!value) {
+    return null;
+  }
+
+  const zip = String(value).trim();
+
+  const isValid = /^\d{5,7}$/.test(zip);
+
+  return isValid ? null : { zipCode: true };
+};

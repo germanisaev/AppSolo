@@ -8,7 +8,6 @@ import {
   Step3Form11,
   Step3Form2,
   Step3Form3,
-
   Step3Form4,
   Step3Form41,
   Step4Form1,
@@ -17,9 +16,12 @@ import {
   Step5Form2,
 } from './step.types';
 import {
+  accountNumberValidator,
   dateValidator,
+  emailValidator,
   israeliIdValidator,
   mobilePhoneValidator,
+  zipCodeValidator,
 } from './validators';
 
 export function createStep1Form1(fb: FormBuilder): Step1Form1 {
@@ -51,7 +53,10 @@ export function createStep1Form1(fb: FormBuilder): Step1Form1 {
 export function createStep2Form1(fb: FormBuilder): Step2Form1 {
   const form = fb.nonNullable.group({
     loanAmount: ['', Validators.required],
-    numberOfPayments: [2,[Validators.required, Validators.min(2), Validators.max(20)],],
+    numberOfPayments: [
+      2,
+      [Validators.required, Validators.min(2), Validators.max(20)],
+    ],
     linkageType: ['', Validators.required],
     monthlyPayment: [{ value: '', disabled: true }],
   });
@@ -72,17 +77,14 @@ export function createStep2Form2(fb: FormBuilder): Step2Form2 {
       ],
     ],
     loanBeneficiary: ['', [Validators.required]],
-    bank: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-    branchNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
-    accountNumber: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(/^\d+$/),
-        Validators.minLength(6),
-        Validators.maxLength(7),
-      ],
-    ],
+    /* bank: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+    branchNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]], */
+    bank: fb.nonNullable.control('', Validators.required),
+    branchNumber: fb.nonNullable.control(
+      { value: '', disabled: true },
+      Validators.required,
+    ),
+    accountNumber: ['', [Validators.required, accountNumberValidator]],
   });
 }
 
@@ -187,14 +189,7 @@ export function createStep3Form4(fb: FormBuilder): Step3Form4 {
     houseNumber: ['5', Validators.pattern(/^\d+$/)],
     entranceNumber: ['1', Validators.pattern(/^\d+$/)],
     apartmentNumber: ['76', Validators.pattern(/^\d+$/)],
-    zipCode: [
-      '867870',
-      [
-        Validators.maxLength(7),
-        Validators.minLength(6),
-        Validators.pattern(/^\d+$/),
-      ],
-    ],
+    zipCode: ['8224705', [Validators.pattern(/^\d+$/)]],
     isMailingAddressDifferent: [false],
     differentMailingAddress: createStep3Form41(fb),
   });
@@ -209,10 +204,11 @@ export function createStep3Form4(fb: FormBuilder): Step3Form4 {
 
   return form;
 }
-
+// { value: '', disabled: true }
 export function createStep3Form41(fb: FormBuilder): Step3Form41 {
   return fb.nonNullable.group({
     city: ['', Validators.pattern(/^[א-ת\s-]+$/)],
+    // street: fb.nonNullable.control('', [Validators.pattern(/^[א-ת\s-]+$/)]),
     street: fb.nonNullable.control({ value: '', disabled: true }, [
       Validators.pattern(/^[א-ת\s-]+$/),
     ]),
@@ -240,32 +236,31 @@ export function createStep3Form41(fb: FormBuilder): Step3Form41 {
         Validators.pattern(/^\d+$/),
       ],
     ],
-    zipCode: [
-      '',
-      [
-        Validators.minLength(6),
-        Validators.maxLength(7),
-        Validators.pattern(/^\d+$/),
-      ],
-    ],
+    zipCode: ['', [Validators.pattern(/^\d+$/)]],
     poBoxNumber: [''],
   });
-}
+} // zipCodeValidator
 
+/* 
+tenureValue
+workplaceType
+salaryPaymentDayOptions
+monthlyIncome
+*/
 export function createStep4Form1(fb: FormBuilder): Step4Form1 {
   return fb.nonNullable.group({
     // businessActivity: fb.nonNullable.control<string[]>([], Validators.required),
     businessActivity: ['', Validators.required],
-    fieldsOfOccupation: ['', Validators.required],
+    // fieldsOfOccupation: ['', Validators.required],
     employmentStatus: ['', Validators.required],
-    tenureValue: ['', Validators.required],
+    tenureValue: [''],
     tenureUnit: ['שנים', Validators.required],
-    workplaceType: ['', Validators.required],
+    workplaceType: [''],
     education: ['', Validators.required],
-    salaryPaymentDay: ['', Validators.required],
-    monthlyIncome: ['', Validators.required],
+    salaryPaymentDay: [''],
+    monthlyIncome: [''],
     additionalHouseholdIncome: ['', Validators.required],
-    monthlyAlimonyExpense: [''],
+    monthlyAlimonyExpense: ['', Validators.required],
     monthlyRentExpense: ['', Validators.required],
     hasOwnedApartment: ['', Validators.required],
   });
@@ -284,35 +279,80 @@ export function createCheckControl(
   });
 }
 
+/* export function createCheckControl(
+  fb: FormBuilder,
+  checkedRequired = true,
+): CheckControl {
+  return fb.group({
+    checked: fb.control<boolean | null>(
+      null,
+      checkedRequired ? Validators.required : null,
+    ),
+
+    value: fb.control<string | null>(null),
+  });
+} */
+
 export function createStep4Form2(fb: FormBuilder): Step4Form2 {
   return fb.nonNullable.group({
     publicPersonnel: createCheckControl(fb),
     familyMemberPublicPersonnel: createCheckControl(fb),
     additionalBeneficiaries: createCheckControl(fb),
-    nonIsraeliTaxResidency: createCheckControl(fb),
+    // nonIsraeliTaxResidency: createCheckControl(fb),
+    nonIsraeliTaxResidency: fb.nonNullable.group({
+      checked: fb.nonNullable.control(false),
+      isUsCitizen: fb.nonNullable.control(false),
+      isOtherCountryTaxResident: fb.nonNullable.control(false),
+    }),
     usTaxResidency: createCheckControl(fb, false),
     notIsraeliTaxResidencyCountry: createCheckControl(fb, false),
+    businessArea: fb.nonNullable.control('', Validators.required),
     marketingConsent: [false],
     bankNotifications: [false],
     notificationMethod: [1],
   });
 }
 
-export function createStep5Form1(fb: FormBuilder): Step5Form1 {
+/* export function createStep5Form1(fb: FormBuilder): Step5Form1 {
   return fb.nonNullable.group({
     documentUploaded: [false, Validators.requiredTrue],
   });
+} */
+export function createStep5Form1(fb: FormBuilder): Step5Form1 {
+  return fb.nonNullable.group({});
 }
 
 export function createStep5Form2(fb: FormBuilder): Step5Form2 {
+  return fb.nonNullable.group({});
+}
+
+/* export function createStep5Form2(fb: FormBuilder): Step5Form2 {
   return fb.nonNullable.group({
     agreed: fb.nonNullable.control(
       { value: false, disabled: true },
       Validators.requiredTrue,
     ),
   });
-}
+} */
 
 export function createStep5Form3(fb: FormBuilder): FormGroup {
   return fb.group({});
+}
+
+
+export function createBankRequestForm(fb: FormBuilder) {
+  return fb.nonNullable.group({
+    firstName: ['גרמן', Validators.required],
+    lastName: ['ישייב', Validators.required],
+    governmentId: ['314327735', [Validators.required, israeliIdValidator]],
+    mobile: ['0549452396', [Validators.required, mobilePhoneValidator]],
+    email: ['german.isaev@gmail.com', [Validators.required, emailValidator]],
+
+    loanAmount: ['50000', Validators.required],
+    orderNumber: ['2356', Validators.required],
+
+    linkageType: ['ייעוץ', Validators.required],
+    loanType: ['צמודה למדד', Validators.required],
+    serviceType: [true, Validators.required],
+  });
 }

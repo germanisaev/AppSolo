@@ -75,7 +75,7 @@ export type Step3Form41 = FormGroup<{
 
 export type Step4Form1 = FormGroup<{
   businessActivity: FormControl<string>; // FormArray<FormControl<string>>  // businessActivity: FormControl<string[]>;
-  fieldsOfOccupation: FormControl<string>;
+  // fieldsOfOccupation: FormControl<string>;
   employmentStatus: FormControl<string>;
   tenureValue: FormControl<string>;
   tenureUnit: FormControl<string>;
@@ -93,23 +93,37 @@ export type Step4Form2 = FormGroup<{
   publicPersonnel: CheckControl;
   familyMemberPublicPersonnel: CheckControl;
   additionalBeneficiaries: CheckControl;
-  nonIsraeliTaxResidency: CheckControl;
+  nonIsraeliTaxResidency: TaxResidencyControl;
   usTaxResidency: CheckControl;
   notIsraeliTaxResidencyCountry: CheckControl;
+  businessArea: FormControl<string>;
   marketingConsent: FormControl<boolean>;
   bankNotifications: FormControl<boolean>;
   notificationMethod: FormControl<number>;
 }>;
+
+export type TaxResidencyControl = FormGroup<{
+  checked: FormControl<boolean>;
+  isUsCitizen: FormControl<boolean>;
+  isOtherCountryTaxResident: FormControl<boolean>;
+}>;
+
+/* export type CheckControl = FormGroup<{
+  checked: FormControl<boolean>;
+  value: FormControl<string>;
+}>; */
 
 export type CheckControl = FormGroup<{
   checked: FormControl<string | null>;
   value: FormControl<string | null>;
 }>;
 
-export type Step5Form1 = FormGroup<{
+/* export type Step5Form1 = FormGroup<{
   documentUploaded: FormControl<boolean>;
-}>;
+}>; */
+export type Step5Form1 = FormGroup<{}>;
 
-export type Step5Form2 = FormGroup<{
+/* export type Step5Form2 = FormGroup<{
   agreed: FormControl<boolean>;
-}>;
+}>; */
+export type Step5Form2 = FormGroup<{}>;

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
@@ -14,10 +14,17 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { LoanBlockedPopupComponent } from '../loan-blocked-popup.component';
 
 @Component({
   selector: 'app-wizard-step-page',
-  imports: [CommonModule, ButtonModule, ...WIZARD_FORM_COMPONENTS],
+  imports: [
+    NgIf,
+    LoanBlockedPopupComponent,
+    CommonModule,
+    ButtonModule,
+    ...WIZARD_FORM_COMPONENTS,
+  ],
   templateUrl: './wizard-step-page.component.html',
   styleUrl: './wizard-step-page.component.scss',
   animations: [
@@ -69,6 +76,14 @@ export class WizardStepPageComponent {
     }),
   );
 
+  shouldShowPrevButton(step: number, formIndex: number): boolean {
+    return !(step === 5 && (formIndex === 1 || formIndex === 3));
+  }
+
+  shouldShowNextButton(step: number, formIndex: number): boolean {
+    return !(step === 5 && formIndex === 3);
+  }
+
   getFormKey(step: number, formIndex: number): string {
     return `${step}-${formIndex}`;
   }
@@ -77,6 +92,18 @@ export class WizardStepPageComponent {
     this.animationDirection = 'next';
 
     const form = this.flow.getForm(step, formIndex);
+
+    if (step === 4 && formIndex === 2) {
+      const rawValue = form.getRawValue();
+
+      const isOtherCountryTaxResident =
+        rawValue.nonIsraeliTaxResidency?.isOtherCountryTaxResident === true;
+
+      if (isOtherCountryTaxResident) {
+        this.flow.showLoanBlockedPopup$.next(true);
+        return;
+      }
+    }
 
     this.flow.markTouched(step, formIndex);
 
@@ -87,23 +114,28 @@ export class WizardStepPageComponent {
     const totalForms = this.flow.getFormsCount(step);
     const isLastFormInStep = formIndex === totalForms;
 
-    if (isLastFormInStep && !this.flow.isStepValid(step)) {
+    if (isLastFormInStep && !this.flow.isStepValidForNavigation(step)) {
       return;
     }
 
     const next = this.flow.getNextPosition(step, formIndex);
 
-    this.flow.saveForm(step, formIndex, form.getRawValue()).subscribe(() => {
-      if (!next) {
-        this.flow.saveCurrentPosition(step, formIndex);
-        this.submitAll();
-        return;
-      }
+    this.flow.saveForm(step, formIndex, form.getRawValue()).subscribe({
+      next: () => {
+        if (!next) {
+          this.flow.saveCurrentPosition(step, formIndex);
+          this.submitAll();
+          return;
+        }
 
-      this.flow.saveCurrentPosition(next.step, next.form);
+        this.flow.saveCurrentPosition(next.step, next.form);
 
-      this.animationTick++;
-      this.navigate(next.step, next.form);
+        this.animationTick++;
+        this.navigate(next.step, next.form);
+      },
+      error: (error) => {
+        console.error('SAVE FORM ERROR:', error);
+      },
     });
   }
 
@@ -148,12 +180,6 @@ export class WizardStepPageComponent {
 
     return errors;
   }
-
-  /* private hasSpouse(): boolean {
-    const form = this.formsByStep[2]?.[2] as Step2Form3 | undefined;
-
-    return form?.controls.familyStatus.value === 'married';
-  } */
 
   private submitAll(): void {
     console.log('submit all', this.flow.getAllRawValue());

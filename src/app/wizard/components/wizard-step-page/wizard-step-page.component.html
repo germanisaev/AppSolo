@@ -35,16 +35,21 @@
     </div>
 
     <div class="actions rtl-actions">
-      <p-button label="לשלב הקודם" severity="secondary" [outlined]="true"
+      <p-button *ngIf="shouldShowPrevButton(vm.step, vm.formIndex)" label="לשלב הקודם" severity="secondary" [outlined]="true"
         [disabled]="vm.step === 1 && vm.formIndex === 1" class="prev" (onClick)="prev(vm.step, vm.formIndex)">
       </p-button>
 
-      <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'לשלב הבא'" class="next"
+      <p-button *ngIf="shouldShowNextButton(vm.step, vm.formIndex)" [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'לשלב הבא'" class="next"
         (onClick)="next(vm.step, vm.formIndex)">
       </p-button>
     </div>
   </div>
 </ng-container>
+
+<app-loan-blocked-popup
+  *ngIf="flow.showLoanBlockedPopup$ | async"
+  (close)="flow.showLoanBlockedPopup$.next(false)"
+></app-loan-blocked-popup>
 
 
 

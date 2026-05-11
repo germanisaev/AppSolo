@@ -49,7 +49,7 @@ export class Step2Form2Component extends FormBaseComponent {
 }
 */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
@@ -57,6 +57,7 @@ import { Step2Form2 } from '../models/step.types';
 import { FormFieldComponent } from '../controls/form-field.component';
 import { NgFor, NgIf } from '@angular/common';
 import { WizardCardComponent } from '../components/wizard-card.component';
+import { SelectFieldComponent } from '../controls/select-field.component';
 
 @Component({
   selector: 'app-step2-form2',
@@ -65,6 +66,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
     ReactiveFormsModule,
     DropdownModule,
     FormFieldComponent,
+    SelectFieldComponent,
     NgFor,
     NgIf,
     WizardCardComponent,
@@ -114,12 +116,20 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           <h3 class="section-title">פרטי חשבון בנק לחיוב</h3>
 
           <div class="bank-grid">
-            <app-form-field [form]="form" controlName="bank" label="בנק" />
+            <app-select-field
+              [form]="form"
+              controlName="bank"
+              label="בנק"
+              [options]="bankOptions"
+              placeholder="בחר"
+            />
 
-            <app-form-field
+            <app-select-field
               [form]="form"
               controlName="branchNumber"
               label="מספר סניף"
+              [options]="branchOptions"
+              placeholder="בחר"
             />
 
             <app-form-field
@@ -133,8 +143,10 @@ import { WizardCardComponent } from '../components/wizard-card.component';
     </div>
   `,
 })
-export class Step2Form2Component extends FormBaseComponent {
+export class Step2Form2Component extends FormBaseComponent implements OnInit {
   @Input({ required: true }) override form!: Step2Form2;
+
+  branchOptions: { label: string; value: string }[] = [];
 
   monthlyChargeOptions = [
     { label: '2 לחודש', value: '2' },
@@ -148,6 +160,139 @@ export class Step2Form2Component extends FormBaseComponent {
     { label: 'בן/בת זוג', value: 'spouse' },
     { label: 'אחר', value: 'other' },
   ];
+
+  bankOptions = [
+    { label: 'בנק יהב', value: '4' },
+    { label: 'בנק לאומי', value: '10' },
+    { label: 'בנק דיסקונט', value: '11' },
+    { label: 'בנק הפועלים', value: '12' },
+    { label: 'בנק איגוד', value: '13' },
+    { label: 'בנק אוצר החייל', value: '14' },
+    { label: 'בנק מרכנתיל דיסקונט', value: '17' },
+    { label: 'וואן זירו', value: '18' },
+    { label: 'בנק מזרחי טפחות', value: '20' },
+    { label: 'הבנק הבינלאומי', value: '31' },
+    { label: 'בנק מסד', value: '46' },
+    { label: 'בנק ירושלים', value: '54' },
+  ];
+
+  branchesByBank: Record<string, { label: string; value: string }[]> = {
+    '4': [
+      { label: '001 ירושלים', value: '001' },
+      { label: '183 תל אביב', value: '183' },
+      { label: '285 חיפה', value: '285' },
+      { label: '402 באר שבע', value: '402' },
+      { label: '501 נתניה', value: '501' },
+    ],
+
+    '10': [
+      { label: '800 תל אביב ראשי', value: '800' },
+      { label: '811 ירושלים', value: '811' },
+      { label: '841 חיפה', value: '841' },
+      { label: '867 נתניה', value: '867' },
+      { label: '941 ראשון לציון', value: '941' },
+      { label: '905 באר שבע', value: '905' },
+      { label: '968 אשדוד', value: '968' },
+    ],
+
+    '11': [
+      { label: '001 תל אביב', value: '001' },
+      { label: '068 רמת גן', value: '068' },
+      { label: '090 ירושלים', value: '090' },
+      { label: '150 חיפה', value: '150' },
+      { label: '178 נתניה', value: '178' },
+      { label: '210 אשקלון', value: '210' },
+    ],
+
+    '12': [
+      { label: '600 תל אביב ראשי', value: '600' },
+      { label: '610 ירושלים', value: '610' },
+      { label: '620 חיפה', value: '620' },
+      { label: '635 פתח תקווה', value: '635' },
+      { label: '678 נתניה', value: '678' },
+      { label: '700 ראשון לציון', value: '700' },
+      { label: '778 אשדוד', value: '778' },
+    ],
+
+    '13': [
+      { label: '101 תל אביב', value: '101' },
+      { label: '120 ירושלים', value: '120' },
+      { label: '130 חיפה', value: '130' },
+    ],
+
+    '14': [
+      { label: '301 תל אביב', value: '301' },
+      { label: '321 ירושלים', value: '321' },
+      { label: '345 באר שבע', value: '345' },
+    ],
+
+    '17': [
+      { label: '601 תל אביב', value: '601' },
+      { label: '632 ירושלים', value: '632' },
+      { label: '645 בני ברק', value: '645' },
+      { label: '660 אשדוד', value: '660' },
+    ],
+
+    '18': [
+      { label: '001 תל אביב', value: '001' },
+      { label: '002 דיגיטל', value: '002' },
+    ],
+
+    '20': [
+      { label: '400 תל אביב', value: '400' },
+      { label: '401 ירושלים', value: '401' },
+      { label: '420 חיפה', value: '420' },
+      { label: '440 נתניה', value: '440' },
+      { label: '450 אשדוד', value: '450' },
+      { label: '460 ראשון לציון', value: '460' },
+    ],
+
+    '31': [
+      { label: '001 תל אביב', value: '001' },
+      { label: '012 ירושלים', value: '012' },
+      { label: '028 חיפה', value: '028' },
+      { label: '045 נתניה', value: '045' },
+    ],
+
+    '46': [
+      { label: '154 תל אביב', value: '154' },
+      { label: '178 ירושלים', value: '178' },
+      { label: '201 חיפה', value: '201' },
+    ],
+
+    '54': [
+      { label: '001 ירושלים', value: '001' },
+      { label: '002 תל אביב', value: '002' },
+      { label: '003 חיפה', value: '003' },
+      { label: '004 באר שבע', value: '004' },
+    ],
+  };
+
+  ngOnInit(): void {
+    const bankControl = this.form.controls.bank;
+    const branchControl = this.form.controls.branchNumber;
+
+    this.updateBranchOptions(bankControl.value);
+
+    bankControl.valueChanges.subscribe((bankCode) => {
+      branchControl.setValue('', { emitEvent: false });
+      this.updateBranchOptions(bankCode);
+    });
+  }
+
+  private updateBranchOptions(bankCode: string): void {
+    const branchControl = this.form.controls.branchNumber;
+
+    this.branchOptions = this.branchesByBank[bankCode] ?? [];
+
+    if (this.branchOptions.length > 0) {
+      branchControl.enable({ emitEvent: false });
+    } else {
+      branchControl.disable({ emitEvent: false });
+    }
+
+    branchControl.updateValueAndValidity({ emitEvent: false });
+  }
 
   selectMonthlyChargeDate(value: string): void {
     this.form.controls.monthlyChargeDate.setValue(value);

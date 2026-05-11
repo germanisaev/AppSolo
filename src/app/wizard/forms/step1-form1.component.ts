@@ -3,7 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step1Form1 } from '../models/step.types';
 import { FormFieldComponent } from '../controls/form-field.component';
-import { ServiceNoteComponent } from '../components/service-note.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
@@ -38,9 +37,4 @@ import { WizardCardComponent } from '../components/wizard-card.component';
 })
 export class Step1Form1Component extends FormBaseComponent {
   @Input({ required: true }) override form!: Step1Form1;
-  /* @Output() titleChange = new EventEmitter<string>();
-
-  ngOnInit(): void {
-    this.titleChange.emit('בואו נכיר אותכם');
-  } */
 }

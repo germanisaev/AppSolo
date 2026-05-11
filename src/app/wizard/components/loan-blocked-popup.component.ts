@@ -6,9 +6,25 @@ import { Component, EventEmitter, Output } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="loan-blocked-overlay">
+    <!-- <div class="loan-blocked-overlay">
       <div class="loan-blocked-popup">
         <div class="popup-icon"></div>
+
+        <h2>לצערנו, לא ניתן לקחת הלוואה</h2>
+
+        <p>בעקבות בדיקה שערכנו מצאנו כי אינך זכאי לקבל הלוואה מהבנק</p>
+
+        <button type="button" (click)="onClose()">הבנתי</button>
+      </div>
+    </div> -->
+    <div class="loan-blocked-overlay">
+      <div class="loan-blocked-popup">
+        <img
+          class="popup-icon"
+          src="/icon-secure-authentication.png"
+          alt=""
+          aria-hidden="true"
+        />
 
         <h2>לצערנו, לא ניתן לקחת הלוואה</h2>
 
@@ -51,13 +67,21 @@ import { Component, EventEmitter, Output } from '@angular/core';
         box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
       }
 
-      .popup-icon {
+      /* .popup-icon {
         width: 170px;
         height: 110px;
         margin-bottom: 24px;
 
-        background: url('/icon-secure-authentication.svg') center /
+        background: url('/icon-secure-authentication.svg') center center /
           contain no-repeat;
+      } */
+      .popup-icon {
+        width: auto;
+        height: 110px;
+        margin-bottom: 24px;
+
+        display: block;
+        object-fit: contain;
       }
 
       .loan-blocked-popup h2 {

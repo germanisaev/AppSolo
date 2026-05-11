@@ -1,11 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
-
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step4Form1 } from '../models/step.types';
-import { NumberFormatDirective } from '../services/number-format.directive';
 import { SwitchFieldComponent } from '../controls/switch-field.component';
 import { SelectFieldComponent } from '../controls/select-field.component';
 import { NumberFieldComponent } from '../controls/number-field.component';
@@ -17,9 +14,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    NgIf,
     DropdownModule,
-    NumberFormatDirective,
     SwitchFieldComponent,
     SelectFieldComponent,
     NumberFieldComponent,
@@ -31,49 +26,36 @@ import { WizardCardComponent } from '../components/wizard-card.component';
       <app-wizard-card>
         <h3 class="card-title">פרטי הכנסות</h3>
 
-        <div class="form-grid two-columns" [formGroup]="form">
+        <div class="form-grid three-columns" [formGroup]="form">
           <app-select-field
             [form]="form"
             controlName="businessActivity"
-            label="תחום פעילות"
+            label="תחום עיסוק"
             [options]="businessActivityOptions"
             [filter]="false"
           ></app-select-field>
 
           <app-select-field
             [form]="form"
-            controlName="fieldsOfOccupation"
-            label="תחום עסקים"
-            [options]="occupationOptions"
-            [filter]="false"
-          ></app-select-field>
-
-          <app-select-field
-            [form]="form"
             controlName="employmentStatus"
-            label="מצב תעסוקתי"
+            label="סטטוס תעסוקה"
             [options]="employmentStatusOptions"
             [filter]="false"
-          ></app-select-field>
+          />
+          <br />
 
-          <app-form-field [form]="form" controlName="tenureValue" label="ותק">
+          <app-form-field
+            [form]="form"
+            controlName="tenureValue"
+            label="וותק במקום העבודה הנוכחי (בשנים)"
+          >
           </app-form-field>
 
-          <app-select-field
-            [form]="form"
-            controlName="tenureUnit"
-            label="יחידת ותק"
-            [options]="tenureUnitOptions"
-            [filter]="false"
-          ></app-select-field>
-
-          <app-select-field
+          <app-form-field
             [form]="form"
             controlName="workplaceType"
-            label="סוג מקום עבודה"
-            [options]="workplaceTypeOptions"
-            [filter]="false"
-          ></app-select-field>
+            label="מה מקום העבודה שלך?"
+          />
 
           <app-select-field
             [form]="form"
@@ -86,7 +68,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           <app-select-field
             [form]="form"
             controlName="salaryPaymentDay"
-            label="יום תשלום משכורת"
+            label="יום קבלת משכרות"
             [options]="salaryPaymentDayOptions"
             [filter]="false"
           ></app-select-field>
@@ -94,98 +76,68 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           <app-number-field
             [form]="form"
             controlName="monthlyIncome"
-            label="הכנסה חודשית"
+            label="גובה שכר חודשי נטו (ב-ש״ח)"
           />
 
-          <div class="field">
-            <label
-              [class.required-mark]="
-                isControlRequired('additionalHouseholdIncome')
-              "
-            >
-              הכנסה נוספת במשק הבית
-            </label>
-            <input
-              type="text"
-              numberFormat
-              formControlName="additionalHouseholdIncome"
-              [class.input-error]="
-                isControlInvalid('additionalHouseholdIncome')
-              "
-            />
-            <div
-              class="error"
-              *ngIf="isControlInvalid('additionalHouseholdIncome')"
-            >
-              {{ getControlErrorMessage('additionalHouseholdIncome') }}
-            </div>
-          </div>
-
-          <app-form-field
+          <app-number-field
+            [form]="form"
+            controlName="additionalHouseholdIncome"
+            label="בכנסה נוספת למשק בית"
+          />
+        </div>
+        <br />
+        <h3 class="card-title">פרטי הוצאות</h3>
+        <div class="form-grid three-columns" [formGroup]="form">
+          <app-number-field
             [form]="form"
             controlName="monthlyAlimonyExpense"
-            label="תשלומי מזונות חודשיים"
+            label="סך הוצאה חודשית של תשלום מזונות"
           />
 
           <app-number-field
             [form]="form"
             controlName="monthlyRentExpense"
-            label="שכר דירה חודשי"
+            label="סך הוצאה חודשית שכר דירה"
           />
-
+        </div>
+        <br />
+        <h3 class="card-title">פרטים נוספים</h3>
+        <div class="form-grid three-columns" [formGroup]="form">
           <app-switch-field
             [form]="form"
             controlName="hasOwnedApartment"
-            label="האם בבעלותך דירה"
+            label="האם קיימת דירה בבעלותך?"
           />
         </div>
       </app-wizard-card>
     </div>
   `,
-  styles: [
-    `
-    `,
-  ],
+  styles: [``],
 })
-export class Step4Form1Component extends FormBaseComponent {
+export class Step4Form1Component extends FormBaseComponent implements OnInit {
   @Input({ required: true }) override form!: Step4Form1;
 
-  businessActivityOptions = [
-    { label: 'שכיר', value: 'employee' },
-    { label: 'עצמאי', value: 'selfEmployed' },
-    { label: 'בעל חברה', value: 'companyOwner' },
-    { label: 'פנסיונר', value: 'pensioner' },
-    { label: 'אחר', value: 'other' },
+  private readonly employmentStatusesWithoutWork = [
+    'unemployed',
+    'homemaker',
+    'notWorking',
   ];
 
-  occupationOptions = [
+  employmentStatusOptions = [
+    { label: 'שכיר', value: 'employee' },
+    { label: 'עצמאי', value: 'selfEmployed' },
+    { label: 'מובטל', value: 'unemployed' },
+    { label: 'עקרת בית', value: 'homemaker' },
+    { label: 'לא עובד', value: 'notWorking' },
+  ];
+
+  businessActivityOptions = [
     { label: 'הייטק', value: 'highTech' },
     { label: 'פיננסים', value: 'finance' },
     { label: 'חינוך', value: 'education' },
     { label: 'בריאות', value: 'healthcare' },
     { label: 'שירותים', value: 'services' },
     { label: 'מסחר', value: 'commerce' },
-    { label: 'אחר', value: 'other' },
-  ];
-
-  employmentStatusOptions = [
-    { label: 'מועסק', value: 'employed' },
-    { label: 'עצמאי', value: 'selfEmployed' },
-    { label: 'לא מועסק', value: 'unemployed' },
-    { label: 'סטודנט', value: 'student' },
-    { label: 'פנסיונר', value: 'pensioner' },
-  ];
-
-  tenureUnitOptions = [
-    { label: 'שנים', value: 'שנים' },
-    { label: 'חודשים', value: 'חודשים' },
-  ];
-
-  workplaceTypeOptions = [
-    { label: 'חברה פרטית', value: 'privateCompany' },
-    { label: 'חברה ציבורית', value: 'publicCompany' },
-    { label: 'מגזר ציבורי', value: 'publicSector' },
-    { label: 'עסק עצמאי', value: 'selfBusiness' },
     { label: 'אחר', value: 'other' },
   ];
 
@@ -215,4 +167,78 @@ export class Step4Form1Component extends FormBaseComponent {
     this.form.controls.hasOwnedApartment.markAsTouched();
     this.form.controls.hasOwnedApartment.updateValueAndValidity();
   }
+
+  ngOnInit(): void {
+    this.applyEmploymentStatusValidators();
+
+    this.form.controls.employmentStatus.valueChanges.subscribe(() => {
+      this.applyEmploymentStatusValidators();
+    });
+  }
+
+  // -------------------------- getters -----------------------
+  private applyEmploymentStatusValidators(): void {
+    const employmentStatus = this.form.controls.employmentStatus.value;
+
+    const shouldRequireWorkFields =
+      !!employmentStatus &&
+      !this.employmentStatusesWithoutWork.includes(employmentStatus);
+
+    const workControls = [
+      this.form.controls.tenureValue,
+      this.form.controls.workplaceType,
+      this.form.controls.salaryPaymentDay,
+      this.form.controls.monthlyIncome,
+    ];
+
+    workControls.forEach((control) => {
+      if (shouldRequireWorkFields) {
+        control.addValidators(Validators.required);
+      } else {
+        control.removeValidators(Validators.required);
+
+        if (this.employmentStatusesWithoutWork.includes(employmentStatus)) {
+          control.setValue('', { emitEvent: false });
+        }
+
+        control.markAsUntouched();
+        control.markAsPristine();
+      }
+
+      control.updateValueAndValidity({ emitEvent: false });
+    });
+
+    this.form.updateValueAndValidity({ emitEvent: false });
+  }
 }
+
+/* employmentStatusOptions = [
+    { label: 'מועסק', value: 'employed' },
+    { label: 'עצמאי', value: 'selfEmployed' },
+    { label: 'לא מועסק', value: 'unemployed' },
+    { label: 'סטודנט', value: 'student' },
+    { label: 'פנסיונר', value: 'pensioner' },
+  ]; */
+
+/* tenureUnitOptions = [
+    { label: 'שנים', value: 'שנים' },
+    { label: 'חודשים', value: 'חודשים' },
+  ]; */
+
+/* workplaceTypeOptions = [
+    { label: 'חברה פרטית', value: 'privateCompany' },
+    { label: 'חברה ציבורית', value: 'publicCompany' },
+    { label: 'מגזר ציבורי', value: 'publicSector' },
+    { label: 'עסק עצמאי', value: 'selfBusiness' },
+    { label: 'אחר', value: 'other' },
+  ]; */
+
+/* occupationOptions = [
+    { label: 'שכיר', value: 'employee' },
+    { label: 'עצמאי', value: 'selfEmployed' },
+    { label: 'בעל חברה', value: 'companyOwner' },
+    { label: 'פנסיונר', value: 'pensioner' },
+    { label: 'מובטל', value: 'unemployed' },
+    { label: 'הכרת בית', value: 'homemaker' },
+    { label: 'לא עובד', value: 'notWorking' },
+  ]; */

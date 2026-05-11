@@ -8,6 +8,7 @@ import { SelectFieldComponent } from '../controls/select-field.component';
 import { SwitchFieldComponent } from '../controls/switch-field.component';
 import { RadioGroupFieldComponent } from '../controls/radio-group-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
+import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.component';
 
 @Component({
   selector: 'app-step4-form2',
@@ -32,6 +33,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
             label="אני משמש בתפקיד ציבורי"
             detailsControlName="value"
             detailsLabel="תיאור התפקיד"
+            [detailsType]="'input'"
             [isDetails]="true"
           >
           </app-switch-field>
@@ -42,6 +44,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
             label="בן משפחה משמש בתפקיד ציבורי"
             detailsControlName="value"
             detailsLabel="תיאור תפקיד בן משפחה"
+            [detailsType]="'input'"
             [isDetails]="true"
           >
           </app-switch-field>
@@ -53,7 +56,9 @@ import { WizardCardComponent } from '../components/wizard-card.component';
             sublabel="לא ניתן להמשיך בתהליך במידה ויש נהנים נוספים בחשבון"
             detailsControlName="value"
             detailsLabel="תיאור נהנים בחשבון"
-            [isDetails]="true"
+            yesLabel="יש"
+            noLabel="אין"
+            [isDetails]="false"
           >
           </app-switch-field>
 
@@ -61,15 +66,19 @@ import { WizardCardComponent } from '../components/wizard-card.component';
             [form]="form.controls.nonIsraeliTaxResidency"
             controlName="checked"
             label="יש לי תושבות מס שאינה ישראל"
-            detailsControlName="value"
-            detailsLabel="תיאור תושבות מס"
+            detailsLabel="באיזו מדינה/ות תושבות המס?"
+            detailsType="checkboxes"
             [isDetails]="true"
+            [yesValue]="true"
+            [noValue]="false"
+            [showDetailsOnValue]="true"
+            [checkboxOptions]="taxResidencyOptions"
           >
           </app-switch-field>
 
           <app-select-field
             [form]="form"
-            controlName="workplaceType"
+            controlName="businessArea"
             label="האם אתה עוסק בתחומים הבאים?"
             [options]="businessAreaOptions"
             [filter]="true"
@@ -103,37 +112,25 @@ import { WizardCardComponent } from '../components/wizard-card.component';
       </section>
     </div>
 
-    <!-- </div> -->
+    <!-- <app-loan-blocked-popup
+      *ngIf="showLoanBlockedPopup"
+      (close)="showLoanBlockedPopup = false"
+    ></app-loan-blocked-popup> -->
   `,
-  styles: [
-    `
-      .declarations-layout {
-        display: grid;
-        gap: 1.25rem;
-        direction: rtl;
-      }
-
-      .declaration-card {
-        width: min(46rem, 100%);
-        margin: 0 auto;
-        padding: 2rem 3rem;
-
-        background: #fff;
-        border-radius: 1.25rem;
-        box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
-      }
-
-      .declaration-card h3 {
-        margin: 0 0 1.5rem;
-        font-size: 1.25rem;
-        font-weight: 800;
-        color: #2f2f2f;
-      }
-    `,
-  ],
+  styles: [``],
 })
 export class Step4Form2Component extends FormBaseComponent {
   @Input({ required: true }) override form!: Step4Form2;
+
+  showLoanBlockedPopup = false;
+
+  taxResidencyOptions = [
+    { controlName: 'isUsCitizen', label: 'ארה״ב' },
+    {
+      controlName: 'isOtherCountryTaxResident',
+      label: 'מדינה שאינה ישראל ואינה ארה״ב',
+    },
+  ];
 
   notificationMethodOptions = [
     { label: 'בתיבת הודעות ובמייל', value: 1 },
@@ -149,4 +146,10 @@ export class Step4Form2Component extends FormBaseComponent {
     { label: 'אחר', value: 'other' },
     { label: 'לא', value: 'none' },
   ];
+
+  shouldBlockLoan(): boolean {
+    const taxResidency = this.form.controls.nonIsraeliTaxResidency;
+
+    return taxResidency.controls.isOtherCountryTaxResident.value === true;
+  }
 }

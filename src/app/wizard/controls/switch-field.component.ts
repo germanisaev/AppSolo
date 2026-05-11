@@ -1,12 +1,18 @@
-import { Component, Input, inject } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
+import { FormFieldComponent } from './form-field.component';
+
+export interface SwitchCheckboxOption {
+  controlName: string;
+  label: string;
+}
 
 @Component({
   selector: 'app-switch-field',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf],
+  imports: [ReactiveFormsModule, NgIf, NgFor, FormFieldComponent],
   template: `
     <div
       class="field switch-row"
@@ -16,14 +22,25 @@ import { ValidationService } from '../services/validation.service';
     >
       <div class="switch-side">
         <label [class.required-mark]="isRequired">{{ label }}</label>
-        <span class="sub-label">{{ sublabel }}</span>
+        <!-- <span class="sub-label" *ngIf="yesValue">{{ sublabel }}</span> -->
+        <span class="sub-label" *ngIf="sublabel && control?.value === yesValue">
+          {{ sublabel }}
+        </span>
 
         <div class="yes-no-switch">
-          <button type="button" [class.active]="control?.value === yesValue" (click)="setValue(yesValue)">
+          <button
+            type="button"
+            [class.active]="control?.value === yesValue"
+            (click)="setValue(yesValue)"
+          >
             {{ yesLabel }}
           </button>
 
-          <button type="button" [class.active]="control?.value === noValue" (click)="setValue(noValue)">
+          <button
+            type="button"
+            [class.active]="control?.value === noValue"
+            (click)="setValue(noValue)"
+          >
             {{ noLabel }}
           </button>
         </div>
@@ -31,21 +48,47 @@ import { ValidationService } from '../services/validation.service';
         <div class="error" *ngIf="isInvalid">{{ errorMessage }}</div>
       </div>
 
-      <div class="details-side" *ngIf="isDetails && showDetailsInput">
-        <label [class.required-mark]="isDetailsRequired">
-          {{ detailsLabel }}
-        </label>
-
-        <input
-          type="text"
-          [formControlName]="detailsControlName"
-          [class.input-error]="isDetailsInvalid"
-        />
-
-        <div class="error" *ngIf="isDetailsInvalid">
-          {{ detailsErrorMessage }}
+      <ng-container
+        *ngIf="detailsType === 'input' && isDetails && showDetailsInput"
+      >
+        <div class="details-side">
+          <app-form-field
+            [form]="form"
+            [controlName]="detailsControlName"
+            [label]="detailsLabel"
+          >
+          </app-form-field>
         </div>
-      </div>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          detailsType === 'checkboxes' &&
+          isDetails &&
+          control?.value === showDetailsOnValue
+        "
+      >
+        <br>
+        <div class="checkboxes-side">
+          <label class="checkboxes-title" [class.required-mark]="true">
+            {{ detailsLabel }}
+          </label>
+
+          <div class="checkboxes-field">
+            <label class="checkbox-row" *ngFor="let item of checkboxOptions">
+              <input
+                type="checkbox"
+                [formControlName]="item.controlName"
+                (change)="validateCheckboxes()"
+              />
+              {{ item.label }}
+            </label>
+          </div>
+
+          <div class="error" *ngIf="isCheckboxesInvalid">
+            יש לבחור לפחות אפשרות אחת
+          </div>
+        </div>
+      </ng-container>
     </div>
   `,
   styles: [
@@ -127,6 +170,7 @@ import { ValidationService } from '../services/validation.service';
 })
 export class SwitchFieldComponent {
   private readonly validation = inject(ValidationService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) controlName!: string;
@@ -143,6 +187,9 @@ export class SwitchFieldComponent {
   @Input() detailsControlName = 'value';
   @Input() detailsLabel = 'תיאור התפקיד';
   @Input() isDetails = false;
+  @Input() detailsType: 'input' | 'checkboxes' | 'none' = 'none';
+
+  @Input() checkboxOptions: SwitchCheckboxOption[] = [];
 
   get control() {
     return this.form.get(this.controlName);
@@ -200,7 +247,38 @@ export class SwitchFieldComponent {
       : '';
   }
 
-  setValue(value: string | boolean): void {
+  get isCheckboxesInvalid(): boolean {
+    if (this.detailsType !== 'checkboxes') {
+      return false;
+    }
+
+    if (this.control?.value !== this.showDetailsOnValue) {
+      return false;
+    }
+
+    return (
+      !!this.form.errors?.['checkboxesRequired'] && !!this.control?.touched
+    );
+  }
+
+  validateCheckboxes(): void {
+    if (this.detailsType !== 'checkboxes') {
+      return;
+    }
+
+    if (this.control?.value !== this.showDetailsOnValue) {
+      this.form.setErrors(null);
+      return;
+    }
+
+    const hasSelected = this.checkboxOptions.some((item) => {
+      return this.form.get(item.controlName)?.value === true;
+    });
+
+    this.form.setErrors(hasSelected ? null : { checkboxesRequired: true });
+  }
+
+  /* setValue(value: string | boolean): void {
     this.control?.setValue(value);
     this.control?.markAsTouched();
     this.control?.updateValueAndValidity();
@@ -226,6 +304,46 @@ export class SwitchFieldComponent {
         this.detailsControl.markAsUntouched();
       }
     }
+  } */
+  setValue(value: string | boolean): void {
+    this.control?.setValue(value);
+    this.control?.markAsTouched();
+    this.control?.updateValueAndValidity();
+
+    if (this.detailsType === 'checkboxes') {
+      if (value !== this.showDetailsOnValue) {
+        this.checkboxOptions.forEach((item) => {
+          this.form
+            .get(item.controlName)
+            ?.setValue(false, { emitEvent: false });
+        });
+
+        this.form.setErrors(null);
+      } else {
+        this.validateCheckboxes();
+      }
+
+      return;
+    }
+
+    if (!this.detailsControl) {
+      return;
+    }
+
+    if (this.isDetails) {
+      if (value === this.showDetailsOnValue) {
+        this.detailsControl.setValidators([Validators.required]);
+        this.detailsControl.markAsTouched();
+      } else {
+        this.detailsControl.clearValidators();
+        this.detailsControl.setValue(null);
+        this.detailsControl.markAsUntouched();
+      }
+
+      this.detailsControl.updateValueAndValidity();
+    }
+
+    this.cdr.detectChanges();
   }
 }
 
