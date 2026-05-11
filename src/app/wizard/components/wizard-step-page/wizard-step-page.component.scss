@@ -234,7 +234,7 @@
   align-items: center;
   gap: 8px;
 
-  font-size: 14px;
+  font-size: 16px;
   color: #333;
 }
 
@@ -242,6 +242,77 @@
   color: #4f46e5;
 }
 
+/* =========================
+  Action Bar for Step 5 Form 2
+============================ */
+.partial-actions-bar {
+  height: 74px;
+  padding: 0 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+
+  direction: rtl;
+  /* background: #fff;
+  border-top: 1px solid #ffb27a; */
+}
+
+.partial-actions-bar p {
+  margin: 0;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.partial-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.primary-action,
+.secondary-action {
+  height: 42px;
+  min-width: 176px;
+  padding: 0 24px;
+
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-action {
+  border: 1px solid #711aaa;
+  background: #711aaa;
+  color: #fff;
+}
+
+.secondary-action {
+  border: 1px solid #711aaa;
+  background: #fff;
+  color: #711aaa;
+}
+
+@media (max-width: 768px) {
+  .partial-actions-bar {
+    height: auto;
+    padding: 14px 16px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .partial-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .primary-action,
+  .secondary-action {
+    width: 100%;
+  }
+}
 /* =========================
   Step 2 Form 2
 ========================= */
@@ -476,6 +547,18 @@
 
 :host ::ng-deep .checkbox-row.disabled input {
   pointer-events: none;
+}
+
+/* ==================================
+  All switch/radio/dropdown fields here
+==================================== */
+:host ::ng-deep .declarations-content {
+  width: 280px;
+  max-width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 /* ==================================

@@ -30,8 +30,10 @@ import { WizardCardComponent } from '../components/wizard-card.component';
               <input
                 class="amount-input"
                 type="text"
+                inputmode="numeric"
+                autocomplete="off"
                 formControlName="loanAmount"
-                (input)="onLoanAmountInput($event)"
+                (input)="onLoanAmountInput()"
               />
             </div>
           </div>
@@ -137,7 +139,7 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
     }
   }
 
-  onLoanAmountInput(event: Event): void {
+  /* onLoanAmountInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     const rawValue = input.value.replace(/\D/g, '');
@@ -148,6 +150,20 @@ export class Step2Form1Component extends FormBaseComponent implements OnInit {
     this.form.controls.loanAmount.setValue(formattedValue, {
       emitEvent: true,
     });
+  } */
+  onLoanAmountInput(): void {
+    const control = this.form.controls.loanAmount;
+
+    const digitsOnly = control.value?.toString().replace(/\D/g, '') || '';
+
+    if (!digitsOnly) {
+      control.setValue('', { emitEvent: false });
+      return;
+    }
+
+    const formattedValue = Number(digitsOnly).toLocaleString('en-US');
+
+    control.setValue(formattedValue, { emitEvent: false });
   }
 
   calculateMonthlyPayment(): void {

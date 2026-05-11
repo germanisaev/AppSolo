@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { WizardFlowService } from './services/wizard-flow.service';
+import { WizardFlowService } from '../services/wizard-flow.service';
+
 
 export const wizardStepGuard: CanActivateFn = (route) => {
     const flow = inject(WizardFlowService);

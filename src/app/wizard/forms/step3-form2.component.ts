@@ -230,7 +230,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           <input
             type="checkbox"
             formControlName="borrower1"
-            [disabled]="!agreementRead"
+            [class.disabled]="!agreementRead"
           />
           אני מאשר/ת שקראתי והבנתי את פרטי הקמת החשבון
         </label>
@@ -306,11 +306,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
         font-weight: 800;
       }
 
-      @media (max-width: 768px) {
-        .customer-grid {
-          grid-template-columns: 1fr;
-        }
-      }
+      
 
       :host ::ng-deep .agreement-card {
         width: min(1040px, 88vw);
@@ -361,6 +357,17 @@ import { WizardCardComponent } from '../components/wizard-card.component';
         color: #711aaa;
         cursor: pointer;
       }
+
+      @media (max-width: 768px) {
+        .customer-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .agreement-card {
+          margin: 0 auto;
+          padding: 20px 16px !important;
+        }
+      }
     `,
   ],
 })
@@ -395,17 +402,6 @@ export class Step3Form2Component
   ngAfterViewInit(): void {
     this.initCanvas();
   }
-
-  /* onAgreementScroll(event: Event): void {
-    const element = event.target as HTMLElement;
-
-    const reachedBottom =
-      element.scrollTop + element.clientHeight >= element.scrollHeight - 8;
-
-    if (reachedBottom) {
-      this.agreementRead = true;
-    }
-  } */
 
   onAgreementScroll(event: Event): void {
     const element = event.target as HTMLElement;

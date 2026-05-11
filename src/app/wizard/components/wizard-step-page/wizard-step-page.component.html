@@ -14,7 +14,7 @@
 
           <app-step2-form1 *ngSwitchCase="'2-1'" [form]="$any(vm.form)"></app-step2-form1>
           <app-step2-form2 *ngSwitchCase="'2-2'" [form]="$any(vm.form)"></app-step2-form2>
-          
+
           <app-step3-form1 *ngSwitchCase="'3-1'" [form]="$any(vm.form)"></app-step3-form1>
           <app-step3-form2 *ngSwitchCase="'3-2'" [form]="$any(vm.form)"></app-step3-form2>
           <app-step3-form3 *ngSwitchCase="'3-3'" [form]="$any(vm.form)"></app-step3-form3>
@@ -34,35 +34,39 @@
       </div>
     </div>
 
-    <div class="actions rtl-actions">
-      <p-button *ngIf="shouldShowPrevButton(vm.step, vm.formIndex)" label="לשלב הקודם" severity="secondary" [outlined]="true"
-        [disabled]="vm.step === 1 && vm.formIndex === 1" class="prev" (onClick)="prev(vm.step, vm.formIndex)">
-      </p-button>
+    <ng-container *ngIf="shouldShowActionBar(vm.step, vm.formIndex)">
+      <div class="actions rtl-actions">
+        <p-button *ngIf="shouldShowPrevButton(vm.step, vm.formIndex)" label="לשלב הקודם" severity="secondary"
+          [outlined]="true" [disabled]="isPrevDisabled(vm.step, vm.formIndex)" class="prev"
+          (onClick)="prev(vm.step, vm.formIndex)">
+        </p-button>
 
-      <p-button *ngIf="shouldShowNextButton(vm.step, vm.formIndex)" [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'לשלב הבא'" class="next"
-        (onClick)="next(vm.step, vm.formIndex)">
-      </p-button>
+        <p-button *ngIf="shouldShowNextButton(vm.step, vm.formIndex)"
+          [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'סיום' : 'לשלב הבא'" class="next"
+          (onClick)="next(vm.step, vm.formIndex)">
+        </p-button>
+      </div>
+    </ng-container>
+
+
+    <div class="partial-actions-bar" *ngIf="!shouldShowActionBar(vm.step, vm.formIndex)">
+      <div class="partial-actions">
+        <button type="button" class="secondary-action" (click)="openLoanDecisionModal('sentToAgent')">
+          בקשה לשיחה עם נציג
+        </button>
+        <button type="button" class="primary-action" (click)="openLoanDecisionModal('manualProcess')">
+          אישור התנאים החדשים
+        </button>
+      </div>
+      <p>
+        במידה ותרצו לשנות את תנאי ההלוואה, יש לפנות לשיחה עם נציג
+      </p>
     </div>
   </div>
 </ng-container>
 
-<app-loan-blocked-popup
-  *ngIf="flow.showLoanBlockedPopup$ | async"
-  (close)="flow.showLoanBlockedPopup$.next(false)"
-></app-loan-blocked-popup>
+<app-loan-blocked-popup *ngIf="flow.showLoanBlockedPopup$ | async"
+  (close)="flow.showLoanBlockedPopup$.next(false)"></app-loan-blocked-popup>
 
-
-
-<!-- icon="pi pi-arrow-left" iconPos="left" -->
-
-<!-- icon="pi pi-arrow-right" iconPos="right" -->
-
-<!-- <div class="actions">
-      <p-button label="Back" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
-        [disabled]="vm.step === 1 && vm.formIndex === 1" (onClick)="prev(vm.step, vm.formIndex)">
-      </p-button>
-
-      <p-button [label]="vm.step === 5 && vm.formIndex === vm.totalForms ? 'Finish' : 'Next'" icon="pi pi-arrow-right"
-        iconPos="right" (onClick)="next(vm.step, vm.formIndex)">
-      </p-button>
-    </div> -->
+<app-loan-decision-modal *ngIf="loanDecisionModalType" [type]="loanDecisionModalType"
+  (confirmed)="onLoanDecisionModalConfirmed($event)" />

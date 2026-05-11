@@ -30,14 +30,15 @@
 }
 
 .bg-layer {
-  position: fixed; // לא fixed
+  position: absolute;
   left: 0;
   right: 0;
-
   bottom: 0;
-  height: 78vh;
 
-  background-image: url("/background-customer.png");
+  width: 100%;
+  height: max(78vh, 720px);
+
+  background-image: url('/background-customer.png');
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% 100%;

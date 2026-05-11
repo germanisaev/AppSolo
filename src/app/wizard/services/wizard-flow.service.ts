@@ -26,7 +26,6 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class WizardFlowService {
   private fb = inject(FormBuilder);
-  // private loader = inject(LoaderService);
   private http = inject(HttpClient);
 
   private readonly storageKey = 'wizard-progress';
@@ -121,48 +120,6 @@ export class WizardFlowService {
     // this.registerAutoSave();
   }
 
-  /* patchBankRequestData(data: BankRequestDraft): void {
-    this.clearProgress();
-
-    this.formsByStep[1][0].patchValue(
-      {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        governmentId: data.governmentId,
-        mobile: data.mobile,
-      },
-      { emitEvent: false },
-    );
-
-    this.formsByStep[2][0].patchValue(
-      {
-        loanAmount: data.loanAmount,
-        numberOfPayments: Number(data.numberOfPayments),
-        linkageType: data.linkageType,
-      },
-      { emitEvent: false },
-    );
-
-    this.formsByStep[2][1].patchValue(
-      {
-        loanBeneficiary: data.loanBeneficiary,
-        bank: data.bank,
-        branchNumber: data.branchNumber,
-        accountNumber: data.accountNumber,
-      },
-      { emitEvent: false },
-    );
-
-    this.formsByStep[3][0].patchValue(
-      {
-        email: data.email,
-        birthCountry: 'IL',
-      },
-      { emitEvent: false },
-    );
-
-    this.saveCurrentPosition(1, 1);
-  } */
   patchBankRequestData(data: BankRequestDraft): void {
     this.clearProgress();
 
@@ -344,6 +301,13 @@ export class WizardFlowService {
   ): { step: number; form: number } | null {
     const normalizedStep = this.normalizeStep(step);
 
+    if (normalizedStep === 4 && formIndex === 2) {
+      return {
+        step: 5,
+        form: 2,
+      };
+    }
+
     if (normalizedStep === 5 && (formIndex === 1 || formIndex === 2)) {
       return {
         step: 5,
@@ -418,7 +382,7 @@ export class WizardFlowService {
     return null;
   }
 
-  isStepValidForNavigation(step: number): boolean {
+  /* isStepValidForNavigation(step: number): boolean {
     const forms = this.formsByStep[step as keyof typeof this.formsByStep];
 
     if (!forms) {
@@ -429,6 +393,21 @@ export class WizardFlowService {
       const formNumber = index + 1;
 
       if (step === 3 && formNumber === 3 && !this.isMarried()) {
+        return true;
+      }
+
+      return form.valid;
+    });
+  } */
+  isStepValidForNavigation(step: number): boolean {
+    const normalizedStep = this.normalizeStep(step);
+    const forms =
+      this.formsByStep[normalizedStep as keyof typeof this.formsByStep];
+
+    return forms.every((form, index) => {
+      const formNumber = index + 1;
+
+      if (normalizedStep === 3 && formNumber === 3 && !this.isMarried()) {
         return true;
       }
 

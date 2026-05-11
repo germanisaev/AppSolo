@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
@@ -8,7 +7,6 @@ import { SelectFieldComponent } from '../controls/select-field.component';
 import { SwitchFieldComponent } from '../controls/switch-field.component';
 import { RadioGroupFieldComponent } from '../controls/radio-group-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.component';
 
 @Component({
   selector: 'app-step4-form2',
@@ -76,15 +74,17 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
           >
           </app-switch-field>
 
-          <app-select-field
-            [form]="form"
-            controlName="businessArea"
-            label="האם אתה עוסק בתחומים הבאים?"
-            [options]="businessAreaOptions"
-            [filter]="true"
-            placeholder=""
-          >
-          </app-select-field>
+          <div class="declarations-content">
+            <app-select-field
+              [form]="form"
+              controlName="businessArea"
+              label="האם אתה עוסק בתחומים הבאים?"
+              [options]="businessAreaOptions"
+              [filter]="true"
+              placeholder=""
+            >
+            </app-select-field>
+          </div>
         </app-wizard-card>
       </section>
 
@@ -102,12 +102,14 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
             אני רוצה לקבל הודעות מהבנק
           </label>
 
-          <app-radio-group-field
-            [form]="form"
-            controlName="notificationMethod"
-            [options]="notificationMethodOptions"
-          >
-          </app-radio-group-field>
+          <div class="declarations-content">
+            <app-radio-group-field
+              [form]="form"
+              controlName="notificationMethod"
+              [options]="notificationMethodOptions"
+            >
+            </app-radio-group-field>
+          </div>
         </app-wizard-card>
       </section>
     </div>

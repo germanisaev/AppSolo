@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { WizardFlowService } from '../services/wizard-flow.service';
 import { WizardCardComponent } from '../components/wizard-card.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-step5-form3',
@@ -8,7 +9,8 @@ import { WizardCardComponent } from '../components/wizard-card.component';
   imports: [WizardCardComponent],
   template: `
     <section class="almost-done-card final-card">
-      <img class="final-message-icon" src="/icon-session-timeout.svg" alt="" />
+      
+      <img class="final-message-icon" src="/icon-session-timeout.png" alt="" />
 
       <h3>כמעט סיימנו!</h3>
 
@@ -26,8 +28,18 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           </div>
 
           <div class="detail-item">
+            <span>ריבית</span>
+            <strong>2%</strong>
+          </div>
+
+          <div class="detail-item">
             <span>מספר תשלומים</span>
             <strong>{{ loanDetails.payments }}</strong>
+          </div>
+
+          <div class="detail-item">
+            <span>החזר חודשי משוערך</span>
+            <strong>{{ loanDetails.monthlyPayment }} ₪</strong>
           </div>
 
           <div class="detail-item">
@@ -37,21 +49,15 @@ import { WizardCardComponent } from '../components/wizard-card.component';
             }}</strong>
           </div>
 
-          <div class="detail-item">
-            <span>ריבית</span>
-            <strong>2%</strong>
-          </div>
-
-          <div class="detail-item">
-            <span>החזר חודשי משוערך</span>
-            <strong>{{ loanDetails.monthlyPayment }} ₪</strong>
-          </div>
         </div>
       </app-wizard-card>
     </section>
   `,
   styles: [
     `
+      /*  */
+      
+      /*  */
       .final-card {
         width: min(1040px, 88vw);
         margin-inline: auto;
@@ -79,7 +85,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
         height: 96px;
         margin-bottom: 16px;
 
-        animation: hourglass-rotate 4s ease-in-out infinite;
+        /* animation: hourglass-rotate 4s ease-in-out infinite; */
         transform-origin: center;
         object-fit: contain;
       }
@@ -131,7 +137,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
 
       .loan-details-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 28px 64px;
 
         direction: rtl;

@@ -29,39 +29,60 @@ import { SelectFieldComponent } from '../controls/select-field.component';
             controlName="city"
             label="ישוב"
           ></app-form-field>
+
           <app-form-field
             [form]="form"
             controlName="street"
             label="שם רחוב"
           ></app-form-field>
 
-          <div class="field">
+          <!-- <div class="field">
             <label [class.required-mark]="isControlRequired('houseNumber')">
               מספר בית
             </label>
             <input type="text" formControlName="houseNumber" />
-          </div>
+          </div> -->
+          <app-form-field
+            [form]="form"
+            controlName="houseNumber"
+            label="מספר בית"
+          ></app-form-field>
 
-          <div class="field">
+          <!-- <div class="field">
             <label [class.required-mark]="isControlRequired('entranceNumber')">
               כניסה
             </label>
             <input type="text" formControlName="entranceNumber" />
-          </div>
+          </div> -->
+          <app-form-field
+            [form]="form"
+            controlName="entranceNumber"
+            label="כניסה"
+          ></app-form-field>
 
-          <div class="field">
+          <!-- <div class="field">
             <label [class.required-mark]="isControlRequired('apartmentNumber')">
               מספר דירה
             </label>
             <input type="text" formControlName="apartmentNumber" />
-          </div>
+          </div> -->
+          <app-form-field
+            [form]="form"
+            controlName="apartmentNumber"
+            label="מספר דירה"
+          ></app-form-field>
 
-          <div class="field">
+          <!-- <div class="field">
             <label [class.required-mark]="isControlRequired('zipCode')">
               מיקוד
             </label>
             <input type="text" formControlName="zipCode" />
-          </div>
+          </div> -->
+          <app-form-field
+            [form]="form"
+            controlName="zipCode"
+            label="מיקוד"
+          ></app-form-field>
 
           <div class="field" style="margin-bottom: 1rem;">
             <label

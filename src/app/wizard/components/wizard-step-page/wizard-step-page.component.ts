@@ -15,12 +15,15 @@ import {
   trigger,
 } from '@angular/animations';
 import { LoanBlockedPopupComponent } from '../loan-blocked-popup.component';
+import { LoanDecisionModalComponent } from '../loan-decision-modal.component';
+import { LoanDecisionModalType } from '../../components/loan-decision-modal.component';
 
 @Component({
   selector: 'app-wizard-step-page',
   imports: [
     NgIf,
     LoanBlockedPopupComponent,
+    LoanDecisionModalComponent,
     CommonModule,
     ButtonModule,
     ...WIZARD_FORM_COMPONENTS,
@@ -47,6 +50,31 @@ export class WizardStepPageComponent {
   animationDirection: 'next' | 'prev' = 'next';
   animationTick = 0;
   currentFormTitle = 'בואו נכיר אותכם קצת';
+
+  loanDecisionModalType: LoanDecisionModalType | null = null;
+
+  onLoanDecisionModalConfirmed(type: LoanDecisionModalType): void {
+    if (type !== 'manualProcess' && type !== 'sentToAgent') {
+      this.loanDecisionModalType = null;
+      return;
+    }
+
+    this.loanDecisionModalType = null;
+    this.goToFinalLoanStep();
+  }
+
+  goToFinalLoanStep(): void {
+    this.flow.saveCurrentPosition(5, 3);
+
+    this.animationDirection = 'next';
+    this.animationTick++;
+
+    this.navigate(5, 3);
+  }
+
+  openLoanDecisionModal(type: LoanDecisionModalType): void {
+    this.loanDecisionModalType = type;
+  }
 
   onFormTitleChange(title: string): void {
     this.currentFormTitle = title;
@@ -84,6 +112,18 @@ export class WizardStepPageComponent {
     return !(step === 5 && formIndex === 3);
   }
 
+  shouldShowActionBar(step: number, formIndex: number): boolean {
+    return !(step === 5 && formIndex === 2);
+  }
+
+  isPrevDisabled(step: number, formIndex: number): boolean {
+    return (
+      (step === 3 && formIndex === 2) ||
+      (step === 1 && formIndex === 1) ||
+      (step === 4 && formIndex === 1)
+    );
+  }
+
   getFormKey(step: number, formIndex: number): string {
     return `${step}-${formIndex}`;
   }
@@ -111,12 +151,12 @@ export class WizardStepPageComponent {
       return;
     }
 
-    const totalForms = this.flow.getFormsCount(step);
-    const isLastFormInStep = formIndex === totalForms;
+    // const totalForms = this.flow.getFormsCount(step);
+    // const isLastFormInStep = formIndex === totalForms;
 
-    if (isLastFormInStep && !this.flow.isStepValidForNavigation(step)) {
+    /* if (isLastFormInStep && !this.flow.isStepValidForNavigation(step)) {
       return;
-    }
+    } */
 
     const next = this.flow.getNextPosition(step, formIndex);
 

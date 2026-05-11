@@ -21,7 +21,10 @@ export type LoanDecisionModalType =
           {{ text }}
         </p>
 
-        <button type="button" class="modal-button" (click)="closed.emit()">
+        <!-- <button type="button" class="modal-button" (click)="closed.emit()">
+          הבנתי
+        </button> -->
+        <button type="button" class="modal-button" (click)="onConfirm()">
           הבנתי
         </button>
       </div>
@@ -38,18 +41,25 @@ export type LoanDecisionModalType =
         align-items: center;
         justify-content: center;
 
-        background: rgba(0, 0, 0, 0.55);
+        background: rgba(0, 0, 0, 0.45);
+
+        animation: backdropFade 220ms ease;
       }
 
       .decision-modal {
-        width: min(520px, calc(100vw - 32px));
-        padding: 48px 56px;
+        width: min(640px, calc(100vw - 32px));
+        min-height: 300px;
+        padding: 42px 56px;
+
         direction: rtl;
         text-align: center;
 
         background: #ffffff;
-        border-radius: 24px;
+        border-radius: 18px;
         box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+
+        animation: modalEnter 280ms cubic-bezier(0.22, 1, 0.36, 1);
+        transform-origin: center;
       }
 
       .modal-icon {
@@ -57,31 +67,13 @@ export type LoanDecisionModalType =
         height: 110px;
         object-fit: contain;
         margin-bottom: 20px;
-        
-        animation: hourglass-rotate 4s ease-in-out infinite;
+
+        /* animation: hourglass-rotate 4s ease-in-out infinite; */
         transform-origin: center;
-      }
 
-      @keyframes hourglass-rotate {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        40% {
-          transform: rotate(0deg);
-        }
-
-        50% {
-          transform: rotate(180deg);
-        }
-
-        90% {
-          transform: rotate(180deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
+        animation:
+          modalIconEnter 500ms ease,
+          floatingIcon 4s ease-in-out infinite 500ms;
       }
 
       h2 {
@@ -90,6 +82,8 @@ export type LoanDecisionModalType =
         font-size: 30px;
         font-weight: 800;
         line-height: 1.25;
+
+        animation: contentFade 400ms ease;
       }
 
       p {
@@ -98,10 +92,12 @@ export type LoanDecisionModalType =
         color: #475569;
         font-size: 16px;
         line-height: 1.6;
+
+        animation: contentFade 500ms ease;
       }
 
       .modal-button {
-        min-width: 136px;
+        min-width: 140px;
         height: 44px;
 
         border: none;
@@ -111,22 +107,101 @@ export type LoanDecisionModalType =
         color: #ffffff;
 
         font-weight: 800;
-        font-size: 1rem;
-        line-height: 1;
+        font-size: 1.05rem;
         cursor: pointer;
+
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease;
+      }
+
+      .modal-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 24px rgba(113, 26, 170, 0.35);
+      }
+
+      @keyframes backdropFade {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes modalEnter {
+        from {
+          opacity: 0;
+          transform: scale(0.92) translateY(12px);
+        }
+
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes modalIconEnter {
+        from {
+          opacity: 0;
+          transform: scale(0.7) rotate(-10deg);
+        }
+
+        to {
+          opacity: 1;
+          transform: scale(1) rotate(0deg);
+        }
+      }
+
+      @keyframes floatingIcon {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+
+      @keyframes contentFade {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .decision-modal {
+          width: calc(100vw - 32px);
+          min-height: 340px;
+          padding: 40px 24px;
+        }
       }
     `,
   ],
 })
 export class LoanDecisionModalComponent {
   @Input({ required: true }) type!: LoanDecisionModalType;
-  @Output() closed = new EventEmitter<void>();
+  // @Output() closed = new EventEmitter<void>();
+  @Output() confirmed = new EventEmitter<LoanDecisionModalType>();
+
+  onConfirm(): void {
+    this.confirmed.emit(this.type);
+  }
 
   get icon(): string {
     const icons: Record<LoanDecisionModalType, string> = {
-      sentToAgent: '/icon-session-timeout.svg',
-      rejected: '/icon-operation-failed.svg',
-      manualProcess: '/icon-secure-authentication.svg',
+      sentToAgent: '/icon-session-timeout.png',
+      rejected: '/icon-operation-failed.png',
+      manualProcess: '/icon-secure-authentication.png',
     };
 
     return icons[this.type];
