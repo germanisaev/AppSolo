@@ -188,9 +188,7 @@ export function createStep3Form4(fb: FormBuilder): Step3Form4 {
     entranceNumber: ['1', Validators.pattern(VALIDATION_PATTERNS.digitsOnly)],
     apartmentNumber: ['76', Validators.pattern(VALIDATION_PATTERNS.digitsOnly)],
     zipCode: ['8224705', [Validators.pattern(VALIDATION_PATTERNS.digitsOnly)]],
-    isMailingAddressDifferent: fb.nonNullable.control(false, [
-      Validators.requiredTrue,
-    ]),
+    isMailingAddressDifferent: fb.nonNullable.control(false),
     differentMailingAddress: createStep3Form41(fb),
   });
 

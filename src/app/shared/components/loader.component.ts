@@ -7,14 +7,6 @@ import { LoaderService } from '../services/loader.service';
   standalone: true,
   imports: [NgFor, NgIf],
   template: `
-    <!-- <div class="loader-overlay" *ngIf="loader.isLoading()">
-      <div class="loader-box">
-        <div class="spinner"></div>
-
-        <div class="loader-text">שומר נתונים...</div>
-        
-      </div>
-    </div> -->
     <div class="loader-overlay" *ngIf="loader.isLoading()">
       <div class="loader-box">
         <div class="brand-loader">
@@ -25,6 +17,7 @@ import { LoaderService } from '../services/loader.service';
           ></span>
 
           <span class="dash dash-left"></span>
+          <span class="mini-burst"></span>
           <span class="dash dash-right"></span>
           <!-- <span class="shape triangle"></span> -->
           <span class="shape triangle">
@@ -145,8 +138,8 @@ import { LoaderService } from '../services/loader.service';
 
       .dot {
         position: absolute;
-        right: 36px;
-        top: 96px;
+        right: 18px;
+        top: 98px;
         width: 18px;
         height: 18px;
         background: #8e24aa;
@@ -154,6 +147,46 @@ import { LoaderService } from '../services/loader.service';
         transform: rotate(12deg);
         transform-origin: center;
         animation: float-dot 2.1s ease-in-out infinite;
+      }
+
+      .mini-burst {
+        position: absolute;
+        left: 16px;
+        top: 52px;
+        width: 28px;
+        height: 28px;
+        border: 2px dashed #2f2f2f;
+        border-radius: 50%;
+        opacity: 0.9;
+        animation: mini-spin 2.4s linear infinite;
+      }
+
+      .mini-burst::before,
+      .mini-burst::after {
+        content: '';
+        position: absolute;
+        background: #2f2f2f;
+        border-radius: 999px;
+      }
+
+      .mini-burst::before {
+        width: 8px;
+        height: 2px;
+        left: -10px;
+        top: 12px;
+      }
+
+      .mini-burst::after {
+        width: 2px;
+        height: 8px;
+        right: 5px;
+        top: -10px;
+      }
+
+      @keyframes mini-spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
 
       @keyframes float-triangle {

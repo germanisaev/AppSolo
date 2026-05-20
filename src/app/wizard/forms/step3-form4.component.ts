@@ -63,6 +63,7 @@ import { CheckboxFieldComponent } from '../../shared/controls/checkbox-field.com
           ></app-input-field>
 
           <app-checkbox-field
+            class="full-width"
             [form]="form"
             controlName="isMailingAddressDifferent"
             label="כתובת למשלוח דואר אינה זהה לכתובת המגורים שלי"
