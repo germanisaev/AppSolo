@@ -68,5 +68,6 @@
 <app-loan-blocked-popup *ngIf="flow.showLoanBlockedPopup$ | async"
   (close)="flow.showLoanBlockedPopup$.next(false)"></app-loan-blocked-popup>
 
-<app-loan-decision-modal *ngIf="loanDecisionModalType" [type]="loanDecisionModalType"
+<app-loan-decision-modal *ngIf="loanDecisionModalType" 
+  [type]="loanDecisionModalType"
   (confirmed)="onLoanDecisionModalConfirmed($event)" />

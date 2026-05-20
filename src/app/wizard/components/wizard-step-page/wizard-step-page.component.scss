@@ -688,7 +688,7 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-:host ::ng-deep app-form-field {
+:host ::ng-deep app-input-field {
   display: block;
 }
 

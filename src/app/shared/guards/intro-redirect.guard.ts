@@ -12,7 +12,7 @@ export const introRedirectGuard: CanActivateFn = () => {
 
   const saved = flow.getSavedPosition();
 
-  return router.createUrlTree(['/wizard/step', saved.step], {
+  return router.createUrlTree(['/customer/wizard/step', saved.step], {
     queryParams: { form: saved.form },
   });
 };

@@ -45,11 +45,9 @@ import { LoaderService } from '../services/loader.service';
         position: fixed;
         inset: 0;
         z-index: 9999;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         background: rgba(0, 0, 0, 0.45);
       }
 
@@ -57,11 +55,9 @@ import { LoaderService } from '../services/loader.service';
         width: min(604px, calc(100vw - 96px));
         min-height: 286px;
         padding: 56px 48px 52px;
-
         display: flex;
         flex-direction: column;
         align-items: center;
-
         background: #ffffff;
         border-radius: 20px;
         box-shadow: 0 24px 70px rgba(0, 0, 0, 0.22);
@@ -78,16 +74,12 @@ import { LoaderService } from '../services/loader.service';
         position: absolute;
         left: 50%;
         top: 50%;
-
         width: 10px;
         height: 34px;
         border-radius: 999px;
-
         background: #ff7a2f;
-
         transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg))
           translateY(-42px);
-
         transform-origin: center;
         animation: loader-fade 1.1s linear infinite;
         animation-delay: calc(var(--i) * -0.09s);
@@ -97,7 +89,6 @@ import { LoaderService } from '../services/loader.service';
         0% {
           opacity: 1;
         }
-
         100% {
           opacity: 0.18;
         }
@@ -121,13 +112,10 @@ import { LoaderService } from '../services/loader.service';
       .dash-right {
         right: 30px;
         top: 68px;
-
         width: 74px;
         height: 40px;
-
         border-top: 2px dashed #2f2f2f;
         border-radius: 50%;
-
         transform: rotate(28deg);
       }
 
@@ -135,10 +123,8 @@ import { LoaderService } from '../services/loader.service';
         position: absolute;
         right: 52px;
         top: 32px;
-
         width: 15px;
         height: 15px;
-
         background: transparent;
         transform: rotate(28deg);
         animation: float-triangle 1.8s ease-in-out infinite;
@@ -161,17 +147,12 @@ import { LoaderService } from '../services/loader.service';
         position: absolute;
         right: 36px;
         top: 96px;
-
         width: 18px;
         height: 18px;
-
         background: #8e24aa;
-
         clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
-
         transform: rotate(12deg);
         transform-origin: center;
-
         animation: float-dot 2.1s ease-in-out infinite;
       }
 
@@ -180,7 +161,6 @@ import { LoaderService } from '../services/loader.service';
         100% {
           transform: translateY(0) rotate(0deg);
         }
-
         50% {
           transform: translateY(-6px) rotate(12deg);
         }
@@ -191,7 +171,6 @@ import { LoaderService } from '../services/loader.service';
         100% {
           transform: translateY(0) rotate(12deg);
         }
-
         50% {
           transform: translateY(-4px) rotate(18deg);
         }
@@ -199,7 +178,6 @@ import { LoaderService } from '../services/loader.service';
 
       .loader-title {
         margin-top: 0;
-
         font-size: 32px;
         line-height: 1.15;
         font-weight: 600;
@@ -209,63 +187,12 @@ import { LoaderService } from '../services/loader.service';
 
       .loader-text {
         margin-top: 14px;
-
         font-size: 18px;
         line-height: 1.3;
         font-weight: 400;
         color: #333333;
         text-align: center;
       }
-      
-      /* .loader-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        background: rgba(15, 23, 42, 0.25);
-        backdrop-filter: blur(2px);
-      }
-
-      .loader-box {
-        min-width: 160px;
-        padding: 24px;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
-
-        background: #ffffff;
-        border-radius: 18px;
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18);
-        z-index: 1000;
-      }
-
-      .spinner {
-        width: 42px;
-        height: 42px;
-
-        border: 4px solid #ffe0cc;
-        border-top-color: #ff6600;
-        border-radius: 50%;
-
-        animation: spin 0.8s linear infinite;
-      }
-
-      .loader-text {
-        font-weight: 700;
-        color: #0f172a;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      } */
     `,
   ],
 })

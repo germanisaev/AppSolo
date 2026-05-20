@@ -1,5 +1,5 @@
-import { Component, OnInit } from "@angular/core";
-import { ServiceNoteComponent } from "./service-note.component";
+import { Component, OnInit } from '@angular/core';
+import { ServiceNoteComponent } from '../../shared/components/service-note.component';
 
 @Component({
   selector: 'app-wizard-card',
@@ -15,7 +15,15 @@ import { ServiceNoteComponent } from "./service-note.component";
       <app-service-note />
     </div>
   `,
+  styles: [
+    `
+      :host ::ng-deep .service-note {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 14px;
+        color: #888;
+      }
+    `,
+  ],
 })
-export class WizardCardComponent {
-  
-}
+export class WizardCardComponent {}

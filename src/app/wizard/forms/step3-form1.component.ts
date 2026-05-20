@@ -3,14 +3,14 @@ import { JsonPipe, NgIf } from '@angular/common';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step3Form1 } from '../models/step.types';
-import { DateFieldComponent } from '../controls/date-field.component';
-import { SelectFieldComponent } from '../controls/select-field.component';
-import { FormFieldComponent } from '../controls/form-field.component';
-import { SwitchFieldComponent } from '../controls/switch-field.component';
-import { dateValidator } from '../models/validators';
+import { Step3Form1 } from '../../shared/models/step.types';
+import { DateFieldComponent } from '../../shared/controls/date-field.component';
+import { SelectFieldComponent } from '../../shared/controls/select-field.component';
+import { InputFieldComponent } from '../../shared/controls/input-field.component';
+import { SwitchFieldComponent } from '../../shared/controls/switch-field.component';
+import { dateValidator } from '../../shared/models/validators';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.component';
+import { LoanBlockedPopupComponent } from '../../shared/components/loan-blocked-popup.component';
 
 @Component({
   selector: 'app-step3-form1',
@@ -20,7 +20,7 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
     DropdownModule,
     DateFieldComponent,
     SelectFieldComponent,
-    FormFieldComponent,
+    InputFieldComponent,
     SwitchFieldComponent,
     NgIf,
     WizardCardComponent,
@@ -79,12 +79,12 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
               [filter]="false"
             ></app-select-field>
 
-            <app-form-field
+            <app-input-field
               [form]="form"
               controlName="email"
               label="כתובת דוא״ל"
             >
-            </app-form-field>
+            </app-input-field>
 
             <app-select-field
               [form]="form"
@@ -94,12 +94,12 @@ import { LoanBlockedPopupComponent } from '../components/loan-blocked-popup.comp
               [filter]="false"
             ></app-select-field>
 
-            <app-form-field
+            <app-input-field
               [form]="form"
               controlName="childreNumUnder18"
               label="18 מספר ילדים עד גיל"
             >
-            </app-form-field>
+            </app-input-field>
           </div>
         </app-wizard-card>
       </div>

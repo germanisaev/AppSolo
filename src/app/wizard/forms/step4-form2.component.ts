@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step4Form2 } from '../models/step.types';
-import { SelectFieldComponent } from '../controls/select-field.component';
-import { SwitchFieldComponent } from '../controls/switch-field.component';
-import { RadioGroupFieldComponent } from '../controls/radio-group-field.component';
+import { Step4Form2 } from '../../shared/models/step.types';
+import { SelectFieldComponent } from '../../shared/controls/select-field.component';
+import { SwitchFieldComponent } from '../../shared/controls/switch-field.component';
+import { RadioGroupFieldComponent } from '../../shared/controls/radio-group-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({

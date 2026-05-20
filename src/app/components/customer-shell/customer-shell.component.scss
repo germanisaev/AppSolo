@@ -38,7 +38,7 @@
   width: 100%;
   height: max(78vh, 720px);
 
-  background-image: url('/background-customer.png');
+  background-image: url("/background-customer.png");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% 100%;
@@ -52,6 +52,28 @@
   z-index: 1;
   min-height: 100%;
 }
+
+/* ============= */
+// .page-shell {
+//   position: relative;
+//   min-height: 100vh;
+//   overflow: hidden;
+// }
+
+// .bg-intro,
+// .bg-layer {
+//   position: fixed;
+//   inset: 0;
+//   z-index: 0;
+//   pointer-events: none;
+// }
+
+// .page-content {
+//   position: relative;
+//   z-index: 1;
+//   min-height: 100vh;
+// }
+/* ============= */
 
 @media (max-width: 768px) {
   .bg-layer {

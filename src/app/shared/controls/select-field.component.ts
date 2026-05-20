@@ -19,15 +19,36 @@ export interface SelectOption<T = string> {
         {{ label }}
       </label>
 
+      <!-- 
+      <p-dropdown
+        [formControlName]="controlName"
+        [options]="options"
+        optionLabel="label"
+        optionValue="value"
+        [filter]="true"
+        filterBy="label"
+        [filterPlaceholder]="'חפש...'"
+        [showClear]="true"
+        [appendTo]="'body'"
+        [autoDisplayFirst]="false"
+        [placeholder]="placeholder"
+      />
+      -->
+
       <p-dropdown
         [formControlName]="controlName"
         [options]="options"
         optionLabel="label"
         optionValue="value"
         [placeholder]="placeholder"
+        [filterPlaceholder]="'חפש...'"
         [filter]="filter"
         filterBy="label"
+        [showClear]="false"
+        [autoDisplayFirst]="false"
         [class.input-error]="isInvalid"
+        (onChange)="onChange()"
+        (onBlur)="onBlur()"
       />
 
       <div class="error" *ngIf="isInvalid">
@@ -37,6 +58,31 @@ export interface SelectOption<T = string> {
   `,
   styles: [
     `
+      :host ::ng-deep {
+        .p-dropdown {
+          width: 100%;
+        }
+
+        .p-dropdown-label {
+          padding-right: 42px !important; // место под стрелку справа
+          padding-left: 42px !important; // место под крестик слева
+          text-align: right;
+          direction: rtl;
+        }
+
+        .p-dropdown-trigger {
+          right: 0 !important;
+          left: auto !important;
+        }
+
+        .p-dropdown-clear-icon,
+        .p-dropdown-clearable .p-dropdown-clear-icon,
+        .p-dropdown-clearable .p-icon-wrapper {
+          right: auto !important;
+          left: 12px !important;
+        }
+      }
+
       .error {
         display: block;
         margin-top: 4px;
@@ -91,5 +137,18 @@ export class SelectFieldComponent<T = string> {
     }
 
     return this.validation.getError(this.controlName, errors);
+  }
+
+  onChange(): void {
+    const control = this.control;
+
+    if (!control) return;
+
+    control.markAsTouched();
+    control.markAsDirty();
+  }
+
+  onBlur(): void {
+    this.control?.markAsTouched();
   }
 }

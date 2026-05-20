@@ -29,22 +29,6 @@ import { NumberFormatDirective } from '../services/number-format.directive';
         {{ errorMessage }}
       </div>
     </div>
-    <!-- <div class="field" [formGroup]="form">
-      <label [class.required-mark]="isRequired">
-        {{ label }}
-      </label>
-
-      <input
-        [type]="type"
-        [formControlName]="controlName"
-        [class.input-error]="isInvalid"
-        numberFormat
-      />
-
-      <div class="error" *ngIf="isInvalid">
-        {{ errorMessage }}
-      </div>
-    </div> -->
   `,
   styles: [
     `

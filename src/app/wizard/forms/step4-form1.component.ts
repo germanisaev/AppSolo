@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step4Form1 } from '../models/step.types';
-import { SwitchFieldComponent } from '../controls/switch-field.component';
-import { SelectFieldComponent } from '../controls/select-field.component';
-import { NumberFieldComponent } from '../controls/number-field.component';
-import { FormFieldComponent } from '../controls/form-field.component';
+import { Step4Form1 } from '../../shared/models/step.types';
+import { SwitchFieldComponent } from '../../shared/controls/switch-field.component';
+import { SelectFieldComponent } from '../../shared/controls/select-field.component';
+import { NumberFieldComponent } from '../../shared/controls/number-field.component';
+import { InputFieldComponent } from '../../shared/controls/input-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
@@ -18,7 +18,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
     SwitchFieldComponent,
     SelectFieldComponent,
     NumberFieldComponent,
-    FormFieldComponent,
+    InputFieldComponent,
     WizardCardComponent,
   ],
   template: `
@@ -44,14 +44,14 @@ import { WizardCardComponent } from '../components/wizard-card.component';
           />
           <br />
 
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="tenureValue"
             label="וותק במקום העבודה הנוכחי (בשנים)"
           >
-          </app-form-field>
+          </app-input-field>
 
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="workplaceType"
             label="מה מקום העבודה שלך?"

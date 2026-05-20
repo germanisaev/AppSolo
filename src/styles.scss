@@ -39,7 +39,47 @@ label {
 
 label.required-mark::after {
   content: "*";
-  color: #dc2626;
+  color: #7b1bb1;
+  // color: #dc2626;
   margin-left: 4px;
   font-weight: 700;
 }
+
+/* =============== */
+input.invalid {
+  border-color: #d93025;
+}
+
+.field-error,
+.privacy-error {
+  display: block;
+  margin-top: 6px;
+  color: #d93025;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.privacy-row {
+  width: fit-content;
+  margin: 28px auto 0;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.privacy-row input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.privacy-row.invalid span {
+  color: #d93025;
+}
+
+.privacy-error {
+  text-align: center;
+}
+/* =============== */

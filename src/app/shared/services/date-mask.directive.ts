@@ -1,12 +1,10 @@
 import { Directive, HostListener } from '@angular/core';
-import { NgControl } from '@angular/forms';
 
 @Directive({
   selector: '[appDateMask]',
   standalone: true,
 })
 export class DateMaskDirective {
-  constructor(private ngControl: NgControl) {}
 
   @HostListener('input', ['$event'])
   onInput(event: Event): void {
@@ -21,6 +19,5 @@ export class DateMaskDirective {
     }
 
     input.value = value;
-    this.ngControl.control?.setValue(value, { emitEvent: false });
   }
 }

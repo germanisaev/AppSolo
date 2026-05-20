@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step3Form3 } from '../models/step.types';
-import { FormFieldComponent } from '../controls/form-field.component';
-import { NumberFieldComponent } from '../controls/number-field.component';
+import { Step3Form3 } from '../../shared/models/step.types';
+import { InputFieldComponent } from '../../shared/controls/input-field.component';
+import { NumberFieldComponent } from '../../shared/controls/number-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { WizardCardComponent } from '../components/wizard-card.component';
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    FormFieldComponent,
+    InputFieldComponent,
     NumberFieldComponent,
     WizardCardComponent,
   ],
@@ -21,17 +21,17 @@ import { WizardCardComponent } from '../components/wizard-card.component';
         <h3 class="card-title">פרטים בן/בת זוג</h3>
 
         <div class="form-grid two-columns" [formGroup]="form">
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="firstName"
             label="שם פרטי"
           />
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="lastName"
             label="שם משפחה"
           />
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="governmentId"
             label="מספר זהות"

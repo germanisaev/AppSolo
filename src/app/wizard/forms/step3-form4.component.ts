@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step3Form4 } from '../models/step.types';
+import { Step3Form4 } from '../../shared/models/step.types';
 import { NgIf } from '@angular/common';
-import { FormFieldComponent } from '../controls/form-field.component';
+import { InputFieldComponent } from '../../shared/controls/input-field.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { zipCodeValidator } from '../models/validators';
-import { SelectFieldComponent } from '../controls/select-field.component';
+import { zipCodeValidator } from '../../shared/models/validators';
+import { SelectFieldComponent } from '../../shared/controls/select-field.component';
+import { CheckboxFieldComponent } from '../../shared/controls/checkbox-field.component';
 
 @Component({
   selector: 'app-step3-form4',
@@ -14,9 +15,10 @@ import { SelectFieldComponent } from '../controls/select-field.component';
   imports: [
     ReactiveFormsModule,
     NgIf,
-    FormFieldComponent,
+    InputFieldComponent,
     WizardCardComponent,
     SelectFieldComponent,
+    CheckboxFieldComponent,
   ],
   template: `
     <div class="final-card">
@@ -24,67 +26,50 @@ import { SelectFieldComponent } from '../controls/select-field.component';
         <h3 class="card-title">כתובת מגורים</h3>
 
         <div class="form-grid three-columns" [formGroup]="form">
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="city"
             label="ישוב"
-          ></app-form-field>
+          ></app-input-field>
 
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="street"
             label="שם רחוב"
-          ></app-form-field>
+          ></app-input-field>
 
-          <!-- <div class="field">
-            <label [class.required-mark]="isControlRequired('houseNumber')">
-              מספר בית
-            </label>
-            <input type="text" formControlName="houseNumber" />
-          </div> -->
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="houseNumber"
             label="מספר בית"
-          ></app-form-field>
+          ></app-input-field>
 
-          <!-- <div class="field">
-            <label [class.required-mark]="isControlRequired('entranceNumber')">
-              כניסה
-            </label>
-            <input type="text" formControlName="entranceNumber" />
-          </div> -->
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="entranceNumber"
             label="כניסה"
-          ></app-form-field>
+          ></app-input-field>
 
-          <!-- <div class="field">
-            <label [class.required-mark]="isControlRequired('apartmentNumber')">
-              מספר דירה
-            </label>
-            <input type="text" formControlName="apartmentNumber" />
-          </div> -->
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="apartmentNumber"
             label="מספר דירה"
-          ></app-form-field>
+          ></app-input-field>
 
-          <!-- <div class="field">
-            <label [class.required-mark]="isControlRequired('zipCode')">
-              מיקוד
-            </label>
-            <input type="text" formControlName="zipCode" />
-          </div> -->
-          <app-form-field
+          <app-input-field
             [form]="form"
             controlName="zipCode"
             label="מיקוד"
-          ></app-form-field>
+          ></app-input-field>
 
-          <div class="field" style="margin-bottom: 1rem;">
+          <app-checkbox-field
+            [form]="form"
+            controlName="isMailingAddressDifferent"
+            label="כתובת למשלוח דואר אינה זהה לכתובת המגורים שלי"
+          >
+          </app-checkbox-field>
+
+          <!-- <div class="field mb-1">
             <label
               class="checkbox-row"
               [class.required-mark]="
@@ -97,7 +82,7 @@ import { SelectFieldComponent } from '../controls/select-field.component';
               />
               כתובת למשלוח דואר אינה זהה לכתובת המגורים שלי
             </label>
-          </div>
+          </div> -->
         </div>
 
         <ng-container *ngIf="form.controls.isMailingAddressDifferent.value">
@@ -108,6 +93,7 @@ import { SelectFieldComponent } from '../controls/select-field.component';
               [form]="form.controls.differentMailingAddress"
               controlName="city"
               label="ישוב"
+              [filter]="true"
               [options]="cityOptions"
               placeholder="בחר"
             />
@@ -116,35 +102,36 @@ import { SelectFieldComponent } from '../controls/select-field.component';
               [form]="form.controls.differentMailingAddress"
               controlName="street"
               label="שם רחוב"
+              [filter]="true"
               [options]="streetOptions"
               placeholder="בחר"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form.controls.differentMailingAddress"
               controlName="houseNumber"
               label="מספר בית"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form.controls.differentMailingAddress"
               controlName="entranceNumber"
               label="כניסה"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form.controls.differentMailingAddress"
               controlName="apartmentNumber"
               label="מספר דירה"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form.controls.differentMailingAddress"
               controlName="zipCode"
               label="מיקוד"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form.controls.differentMailingAddress"
               controlName="poBoxNumber"
               label="תא דואר"

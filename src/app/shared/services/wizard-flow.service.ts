@@ -230,28 +230,18 @@ export class WizardFlowService {
   }
 
   isStepCompleted(step: number): boolean {
-    const total = this.getFormsCount(step);
-
-    if (!total) {
-      return false;
-    }
-
-    for (let i = 1; i <= total; i++) {
-      if (!this.isValid(step, i)) {
-        return false;
-      }
-    }
-
-    return true;
+    return this.isStepValidForNavigation(step);
   }
 
   canOpenStep(step: number): boolean {
-    if (step <= 1) {
+    const normalizedStep = this.normalizeStep(step);
+
+    if (normalizedStep <= 1) {
       return true;
     }
 
-    for (let i = 1; i < step; i++) {
-      if (!this.isStepCompleted(i)) {
+    for (let i = 1; i < normalizedStep; i++) {
+      if (!this.isStepValidForNavigation(i)) {
         return false;
       }
     }
@@ -300,44 +290,36 @@ export class WizardFlowService {
     formIndex: number,
   ): { step: number; form: number } | null {
     const normalizedStep = this.normalizeStep(step);
+    const normalizedForm = this.normalizeForm(normalizedStep, formIndex);
 
-    if (normalizedStep === 4 && formIndex === 2) {
-      return {
-        step: 5,
-        form: 2,
-      };
+    // step 3: если не женат — пропускаем spouse-details
+    if (normalizedStep === 3 && normalizedForm === 2 && !this.isMarried()) {
+      return { step: 3, form: 4 };
     }
 
-    if (normalizedStep === 5 && (formIndex === 1 || formIndex === 2)) {
-      return {
-        step: 5,
-        form: 3,
-      };
+    // step 4: после personal-declarations идём на loan-summary
+    if (normalizedStep === 4 && normalizedForm === 2) {
+      return { step: 5, form: 2 };
     }
 
-    if (normalizedStep === 3 && formIndex === 2 && !this.isMarried()) {
-      return {
-        step: 3,
-        form: 4,
-      };
+    // step 5: после form 1 или form 2 идём на финальную форму
+    if (
+      normalizedStep === 5 &&
+      (normalizedForm === 1 || normalizedForm === 2)
+    ) {
+      return { step: 5, form: 3 };
     }
 
     const totalForms = this.getFormsCount(normalizedStep);
 
-    if (formIndex < totalForms) {
-      return {
-        step: normalizedStep,
-        form: formIndex + 1,
-      };
+    if (normalizedForm < totalForms) {
+      return { step: normalizedStep, form: normalizedForm + 1 };
     }
 
     const nextStep = normalizedStep + 1;
 
     if (nextStep <= this.steps.length) {
-      return {
-        step: nextStep,
-        form: 1,
-      };
+      return { step: nextStep, form: 1 };
     }
 
     return null;
@@ -348,19 +330,25 @@ export class WizardFlowService {
     formIndex: number,
   ): { step: number; form: number } | null {
     const normalizedStep = this.normalizeStep(step);
+    const normalizedForm = this.normalizeForm(normalizedStep, formIndex);
 
-    if (normalizedStep === 3 && formIndex === 4 && !this.isMarried()) {
-      return {
-        step: 3,
-        form: 2,
-      };
+    // step 3: если не женат — возвращаемся с address-details сразу на confirmation
+    if (normalizedStep === 3 && normalizedForm === 4 && !this.isMarried()) {
+      return { step: 3, form: 2 };
     }
 
-    if (formIndex > 1) {
-      return {
-        step: normalizedStep,
-        form: formIndex - 1,
-      };
+    // step 5: финальная форма возвращается на summary
+    if (normalizedStep === 5 && normalizedForm === 3) {
+      return { step: 5, form: 2 };
+    }
+
+    // step 5: summary возвращается на step 4 form 2
+    if (normalizedStep === 5 && normalizedForm === 2) {
+      return { step: 4, form: 2 };
+    }
+
+    if (normalizedForm > 1) {
+      return { step: normalizedStep, form: normalizedForm - 1 };
     }
 
     const prevStep = normalizedStep - 1;
@@ -372,33 +360,9 @@ export class WizardFlowService {
       };
     }
 
-    if (normalizedStep === 5 && formIndex === 3) {
-      return {
-        step: 5,
-        form: 1,
-      };
-    }
-
     return null;
   }
 
-  /* isStepValidForNavigation(step: number): boolean {
-    const forms = this.formsByStep[step as keyof typeof this.formsByStep];
-
-    if (!forms) {
-      return false;
-    }
-
-    return forms.every((form, index) => {
-      const formNumber = index + 1;
-
-      if (step === 3 && formNumber === 3 && !this.isMarried()) {
-        return true;
-      }
-
-      return form.valid;
-    });
-  } */
   isStepValidForNavigation(step: number): boolean {
     const normalizedStep = this.normalizeStep(step);
     const forms =
@@ -457,12 +421,7 @@ export class WizardFlowService {
   }
 
   isStepValid(step: number): boolean {
-    const normalizedStep = this.normalizeStep(
-      step,
-    ) as keyof typeof this.formsByStep;
-    const forms = this.formsByStep[normalizedStep];
-
-    return forms.every((form) => form.valid);
+    return this.isStepValidForNavigation(step);
   }
 
   isStepAccessible(targetStep: number, currentStep: number): boolean {

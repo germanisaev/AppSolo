@@ -4,7 +4,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export type LoanDecisionModalType =
   | 'sentToAgent'
   | 'rejected'
-  | 'manualProcess';
+  | 'manualProcess'
+  | 'otpBlocked'
+  | 'linkSentSuccess';
 
 @Component({
   selector: 'app-loan-decision-modal',
@@ -21,9 +23,6 @@ export type LoanDecisionModalType =
           {{ text }}
         </p>
 
-        <!-- <button type="button" class="modal-button" (click)="closed.emit()">
-          הבנתי
-        </button> -->
         <button type="button" class="modal-button" (click)="onConfirm()">
           הבנתי
         </button>
@@ -202,6 +201,9 @@ export class LoanDecisionModalComponent {
       sentToAgent: '/icon-session-timeout.png',
       rejected: '/icon-operation-failed.png',
       manualProcess: '/icon-secure-authentication.png',
+      otpBlocked: '/icon-secure-authentication.png',
+      linkSentSuccess: '/icon-success-form.png',
+
     };
 
     return icons[this.type];
@@ -212,6 +214,8 @@ export class LoanDecisionModalComponent {
       sentToAgent: 'בקשתך הועברה לנציג',
       rejected: 'מצטערים. בהתאם למידע לא ניתן לאשר את ההלוואה',
       manualProcess: 'המשך התהליך מול נציג',
+      otpBlocked: 'לא ניתן לנסות שוב',
+      linkSentSuccess: 'הקישור נשלח בהצלחה!',
     };
 
     return titles[this.type];
@@ -223,6 +227,8 @@ export class LoanDecisionModalComponent {
       rejected: '',
       manualProcess:
         'לצורך אישור הבקשה נדרש אישור מול הגורם המטפל. נציג מטעמנו יצור עמך קשר לבדיקה ולהשלמת מסמכים במידת הצורך',
+      otpBlocked: 'בוצעו יותר מדי נסיונות. אפשר לנסות שוב בעוד 24 שעות',
+      linkSentSuccess: 'הפרטים נשמרו ונשלח קישור ללקוח להמשך התהליך',
     };
 
     return texts[this.type];

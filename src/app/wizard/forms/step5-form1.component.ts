@@ -1,9 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step5Form1 } from '../models/step.types';
+import { Step5Form1 } from '../../shared/models/step.types';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { WizardFlowService } from '../services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services/wizard-flow.service';
 
 @Component({
   selector: 'app-step5-form1',

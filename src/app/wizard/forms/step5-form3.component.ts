@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { WizardFlowService } from '../services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services/wizard-flow.service';
 import { WizardCardComponent } from '../components/wizard-card.component';
 import { DecimalPipe } from '@angular/common';
 

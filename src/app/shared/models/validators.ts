@@ -92,12 +92,17 @@ export const dateValidator: ValidatorFn = (
 
   const date = String(value);
 
+  if (date.includes('T')) {
+    const parsed = new Date(date);
+
+    return Number.isNaN(parsed.getTime()) ? { invalidDate: true } : null;
+  }
+
   if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
     return { invalidDate: true };
   }
 
   const [day, month, year] = date.split('/').map(Number);
-
   const parsedDate = new Date(year, month - 1, day);
 
   const isValid =

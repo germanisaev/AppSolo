@@ -1,5 +1,5 @@
 import { FormGroup, Validators } from '@angular/forms';
-import { ValidationService } from '../../wizard/services/validation.service';
+import { ValidationService } from '../services/validation.service';
 import { inject } from '@angular/core';
 
 export abstract class FormBaseComponent {

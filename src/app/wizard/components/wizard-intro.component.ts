@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { WizardFlowService } from '../services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { OtpPopupComponent } from './otp-popup.component';
+import { CommonModule } from '@angular/common';
+import { LoanDecisionModalComponent } from '../../shared/components/loan-decision-modal.component';
 
 @Component({
   selector: 'app-wizard-intro',
   standalone: true,
+  imports: [CommonModule, OtpPopupComponent, LoanDecisionModalComponent],
   template: `
     <div class="intro-layout" dir="rtl">
-      <aside class="intro-hero">
+      <aside class="right-side intro-hero">
         <div class="hero-small">חדש במזרחי-טפחות!</div>
-        <div class="hero-title">
-          אשראי<br />
-          צרכני
-        </div>
+        <div class="hero-title">אשראי צרכני</div>
       </aside>
 
-      <div>
+      <div class="left-side">
         <section class="intro-card" dir="rtl">
           <h1>
             הגעתם למערכת אשראי צרכני של בנק מזרחי טפחות.<br />
@@ -65,6 +66,23 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         </footer>
       </div>
     </div>
+
+    <app-otp-popup
+      *ngIf="showOtpPopup"
+      [phoneNumber]="'0549452396'"
+      [errorMessage]="otpErrorMessage"
+      (closed)="showOtpPopup = false"
+      (confirmed)="onOtpConfirmed($event)"
+      (resend)="onOtpResend()"
+    >
+    </app-otp-popup>
+
+    <app-loan-decision-modal
+      *ngIf="showOtpBlockedPopup"
+      [type]="'otpBlocked'"
+      (confirmed)="onOtpBlockedConfirmed()"
+    >
+    </app-loan-decision-modal>
   `,
   styles: [
     `
@@ -79,19 +97,31 @@ import { WizardFlowService } from '../services/wizard-flow.service';
 
         /* display: grid;
         grid-template-columns: 680px 1fr; */
-        gap: 72px;
+        gap: 80px;
       }
 
       .intro-card {
-        width: 920px;
-        min-height: 520px;
+        // width: 920px;
+        // min-height: 720px;
+        width: 100%;
+        max-width: 920px; /* ограничение только сверху */
+        margin-inline: auto;
         padding: 36px 76px;
-
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 20px 45px rgba(15, 23, 42, 0.14);
         text-align: center;
       }
+      // .intro-card {
+      //   width: clamp(760px, 54vw, 920px);
+      //   min-height: 520px;
+      //   padding: 36px 76px;
+      //   background: #fff;
+      //   border-radius: 10px;
+      //   box-shadow: 0 20px 45px rgba(15, 23, 42, 0.14);
+      //   text-align: center;
+      //   flex-shrink: 0;
+      // }
 
       .intro-card h1 > span {
         font-size: 24px;
@@ -104,7 +134,6 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         display: flex;
         flex-direction: column;
         justify-content: center;
-
         color: #fff;
         text-align: right;
       }
@@ -112,6 +141,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
       .hero-small {
         font-size: 48px;
       }
+
       .hero-title {
         font-size: 150px;
         line-height: 0.95;
@@ -169,18 +199,14 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         width: 72px;
         height: 72px;
         margin-bottom: 22px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         border-radius: 50%;
         background: #ff6600;
         color: #fff;
-
         font-size: 34px;
         font-weight: 800;
-
         box-shadow: 0 20px 32px rgba(255, 102, 0, 0.25);
       }
 
@@ -203,17 +229,13 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         min-width: 132px;
         height: 44px;
         margin-bottom: 40px;
-
         border: none;
         border-radius: 999px;
-
         background: #711aaa;
         color: #fff;
-
         font-family: inherit;
         font-size: 16px;
         font-weight: 800;
-
         cursor: pointer;
       }
 
@@ -242,6 +264,14 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         font-size: 15px;
       }
 
+      .left-side {
+        flex: 2; /* шире */
+      }
+
+      .right-side {
+        flex: 1; /* уже */
+      }
+
       @media (max-width: 768px) {
         .intro-layout {
           width: 100%;
@@ -259,12 +289,9 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         .intro-hero {
           width: 100%;
           min-height: 350px;
-
           justify-content: flex-start;
           align-items: center;
-
           padding: 70px 16px 0;
-
           text-align: center;
         }
 
@@ -274,7 +301,7 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         }
 
         .hero-title {
-          font-size: 48px;
+          font-size: 56px;
           font-weight: 800;
         }
 
@@ -290,10 +317,8 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         .intro-card {
           width: 100%;
           min-height: auto;
-
           margin-top: -74px;
           padding: 28px 20px 24px;
-
           border-radius: 16px;
           text-align: center;
           z-index: 2;
@@ -310,7 +335,6 @@ import { WizardFlowService } from '../services/wizard-flow.service';
         .intro-card h1 > span {
           display: block;
           margin-top: 4px;
-
           font-size: 13px;
           line-height: 1.5;
           font-weight: 500;
@@ -320,7 +344,6 @@ import { WizardFlowService } from '../services/wizard-flow.service';
           display: grid;
           grid-template-columns: 1fr;
           gap: 24px;
-
           margin-bottom: 24px;
         }
 
@@ -328,7 +351,6 @@ import { WizardFlowService } from '../services/wizard-flow.service';
           width: 54px;
           height: 54px;
           margin-bottom: 12px;
-
           font-size: 24px;
         }
 
@@ -347,22 +369,19 @@ import { WizardFlowService } from '../services/wizard-flow.service';
           min-width: 112px;
           height: 36px;
           margin-bottom: 20px;
-
           font-size: 13px;
         }
 
         .legal-text {
           max-width: 230px;
           margin-bottom: 14px;
-
           font-size: 10px;
           line-height: 1.55;
         }
 
         .intro-footer {
-          width: min(100%, 280px);
+          // width: min(100%, 280px);
           margin-top: 14px;
-
           text-align: center;
           font-size: 11px;
         }
@@ -398,66 +417,64 @@ export class WizardIntroComponent {
   private router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly flow = inject(WizardFlowService);
+  @ViewChild(OtpPopupComponent) otpPopup?: OtpPopupComponent;
 
-  ngOnInit(): void {
-    const token = this.route.snapshot.queryParamMap.get('token');
+  showOtpPopup = false;
+  showOtpBlockedPopup = false;
+  otpErrorMessage = '';
 
-    if (!token) {
+  private readonly validOtpCode = '123456';
+  private otpAttempts = 0;
+  private readonly maxOtpAttempts = 3;
+
+  start(): void {
+    this.showOtpPopup = true;
+  }
+
+  onOtpConfirmed(code: string): void {
+    if (code !== this.validOtpCode) {
+      this.otpAttempts++;
+
+      const attemptsLeft = this.maxOtpAttempts - this.otpAttempts;
+
+      if (this.otpAttempts >= this.maxOtpAttempts) {
+        this.showOtpPopup = false;
+        this.showOtpBlockedPopup = true;
+        this.otpErrorMessage = '';
+        return;
+      }
+
+      this.otpErrorMessage = `הקוד שהוזן שגוי. נותרו ${attemptsLeft} ניסיונות`;
+
+      setTimeout(() => {
+        this.otpPopup?.clearOtp();
+      });
+
       return;
     }
 
-    /* this.flow.patchBankRequestData({
-      firstName: 'יוסי',
-      lastName: 'אהרוני',
-      governmentId: '223343456',
-      mobile: '0508832233',
-      email: 'yossi@gmail.com',
+    this.otpAttempts = 0;
+    this.otpErrorMessage = '';
+    this.showOtpPopup = false;
 
-      loanAmount: '20000',
-      numberOfPayments: '20',
-      linkageType: 'indexLinked',
+    this.flow.completeIntro();
 
-      loanBeneficiary: 'applicant',
-      bank: '10',
-      branchNumber: '941',
-      accountNumber: '382382',
-
-      orderNumber: '2356',
-      loanType: 'consumer',
-      serviceType: 'consulting',
-    });*/
+    this.router.navigate(['/customer', 'wizard', 'step', 1], {
+      queryParams: { form: 1 },
+    });
   }
 
-  /* start(): void {
-    this.flow.completeIntro();
+  onOtpResend(): void {
+    console.log('resend otp from intro');
+  }
 
-    this.router.navigate(['/wizard/step', 1], {
-      queryParams: { form: 1 },
-    });
-  }  */
-  start(): void {
-    this.flow.patchBankRequestData({
-      firstName: 'יוסי',
-      lastName: 'ישראלי',
-      governmentId: '223343456',
-      mobile: '0508832233',
-      email: 'yossi@gmail.com',
-      loanAmount: '20000',
-      numberOfPayments: '20',
-      linkageType: 'none',
-      loanBeneficiary: 'applicant',
-      bank: '10',
-      branchNumber: '941',
-      accountNumber: '382382',
-      orderNumber: '2356',
-      loanType: 'consumer',
-      serviceType: 'consulting',
-    });
+  onOtpBlockedConfirmed(): void {
+    this.showOtpBlockedPopup = false;
+    this.otpAttempts = 0;
+    this.otpErrorMessage = '';
 
-    this.flow.completeIntro();
-
-    this.router.navigate(['/wizard/step', 1], {
-      queryParams: { form: 1 },
+    this.router.navigate(['/customer', 'intro'], {
+      queryParams: { token: 'secure-token-xyz' },
     });
   }
 }

@@ -8,71 +8,76 @@
     </p>
   </section>
 
-  <section class="bank-form-card" [formGroup]="form">
+  <!-- <section class="bank-form-card" [formGroup]="form">
     <h2>יש למלא את פרטי הלקוח</h2>
 
     <div class="form-grid three-columns">
-      <div class="field">
-        <label>שם פרטי</label>
-        <input type="text" formControlName="firstName" />
-      </div>
+      <div class="field" *ngFor="let field of config.fields">
+        <label>
+          {{ field.label }}
+          <span *ngIf="field.required" class="required-star">*</span>
+        </label>
 
-      <div class="field">
-        <label>שם משפחה</label>
-        <input type="text" formControlName="lastName" />
-      </div>
+        <input [type]="field.type === 'email' ? 'email' : 'text'" [formControlName]="field.name"
+          [class.invalid]="isInvalid(field.name)" />
 
-      <div class="field">
-        <label>מספר ת״ז</label>
-        <input type="text" formControlName="governmentId" />
-      </div>
-
-      <div class="field">
-        <label>טלפון נייד</label>
-        <input type="text" formControlName="mobile" />
-      </div>
-
-      <div class="field">
-        <label>כתובת דוא״ל</label>
-        <input type="email" formControlName="email" />
-      </div>
-
-      <div class="field">
-        <label>סוג הצמדה</label>
-        <input type="text" formControlName="linkageType" />
-      </div>
-
-      <div class="field">
-        <label>סכום ההלוואה המבוקשת</label>
-        <input type="text" formControlName="loanAmount" />
-      </div>
-
-      <div class="field">
-        <label>מספר הזמנה</label>
-        <input type="text" formControlName="orderNumber" />
-      </div>
-
-      <div class="field">
-        <label>סוג השירות</label>
-        <input type="text" formControlName="serviceType" />
+        <small class="field-error" *ngIf="isInvalid(field.name)">
+          שדה חובה
+        </small>
       </div>
     </div>
 
-    <label class="privacy-row">
-      <input type="checkbox" formControlName="privacyApproved" />
+    <label class="privacy-row" *ngIf="config.showPrivacyCheckbox">
       <span>
         ידעתי את הלקוח על מדיניות הפרטיות
         <a href="#">למדיניות הפרטיות</a>
       </span>
+      <input type="checkbox" formControlName="privacyApproved" />
     </label>
 
-    <button
-      type="button"
-      class="send-button"
-      [disabled]="isSending"
-      (click)="sendLinkToCustomer()"
-    >
-      {{ isSending ? 'שולח...' : 'שליחת קישור ללקוח' }}
+    <button type="button" class="send-button" [disabled]="isSending" (click)="submitStartForm()">
+      {{ config.submitButtonText }}
     </button>
+  </section> -->
+  <section class="bank-form-card">
+    <form [formGroup]="form" (ngSubmit)="submitStartForm()">
+      <h2>יש למלא את פרטי הלקוח</h2>
+
+      <div class="form-grid three-columns">
+        <div class="field" *ngFor="let field of config.fields">
+          <label>
+            {{ field.label }}
+            <span *ngIf="field.required" class="required-star">*</span>
+          </label>
+
+          <input [type]="field.type === 'email' ? 'email' : 'text'" [formControlName]="field.name"
+            [class.invalid]="isInvalid(field.name)" />
+
+          <small class="field-error" *ngIf="isInvalid(field.name)">
+            שדה חובה
+          </small>
+        </div>
+      </div>
+
+      <label class="privacy-row" *ngIf="config.showPrivacyCheckbox">
+        <input type="checkbox" formControlName="privacyApproved" />
+        <span>
+          ידעתי את הלקוח על מדיניות הפרטיות
+          <a href="#">למדיניות הפרטיות</a>
+        </span>
+        
+      </label>
+
+      <button type="submit" class="send-button" [disabled]="isSending">
+        {{ config.submitButtonText }}
+      </button>
+    </form>
   </section>
 </div>
+
+<app-otp-popup *ngIf="showOtpPopup" (closed)="showOtpPopup = false" (confirmed)="onOtpConfirmed($event)"
+  (resend)="onOtpResend()" [phoneNumber]="form.controls.mobile.value">
+</app-otp-popup>
+
+<app-loan-decision-modal *ngIf="showSuccessPopup" [type]="'linkSentSuccess'" (confirmed)="showSuccessPopup = false">
+</app-loan-decision-modal>

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { SliderModule } from 'primeng/slider';
-import { Step2Form1 } from '../models/step.types';
+import { Step2Form1 } from '../../shared/models/step.types';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { WizardCardComponent } from '../components/wizard-card.component';
 

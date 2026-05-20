@@ -8,6 +8,63 @@
   gap: 24px;
 }
 
+.required-star {
+  color: #0047ff;
+}
+
+/* ================== */
+
+.field-error,
+.privacy-error {
+  display: block;
+  margin-top: 2px;
+  color: #d93025;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.privacy-row {
+  width: 100%;
+  margin: 34px 0 28px;
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  align-self: stretch;
+  font-size: 16px;
+  color: #333;
+
+  input {
+    order: 1;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: #711aaa;
+  }
+
+  span {
+    order: 2;
+    white-space: nowrap;
+  }
+
+  a {
+    color: #711aaa;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  &.invalid span {
+    color: #d93025;
+  }
+}
+
+.privacy-error {
+  text-align: center;
+}
+/* ================== */
+
 .welcome-card,
 .bank-form-card {
   width: min(1040px, 92vw);
@@ -67,33 +124,36 @@
 
   input {
     width: 100%;
-    height: 46px;
-
-    border: 1px solid #cbd5e1;
+    height: 44px;
+    border: 1px solid #e5e7eb; // мягкий серый
     border-radius: 10px;
-    padding: 0 14px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #1f2937;
+    background-color: #fff;
+    transition: all 0.2s ease;
+    outline: none;
 
-    direction: rtl;
-    text-align: right;
-    font-size: 15px;
-  }
-}
+    // hover
+    &:hover {
+      border-color: #d1d5db;
+    }
 
-.privacy-row {
-  margin: 34px 0 28px;
+    // focus
+    &:focus {
+      border-color: #7c3aed; // твой фиолетовый
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+    }
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+    // ошибка
+    &.invalid,
+    &.input-error {
+      border-color: #ef4444;
 
-  font-size: 15px;
-  color: #333;
-
-  a {
-    color: #711aaa;
-    text-decoration: none;
-    font-weight: 600;
+      &:focus {
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+      }
+    }
   }
 }
 

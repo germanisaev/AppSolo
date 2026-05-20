@@ -2,45 +2,45 @@
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step2Form2 } from '../models/step.types';
-import { FormFieldComponent } from './form-field.component';
+import { InputFieldComponent } from './form-field.component';
 import { NgIf } from '@angular/common';
 import { DateMaskDirective } from '../services/date-mask.directive';
 
 @Component({
   selector: 'app-step2-form2',
   standalone: true,
-  imports: [ReactiveFormsModule, FormFieldComponent],
+  imports: [ReactiveFormsModule, InputFieldComponent],
   template: `
     <div class="form-grid" [formGroup]="form">
-      <app-form-field
+      <app-input-field
         [form]="form"
         controlName="monthlyChargeDate"
         label="מועד חיוב חודשי">
-      </app-form-field>
+      </app-input-field>
 
-      <app-form-field
+      <app-input-field
         [form]="form"
         controlName="loanBeneficiary"
         label="עבור מי ההלוואה">
-      </app-form-field>
+      </app-input-field>
 
-      <app-form-field
+      <app-input-field
         [form]="form"
         controlName="bank"
         label="בנק">
-      </app-form-field>
+      </app-input-field>
 
-      <app-form-field
+      <app-input-field
         [form]="form"
         controlName="branchNumber"
         label="מספר סניף">
-      </app-form-field>
+      </app-input-field>
 
-      <app-form-field
+      <app-input-field
         [form]="form"
         controlName="accountNumber"
         label="מספר חשבון">
-      </app-form-field>
+      </app-input-field>
     </div>
   `,
 })
@@ -53,11 +53,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
-import { Step2Form2 } from '../models/step.types';
-import { FormFieldComponent } from '../controls/form-field.component';
+import { Step2Form2 } from '../../shared/models/step.types';
+import { InputFieldComponent } from '../../shared/controls/input-field.component';
 import { NgFor, NgIf } from '@angular/common';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { SelectFieldComponent } from '../controls/select-field.component';
+import { SelectFieldComponent } from '../../shared/controls/select-field.component';
 
 @Component({
   selector: 'app-step2-form2',
@@ -65,7 +65,7 @@ import { SelectFieldComponent } from '../controls/select-field.component';
   imports: [
     ReactiveFormsModule,
     DropdownModule,
-    FormFieldComponent,
+    InputFieldComponent,
     SelectFieldComponent,
     NgFor,
     NgIf,
@@ -132,8 +132,9 @@ import { SelectFieldComponent } from '../controls/select-field.component';
               placeholder="בחר"
             />
 
-            <app-form-field
+            <app-input-field
               [form]="form"
+              [maxLength]="7"
               controlName="accountNumber"
               label="מספר חשבון"
             />

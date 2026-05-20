@@ -2,7 +2,7 @@ import { Component, Input, inject, ChangeDetectorRef } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
-import { FormFieldComponent } from './form-field.component';
+import { InputFieldComponent } from './input-field.component';
 
 export interface SwitchCheckboxOption {
   controlName: string;
@@ -12,7 +12,7 @@ export interface SwitchCheckboxOption {
 @Component({
   selector: 'app-switch-field',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgFor, FormFieldComponent],
+  imports: [ReactiveFormsModule, NgIf, NgFor, InputFieldComponent],
   template: `
     <div
       class="field switch-row"
@@ -52,12 +52,12 @@ export interface SwitchCheckboxOption {
         *ngIf="detailsType === 'input' && isDetails && showDetailsInput"
       >
         <div class="details-side">
-          <app-form-field
+          <app-input-field
             [form]="form"
             [controlName]="detailsControlName"
             [label]="detailsLabel"
           >
-          </app-form-field>
+          </app-input-field>
         </div>
       </ng-container>
       <ng-container

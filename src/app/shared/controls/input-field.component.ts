@@ -4,18 +4,17 @@ import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ValidationService } from '../services/validation.service';
 
 @Component({
-  selector: 'app-form-field',
+  selector: 'app-input-field',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf],
   template: `
     <div class="field" [formGroup]="form">
-      <label [class.required-mark]="isRequired">
-        {{ label }}
-      </label>
+      <label>{{ label }} <span [class.required-mark]="isRequired"></span></label>
 
       <input
         [type]="type"
         [formControlName]="controlName"
+        [attr.maxlength]="maxLength"
         [class.input-error]="isInvalid"
       />
 
@@ -25,11 +24,12 @@ import { ValidationService } from '../services/validation.service';
     </div>
   `,
 })
-export class FormFieldComponent {
+export class InputFieldComponent {
   @Input({ required: true }) form!: FormGroup;
   @Input({ required: true }) controlName!: string;
   @Input({ required: true }) label!: string;
   @Input() type = 'text';
+  @Input() maxLength: number | null = null;
 
   private validation = inject(ValidationService);
 

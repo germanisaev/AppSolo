@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { combineLatest, map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { WizardFlowService } from '../../services/wizard-flow.service';
+import { WizardFlowService } from '../../../shared/services/wizard-flow.service';
 import { WIZARD_FORM_COMPONENTS } from '../../forms';
 import {
   animate,
@@ -14,9 +14,9 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { LoanBlockedPopupComponent } from '../loan-blocked-popup.component';
-import { LoanDecisionModalComponent } from '../loan-decision-modal.component';
-import { LoanDecisionModalType } from '../../components/loan-decision-modal.component';
+import { LoanBlockedPopupComponent } from '../../../shared/components/loan-blocked-popup.component';
+import { LoanDecisionModalComponent } from '../../../shared/components/loan-decision-modal.component';
+import { LoanDecisionModalType } from '../../../shared/components/loan-decision-modal.component';
 
 @Component({
   selector: 'app-wizard-step-page',
@@ -160,6 +160,13 @@ export class WizardStepPageComponent {
 
     const next = this.flow.getNextPosition(step, formIndex);
 
+    console.log('NEXT FROM:', step, formIndex);
+    console.log('NEXT TO:', next);
+    console.log(
+      'CAN OPEN NEXT STEP:',
+      next ? this.flow.canOpenStep(next.step) : null,
+    );
+
     this.flow.saveForm(step, formIndex, form.getRawValue()).subscribe({
       next: () => {
         if (!next) {
@@ -192,7 +199,7 @@ export class WizardStepPageComponent {
   }
 
   private navigate(step: number, form: number): void {
-    this.router.navigate(['/wizard/step', step], {
+    this.router.navigate(['/customer', 'wizard', 'step', step], {
       queryParams: { form },
     });
   }
