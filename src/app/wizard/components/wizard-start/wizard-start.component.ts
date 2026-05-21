@@ -16,9 +16,10 @@ import {
   createCompanyEmployeeStartForm,
   createCustomerDirectStartForm,
 } from '../../../shared/models/workflow.factory';
-import { WizardFlowService } from '../../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../../shared/services';
 import { BankRequestDraft } from '../../../shared/models/step.model';
-import { LoanDecisionModalComponent } from '../../../shared/components/loan-decision-modal.component';
+import { LoanDecisionModalComponent } from '../../../shared/components';
+import { CheckboxFieldComponent } from '../../../shared/controls';
 
 @Component({
   selector: 'app-wizard-start',
@@ -29,6 +30,7 @@ import { LoanDecisionModalComponent } from '../../../shared/components/loan-deci
     ButtonModule,
     OtpPopupComponent,
     LoanDecisionModalComponent,
+    CheckboxFieldComponent,
   ],
   templateUrl: './wizard-start.component.html',
   styleUrl: './wizard-start.component.scss',

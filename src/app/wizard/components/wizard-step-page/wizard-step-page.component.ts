@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { combineLatest, map } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
-import { WizardFlowService } from '../../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../../shared/services';
 import { WIZARD_FORM_COMPONENTS } from '../../forms';
 import {
   animate,

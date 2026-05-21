@@ -11,7 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step3Form2 } from '../../shared/models/step.types';
 import { NgIf } from '@angular/common';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 import { WizardCardComponent } from '../components/wizard-card.component';
 
 @Component({

@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBaseComponent } from '../../shared/base/form-base.component';
 import { Step5Form2 } from '../../shared/models/step.types';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 
 @Component({
   selector: 'app-step5-form2',

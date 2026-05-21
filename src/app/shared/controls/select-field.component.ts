@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
-import { ValidationService } from '../services/validation.service';
+import { ValidationService } from '../services';
 
 export interface SelectOption<T = string> {
   label: string;

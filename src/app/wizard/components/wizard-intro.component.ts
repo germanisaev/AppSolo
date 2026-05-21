@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 import { OtpPopupComponent } from './otp-popup.component';
 import { CommonModule } from '@angular/common';
-import { LoanDecisionModalComponent } from '../../shared/components/loan-decision-modal.component';
+import { LoanDecisionModalComponent } from '../../shared/components';
 
 @Component({
   selector: 'app-wizard-intro',

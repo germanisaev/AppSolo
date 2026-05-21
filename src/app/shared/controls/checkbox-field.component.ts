@@ -2,7 +2,7 @@ import { Component, Input, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ValidationService } from '../services/validation.service';
+import { ValidationService } from '../services';
 
 @Component({
   selector: 'app-checkbox-field',

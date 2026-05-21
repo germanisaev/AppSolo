@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 import { WizardCardComponent } from '../components/wizard-card.component';
-import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-step5-form3',

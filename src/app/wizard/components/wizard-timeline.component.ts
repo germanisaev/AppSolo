@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs/operators';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 
 @Component({
   selector: 'app-wizard-timeline',

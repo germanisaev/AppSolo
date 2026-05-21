@@ -1,7 +1,7 @@
 import { Component, Input, inject } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ValidationService } from '../services/validation.service';
+import { ValidationService } from '../services';
 
 export interface RadioOption<T = string | number | boolean> {
   label: string;

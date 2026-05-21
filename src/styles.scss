@@ -37,6 +37,16 @@ label {
   line-height: 1.2;
 }
 
+.field label {
+  display: flex;
+  flex-direction: row-reverse; // 🔥 RTL порядок
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  font-weight: 600;
+  color: #111827;
+}
+
 label.required-mark::after {
   content: "*";
   color: #7b1bb1;

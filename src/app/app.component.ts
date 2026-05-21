@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { WizardFlowService } from './shared/services/wizard-flow.service';
-import { LoaderComponent } from './shared/components/loader.component';
-import { LoaderService } from './shared/services/loader.service';
+import { WizardFlowService, LoaderService } from './shared/services';
+import { LoaderComponent } from './shared/components';
 
 @Component({
   selector: 'app-root',

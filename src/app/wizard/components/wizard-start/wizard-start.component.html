@@ -68,6 +68,14 @@
         
       </label>
 
+      <app-checkbox-field
+            class="full-width"
+            [form]="form"
+            controlName="isMailingAddressDifferent"
+            label="כתובת למשלוח דואר אינה זהה לכתובת המגורים שלי"
+          >
+          </app-checkbox-field>
+
       <button type="submit" class="send-button" [disabled]="isSending">
         {{ config.submitButtonText }}
       </button>

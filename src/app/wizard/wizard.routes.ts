@@ -1,11 +1,9 @@
 import { Routes } from '@angular/router';
 import { WizardShellComponent } from './components/wizard-shell.component';
 import { WizardStepPageComponent } from './components/wizard-step-page/wizard-step-page.component';
-import { wizardStepGuard } from '../shared/guards/wizard-step.guard';
+import { wizardStepGuard, introCompletedGuard, introTokenGuard } from '../shared/guards';
 import { WizardIntroComponent } from './components/wizard-intro.component';
-import { introCompletedGuard } from '../shared/guards/intro-completed.guard';
 import { WizardStartComponent } from './components/wizard-start/wizard-start.component';
-import { introTokenGuard } from '../shared/guards/intro-token.guard';
 
 export const WIZARD_ROUTES: Routes = [
   {

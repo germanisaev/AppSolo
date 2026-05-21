@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { WizardFlowService } from '../services/wizard-flow.service';
+import { WizardFlowService } from '../services';
 
 export const introRedirectGuard: CanActivateFn = () => {
   const flow = inject(WizardFlowService);

@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ValidationService } from '../services/validation.service';
+import { ValidationService } from '../services';
 
 @Component({
   selector: 'app-input-field',

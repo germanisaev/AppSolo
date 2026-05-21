@@ -2,7 +2,7 @@ import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ValidationService } from '../services/validation.service';
+import { ValidationService } from '../services';
 
 export interface AutocompleteOption {
   label: string;

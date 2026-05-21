@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
-import { LoaderService } from '../services/loader.service';
+import { LoaderService } from '../services';
 
 @Component({
   selector: 'app-loader',

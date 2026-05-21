@@ -1,8 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ValidationService } from '../services/validation.service';
-import { NumberFormatDirective } from '../services/number-format.directive';
+import { ValidationService, NumberFormatDirective } from '../services';
 
 @Component({
   selector: 'app-number-field',

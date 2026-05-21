@@ -3,7 +3,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { WizardTimelineComponent } from './wizard-timeline.component';
 import { ButtonModule } from 'primeng/button';
-import { WizardFlowService } from '../../shared/services/wizard-flow.service';
+import { WizardFlowService } from '../../shared/services';
 
 @Component({
   selector: 'app-wizard-shell',
